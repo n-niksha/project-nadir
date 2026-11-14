@@ -5,6 +5,7 @@ import { S, TIERS, emit } from "./state.js";
 import { getJSON, postJSON, pollJob } from "./api.js";
 import { esc, fmt, pm, sexa, dateTime, mjdToDate, VISIT_COLORS, OTYPE, lambdaColor } from "./fmt.js";
 import { plot } from "./plots.js";
+import { visitGroups } from "./playback.js";
 
 const L = { measured: '<span class="tag measured">measured</span>', catalog: '<span class="tag cat">catalog</span>',
   inferred: '<span class="tag inferred">inferred</span>', illustrative: '<span class="tag illustrative">illustrative</span>', unknown: '<span class="tag unknown">unknown</span>' };
@@ -20,15 +21,24 @@ export class Inspector {
       if (e.key === "ArrowLeft") { this.tab(tabs[(i + tabs.length - 1) % tabs.length].dataset.tab); tabs[(i + tabs.length - 1) % tabs.length].focus(); }
     });
     this.spectra = new Map();
+    document.querySelectorAll("[data-explain]").forEach(button => { button.onclick = () => { S.explanationLevel = button.dataset.explain; this.explain(); }; });
   }
   open(d) {
     this.d = d; this.el.hidden = false;
     const name = displayName(d);
     document.getElementById("insp-title").textContent = name;
     document.getElementById("insp-kicker").textContent = `NADIR source #${d.id} · ${TIERS[d.tier]?.label || d.tier}`;
+    const classification = d.catalog?.simbad ? (OTYPE[d.catalog.simbad.otype] || d.catalog.simbad.otype) : d.catalog?.gaia ? gaiaClass(d.catalog.gaia) : "Classification unknown";
+    document.getElementById("investigation-summary").innerHTML = `<p>${esc(classification)} ${d.catalog ? L.catalog : L.unknown}</p><p class="primary">${d.fit ? `${fmt(d.fit.pm_total,2)}″/yr` : 'Motion undetermined'} ${d.fit ? L.measured : L.unknown}</p><p class="small">${d.n_epochs} epochs · ${d.n_visits} visits · ${esc(TIERS[d.tier]?.label || d.tier)}</p>`;
+    this.explain();
     this.tab(S.tab || "overview");
   }
   close() { this.el.hidden = true; this.d = null; }
+  explain() {
+    const sections = this.d?.explanation?.[S.explanationLevel] || [];
+    document.querySelectorAll("[data-explain]").forEach(button => button.setAttribute("aria-pressed", button.dataset.explain === S.explanationLevel));
+    document.getElementById("explanation-body").innerHTML = sections.map(section => `<h4>${esc(section.title)} ${L[section.evidence] || L.unknown}</h4><p>${esc(section.text)}</p>`).join("") || '<p>No structured interpretation is available.</p>';
+  }
   tab(t) {
     S.tab = t;
     this.el.querySelectorAll(".tabs button").forEach((b) => { b.classList.toggle("active", b.dataset.tab === t); b.setAttribute("aria-selected", b.dataset.tab === t); });
@@ -60,6 +70,7 @@ export class Inspector {
     h += `<dt>Data quality</dt><dd>${d.n_epochs} epochs in ${d.n_visits} visits over ${fmt(d.baseline_days, 0)} days<br><span class="small">clean ${fmt(100 * d.clean_fraction, 0)}% · saturated ${fmt(100 * d.core_masked_fraction, 0)}% · blended ${fmt(100 * d.blended_fraction, 0)}%</span></dd>`;
     h += `</dl>`;
     if (d.pair) h += `<h4>Two-image test (best pair)</h4><p class="small">Displacement ${fmt(Math.hypot(d.pair.d_east_arcsec, d.pair.d_north_arcsec), 2)}″ at ${fmt(d.pair.significance, 1)}σ between the two highlighted epochs. ${d.tier === "rejected" ? "<b>The other visits do not confirm it.</b>" : ""}</p>`;
+    h += `<details class="evidence"><summary>Evidence behind this interpretation</summary><p>${esc(d.explanation?.summary || 'Insufficient evidence')}</p><ul>${(d.reasons || []).map(reason => `<li>${esc(reason)}</li>`).join('')}</ul><p>${d.n_epochs} source positions across ${d.n_visits} visits; ${fmt(d.baseline_days,1)} days. Masked cores: ${fmt(d.core_masked_fraction*100,0)}%; blended: ${fmt(d.blended_fraction*100,0)}%.</p><p>Reference stars define relative alignment. Gaia is a comparison catalog. The masked-core systematic floor was calibrated on Barnard; agreement there is not independent validation.</p><button class="btn" data-go="obs">Inspect supporting observations</button></details>`;
     h += `<div class="btnrow"><button class="btn" data-go="motion">See the motion →</button><button class="btn" data-go="spectrum">Spectrum →</button><button class="learn-link" data-learn="evidence">How to read these labels</button></div>`;
     this.body.innerHTML = h;
     this._wire();
@@ -117,32 +128,36 @@ export class Inspector {
 
   // ---------------------------------------------------------------- spectrum
   async spectrum() {
-    const d = this.d, sid = d.id;
+    const d = this.d, sid = d.id, fid = S.fid;
     let h = `<div class="callout"><b>How SPHEREx sees colour.</b> Each exposure records this spot of sky at one wavelength (the filter varies across the detector). Measuring the star in many exposures across six detectors builds a 0.75–5 µm spectrum, point by point. <button class="learn-link" data-learn="spectroscopy">Learn more</button></div>`;
     if (d.core_masked_fraction > 0.5) {
-      this.body.innerHTML = h + `<div class="callout bad"><b>No reliable spectrum for this object.</b> Its core saturates the detector, so the flux cannot be measured from the pixels; NADIR shows nothing rather than a biased spectrum. Try an unsaturated neighbour, or Teegarden's Star / van Maanen's Star from the presets. ${L.unknown}</div>`;
+      this.body.innerHTML = h + `<div class="callout bad"><b>No reliable spectrum for this object.</b> Its core is masked in most observations, so reliable flux cannot be measured from these pixels; saturation or other quality masks can cause this. NADIR shows nothing rather than a biased spectrum. Try an unsaturated neighbour or van Maanen's Star from the presets. ${L.unknown}</div>`;
       this._wire(); return;
     }
     if (!S.field.spectral_ready) {
-      this.body.innerHTML = h + `<p>Spectra need images from all six detectors. For this field that means about ${Object.values(S.field.bands_available).reduce((a, b) => a + Math.min(b, 20), 0) - (S.field.bands_available[S.field.band] || 0)} more cutouts (≈4 MB each from IRSA; cached afterwards).</p><button class="btn primary" id="spec-load">Download spectral images</button><div id="spec-prog" class="small"></div>`;
+      const additional = Object.entries(S.field.bands_available).filter(([band]) => band !== S.field.band).reduce((count, [,total]) => count + Math.min(total,20),0);
+      this.body.innerHTML = h + `<p>Spectra use all six detectors: up to ${additional} additional cutouts. Start with available cached observations, without downloading. Missing images can be requested afterwards. Measurements combine different dates.</p><button class="btn primary" id="spec-load">Load cached spectral observations</button><div id="spec-prog" class="small"></div>`;
       document.getElementById("spec-load").onclick = () => this.loadSpectral();
       this._wire(); return;
     }
     this.body.innerHTML = h + `<p class="small">Measuring forced photometry in every image…</p>`;
     try {
-      const sp = this.spectra.get(`${S.fid}:${sid}`) || await getJSON(`/api/fields/${S.fid}/sources/${sid}/spectrum`);
-      this.spectra.set(`${S.fid}:${sid}`, sp);
-      if (this.d?.id !== sid || S.tab !== "spectrum") return;
+      const sp = this.spectra.get(`${fid}:${sid}`) || await getJSON(`/api/fields/${fid}/sources/${sid}/spectrum`);
+      this.spectra.set(`${fid}:${sid}`, sp);
+      if (S.fid !== fid || this.d?.id !== sid || S.tab !== "spectrum") return;
       this.body.innerHTML = h + spectrumHTML(sp, d); this._wire();
-    } catch (e) { this.body.innerHTML = h + `<div class="callout bad">${esc(e.message)}</div>`; }
+    } catch (e) { if (S.fid === fid && this.d?.id === sid && S.tab === "spectrum") this.body.innerHTML = h + `<div class="callout bad">${esc(e.message)}</div>`; }
   }
-  async loadSpectral() {
+  async loadSpectral(cachedOnly = true) {
+    const fid = S.fid, sid = this.d.id;
     const btn = document.getElementById("spec-load"); btn.disabled = true;
     const prog = document.getElementById("spec-prog");
     try {
-      const r = await postJSON(`/api/fields/${S.fid}/spectral`);
+      const r = await postJSON(`/api/fields/${fid}/spectral?cached_only=${cachedOnly}`);
       if (r.job) await pollJob(r.job, { onUpdate: (j) => { prog.innerHTML = `${esc(j.message || j.stage)} · ${j.done}/${j.total || "?"}${j.detail?.cached != null ? ` (${j.detail.cached} from cache)` : ""}`; } });
-      S.field.spectral_ready = true; this.spectrum();
+      if (S.fid !== fid) return;
+      this.spectra.clear();
+      S.field.spectral_ready = true; if (this.d?.id === sid && S.tab === "spectrum") this.spectrum();
     } catch (e) { prog.innerHTML = `<span style="color:var(--red)">${esc(e.message)}</span>`; btn.disabled = false; }
   }
 
@@ -183,6 +198,14 @@ export class Inspector {
   _wire() {
     this.body.querySelectorAll("[data-go]").forEach((b) => (b.onclick = () => this.tab(b.dataset.go)));
     this.body.querySelectorAll("[data-learn]").forEach((b) => (b.onclick = () => emit("learn", b.dataset.learn)));
+    const features = document.getElementById("feat");
+    const load = document.getElementById("spec-load");
+    if (load) load.onclick = () => this.loadSpectral(load.dataset.network !== "true");
+    if (features) features.onchange = () => { S.showFeatures = features.checked; this.spectrum(); };
+    this.body.querySelectorAll(".plot [data-point-info]").forEach(node => {
+      const inspect = () => { const output = document.getElementById("spec-readout"); if (output) output.textContent = node.dataset.pointInfo; };
+      node.onpointerenter = inspect; node.onfocus = inspect; node.onclick = inspect;
+    });
   }
 }
 
@@ -202,7 +225,7 @@ function verdict(d) {
   const cls = { significant: "ok", systematics_limited: "ok", candidate: "warn", rejected: "bad", stationary: "", insufficient: "" }[d.tier] ?? "";
   let txt = "";
   if (d.tier === "significant") txt = `This source moves consistently across ${d.n_visits} independent visits (${fmt(f.snr, 1)}σ), measured on clean pixels.`;
-  else if (d.tier === "systematics_limited") txt = `The motion is real — it is reproduced across ${d.n_visits} visits at ${fmt(f.snr, 1)}σ — but the star saturates the detector, so the accuracy is limited by a systematic floor.`;
+  else if (d.tier === "systematics_limited") txt = `Motion is supported across ${d.n_visits} visits at ${fmt(f.snr, 1)}σ, but masked or saturated cores limit accuracy. The systematic floor is experimental.`;
   else if (d.tier === "candidate") txt = `Formally significant, but it fails a consistency test, so it is <b>not</b> a detection: ${esc(d.reasons.join("; "))}.`;
   else if (d.tier === "rejected") txt = `${esc(d.reasons[0] || "")}. A blend, a pixel-phase effect or a wavelength-dependent centroid can fake motion between two images; repeat visits expose it.`;
   else if (d.tier === "stationary") txt = `No motion above 5σ (${f ? fmt(f.snr, 1) + "σ" : "n/a"}). Stars like this anchor the reference frame.`;
@@ -213,24 +236,31 @@ function verdict(d) {
 function spectrumHTML(sp, d) {
   const P = sp.points || [];
   if (!P.length) return `<div class="callout bad">No usable photometry: ${sp.rejected.length} measurements rejected (${esc([...new Set(sp.rejected.map((r) => r.reason))].join("; "))}). ${L.unknown}</div>`;
-  const visit = (m) => (m < 61000 ? 0 : m < 61200 ? 1 : 2);
-  const good = P.filter((p) => p.snr >= 3);
-  const ys = good.map((p) => p.flux_mjy).concat((sp.catalog_points || []).map((c) => c.flux_mjy));
-  const lo = Math.max(Math.min(...ys) * 0.7, 1e-3), hi = Math.max(...ys) * 1.3;
+  const visits = visitGroups(P);
+  const visit = (mjd) => Math.max(0, visits.findIndex(group => mjd >= group[0].mjd && mjd <= group.at(-1).mjd));
+  const ys = P.flatMap(point => [point.flux_mjy-point.flux_err_mjy, point.flux_mjy+point.flux_err_mjy]).concat((sp.catalog_points || []).map(point => point.flux_mjy)).filter(Number.isFinite);
+  const lo = Math.min(0,...ys), hi = Math.max(1,...ys)*1.1;
   const series = [];
   if (sp.blackbody) series.push({ type: "line", data: sp.blackbody.curve.wavelength_um.map((w, i) => ({ x: w, y: sp.blackbody.curve.flux_mjy[i] })), color: "#a98bff", dash: "6 4", title: sp.blackbody.label });
   for (const [i, f] of (S.showFeatures ? sp.reference_features : []).entries()) series.push({ type: "vline", x: f.wavelength_um, label: f.label, color: "#4fd1b5", row: i % 3 });
-  series.push({ type: "points", data: P.map((p) => ({ x: p.wavelength_um, y: p.flux_mjy, ey: p.flux_err_mjy, color: VISIT_COLORS[visit(p.mjd)], opacity: p.snr < 3 ? 0.3 : 0.9, title: `${p.band} · ${fmt(p.wavelength_um, 3)} µm · ${fmt(p.flux_mjy, 2)} ± ${fmt(p.flux_err_mjy, 2)} mJy · ${mjdToDate(p.mjd)}` })) });
+  series.push({ type: "points", data: P.map((p) => ({ x: p.wavelength_um, y: p.flux_mjy, ex: (p.bandwidth_um || 0)/2, ey: p.flux_err_mjy, color: VISIT_COLORS[visit(p.mjd)%VISIT_COLORS.length], hollow: !!p.flags?.length, shape: p.flags?.length ? 'diamond' : 'circle', opacity: p.snr < 3 ? 0.45 : 0.9, title: `${p.obs_id} · ${p.band} · ${fmt(p.wavelength_um, 3)} µm · ${fmt(p.flux_mjy, 2)} ± ${fmt(p.flux_err_mjy, 2)} mJy · ${mjdToDate(p.mjd)} · ${p.method} · flags: ${p.flags?.join(', ') || 'none'}` })) });
   series.push({ type: "points", shape: "square", r: 4.5, hollow: true, data: (sp.catalog_points || []).map((c) => ({ x: c.wavelength_um, y: c.flux_mjy, ey: c.flux_err_mjy, color: "#ffffff", title: `${c.catalog} ${c.band}: ${fmt(c.mag, 2)} mag = ${fmt(c.flux_mjy, 2)} mJy` })) });
-  let h = `<div class="legend-row"><span><i style="background:#7aa2ff"></i>2025 visit</span><span><i style="background:#ffb547"></i>Mar 2026</span><span><i style="background:#4fd1b5"></i>Aug–Sep 2026</span><span><i style="border:1.5px solid #fff;background:none;border-radius:0"></i>2MASS / AllWISE</span>${sp.blackbody ? '<span><i style="background:#a98bff;border-radius:0;height:2px"></i>blackbody fit</span>' : ""}</div>`;
-  h += plot({ id: "spec", w: 392, h: 270, x: { label: "Wavelength (µm)", domain: [0.7, 5.1] }, y: { label: "Flux density (mJy)", domain: [0, hi] }, series });
+  let h = `<div class="legend-row">${visits.map((group,index) => `<span><i style="background:${VISIT_COLORS[index%VISIT_COLORS.length]}"></i>${mjdToDate(group[0].mjd)} → ${mjdToDate(group.at(-1).mjd)}</span>`).join('')}<span>□ 2MASS / AllWISE · ◇ flagged</span>${sp.blackbody ? '<span>Dashed violet: colour model</span>' : ''}</div>`;
+  h += plot({ id: "spec", w: 440, h: 300, margin: {l:58}, x: { label: "Observed wavelength (µm)", domain: [0.7, 5.1] }, y: { label: "Flux density Fν (mJy)", domain: [lo, hi] }, series });
+  h += `<div class="spec-readout" id="spec-readout" aria-live="polite">Hover, focus or tap a point for its epoch, flux, uncertainty, method and flags. Vertical bars: ±1σ. Horizontal bars: channel half-bandwidth, not wavelength error.</div>`;
   h += `<label class="small"><input type="checkbox" id="feat" ${S.showFeatures ? "checked" : ""}> Show where common infrared features occur ${L.illustrative}</label>`;
+  h += `<details class="evidence"><summary>Explain this spectrum</summary><p>${esc(sp.explanation?.explore || '')}</p><h4>Research assumptions</h4><p>${esc(sp.explanation?.research || '')}</p></details>`;
+  if (sp.missing_images) h += `<div class="callout warn">${sp.missing_images} planned images are not available in this cached spectrum. Coverage is incomplete.<button class="btn" id="spec-load" data-network="true">Fetch missing images from IRSA</button><div id="spec-prog"></div></div>`;
+  if (S.showFeatures) h += `<p class="small">Illustrative rest-frame regions; not redshift-adjusted and not detections. A dip alone does not identify a molecule.</p><ul class="small">${sp.reference_features.map(feature => `<li>${fmt(feature.wavelength_um,3)} µm · ${esc(feature.label)}: ${esc(feature.kind)}</li>`).join('')}</ul>`;
   h += `<h4>What this spectrum supports</h4><dl class="kv">`;
-  h += `<dt>Measurements</dt><dd>${P.length} fluxes in ${sp.bands.join(", ")} ${L.measured}<br><span class="small">forced ePSF photometry at the ${sp.pm_used ? "proper-motion-propagated (" + esc(sp.pm_used) + ")" : "fixed"} position; ${sp.rejected.length} rejected (${sp.n_saturated} saturated)</span></dd>`;
-  if (sp.catalog_comparison?.length) h += `<dt>Check vs catalogs</dt><dd>${sp.catalog_comparison.map((c) => `${c.band}: ×${fmt(c.ratio, 2)}`).join(" · ")} ${L.catalog}<br><span class="small">SPHEREx ÷ 2MASS/AllWISE near each band. Agreement within ~20% is expected (broad filters vs R≈40 sampling, different epochs).</span></dd>`;
-  if (sp.blackbody) h += `<dt>Colour temperature</dt><dd>${fmt(sp.blackbody.T_color_K, 0)} K (range ${fmt(sp.blackbody.T_lo_K, 0)}–${sp.blackbody.unconstrained_high ? "unbounded" : fmt(sp.blackbody.T_hi_K, 0)} K) ${L.inferred}<br><span class="small">single-blackbody model, χ²ᵣ ${fmt(sp.blackbody.chi2_red, 1)}. Real stars are not blackbodies (molecular bands), so this is not an effective temperature.${sp.gaia_teff ? ` Gaia's model estimate: ${fmt(sp.gaia_teff, 0)} K ${L.catalog}.` : ""}</span></dd>`;
+  h += `<dt>Measurements</dt><dd>${P.length} fluxes in ${sp.bands.join(", ")} ${L.measured}<br><span class="small">${esc([...new Set(P.map(point => point.method))].join(', '))} at the ${sp.pm_used ? "proper-motion-propagated (" + esc(sp.pm_used) + ")" : "fixed"} position; ${sp.rejected.length} rejected (${sp.n_saturated} masked/saturated). Aperture measurements are not aperture-corrected.</span></dd>`;
+  if (sp.catalog_comparison?.length) h += `<dt>Check vs catalogs</dt><dd>${sp.catalog_comparison.map((c) => `${c.band}: ×${fmt(c.ratio, 2)}`).join(" · ")} ${L.catalog}<br><span class="small">SPHEREx ÷ catalog flux near each band. Different epochs, broad filters, blending and aperture losses limit this comparison; no fixed agreement tolerance is claimed.</span></dd>`;
+  if (sp.blackbody) h += `<dt>Colour temperature</dt><dd>${fmt(sp.blackbody.T_color_K, 0)} K (${sp.blackbody.interval_grid_limited ? `interval unresolved on the ≈${fmt(sp.blackbody.grid_step_K,0)} K model grid` : `range ${fmt(sp.blackbody.T_lo_K,0)}–${sp.blackbody.unconstrained_high ? 'unbounded' : fmt(sp.blackbody.T_hi_K,0)} K`}) ${L.inferred}<br><span class="small">single-blackbody model, χ²ᵣ ${fmt(sp.blackbody.chi2_red, 1)}. Real stars are not blackbodies (molecular bands), so this is not an effective temperature.${sp.gaia_teff ? ` Gaia's model estimate: ${fmt(sp.gaia_teff, 0)} K ${L.catalog}.` : ""}</span></dd>`;
   if (sp.simbad_sp_type) h += `<dt>Spectral type</dt><dd>${esc(sp.simbad_sp_type)} ${L.catalog}</dd>`;
+  if (!sp.blackbody) h += `<dt>Colour model</dt><dd>Not supported by enough clean S/N ≥ 5 measurements ${L.unknown}</dd>`;
+  else h += `<dt>Fit diagnostics</dt><dd>${sp.blackbody.n_points} fitted; ${sp.blackbody.excluded_points} excluded. ${sp.blackbody.chi2_red > 5 ? 'Poor continuum fit: do not interpret temperature as a physical property.' : 'Conditional on a single-temperature continuum.'} ${sp.blackbody.unconstrained_low ? 'Lower interval reaches the model grid boundary.' : ''}</dd>`;
   h += `<dt>Composition</dt><dd>Not determined ${L.unknown}<br><span class="small">Feature markers show where molecules absorb or emit in general; NADIR does not claim to detect them in this source.</span></dd></dl>`;
+  h += `<details class="evidence"><summary>Measurement ledger &amp; provenance (${P.length} accepted, ${sp.rejected.length} rejected)</summary><table class="data"><thead><tr><th>Epoch / λ</th><th>Flux ± σ mJy / reason</th><th>Flags / archive</th></tr></thead><tbody>${[...P,...sp.rejected].map(point => `<tr><td>${mjdToDate(point.mjd)}<br>${fmt(point.wavelength_um,3)} µm</td><td>${point.ok ? `${fmt(point.flux_mjy,3)} ± ${fmt(point.flux_err_mjy,3)}` : esc(point.reason)}<br>${esc(point.method || '')}</td><td>${esc(point.flags?.join(', ') || 'none')}<br>${point.source_url?.startsWith('https://irsa.ipac.caltech.edu/') ? `<a href="${esc(point.source_url)}" target="_blank" rel="noopener" title="${esc(point.response_sha256 || '')}">IRSA FITS</a>` : 'provenance unavailable'}</td></tr>`).join('')}</tbody></table></details>`;
   return h;
 }
 
@@ -242,5 +272,3 @@ function report(d, notes) {
     (c.pm_comparison ? `- Gaia DR3 proper motion (catalog): E ${fmt(c.pm_comparison.gaia_pm_east, 3)}, N ${fmt(c.pm_comparison.gaia_pm_north, 3)} arcsec/yr; difference ${fmt(c.pm_comparison.z_total, 1)} sigma\n` : "") +
     `- Epochs: ${d.n_epochs} in ${d.n_visits} visits; saturated ${fmt(100 * d.core_masked_fraction, 0)}%\n- Data: NASA SPHEREx DR1/QR3 via IRSA; field ${S.field.ra}, ${S.field.dec}, band ${S.field.band}\n\n## Notes\n\n${notes || "(none)"}\n`;
 }
-
-document.addEventListener("change", (e) => { if (e.target.id === "feat") { S.showFeatures = e.target.checked; emit("refreshTab"); } });

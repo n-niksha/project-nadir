@@ -7,6 +7,7 @@ import { Timeline } from "./timeline.js";
 import { Inspector, displayName } from "./inspector.js";
 import { discoverHTML, learnHTML, helpHTML, LEARN } from "./sheets.js";
 import { Explorer, label as sliceLabel, CUBE_WL } from "./explore.js";
+import { epochList, stepEpoch } from "./playback.js";
 
 const $ = (id) => document.getElementById(id);
 const BOOT = new URLSearchParams(location.search); // read once: updateUrl() rewrites the query string
@@ -17,6 +18,7 @@ let cfg = {}, presets = [], explorer = null, loadCtl = null, blinkTimer = null, 
 
 // ------------------------------------------------------------------ intro
 function intro() {
+  if (!BOOT.has("intro")) return;
   const el = $("intro"); let seen = false;
   try { seen = sessionStorage.getItem("nadir:intro") === "1"; } catch (_) {}
   if (seen || BOOT.has("nointro")) return;
@@ -52,8 +54,28 @@ function showError(msg, q) {
     <p>${esc(msg)}</p><p class="small">Nothing has been changed${S.field ? "; the previous field is still loaded" : ""}. Archive problems are usually temporary.</p>
     <div class="loader-actions">${S.field ? '<button class="btn ghost" id="er-close">Keep previous field</button>' : ""}<button class="btn" id="er-demo">Open cached Barnard's Star demo</button><button class="btn primary" id="er-retry">Retry</button></div></div>`;
   $("er-retry").onclick = () => loadField(q);
-  $("er-demo").onclick = () => loadPreset(presets.find((p) => p.demo) || presets[0]);
+  $("er-demo").onclick = openDemo;
   if ($("er-close")) $("er-close").onclick = hideLoader;
+}
+
+async function loadConfig() {
+  const results = await Promise.all([getJSON("/api/config"), getJSON("/api/presets")]);
+  [cfg, presets] = results;
+  renderPresets();
+}
+
+async function openDemo() {
+  try {
+    if (!presets.length) await loadConfig();
+    const preset = presets.find((p) => p.demo) || presets[0];
+    if (!preset) throw new Error("The server returned no demo presets.");
+    loadPreset(preset);
+  } catch (e) { showStartupError(e); }
+}
+
+function showStartupError(error) {
+  showError(error.message, { name: "Application startup", band: "D2" });
+  $("er-retry").onclick = boot;
 }
 
 async function loadField(q, opts = {}) {
@@ -71,16 +93,18 @@ async function loadField(q, opts = {}) {
     if (!f.epochs[S.b]?.usable) S.b = f.best_pair?.b;
     S.frame = S.a;
     sky.setField(f); timeline.setField(f);
-    for (const e of f.epochs) if (e.usable) sky.loadFrame(e.index); // preload all registered frames
+    await Promise.all([sky.loadFrame(S.a), sky.loadFrame(S.b)]);
+    if (ctl.signal.aborted) return;
+    sky.preload(f.epochs.filter((epoch) => epoch.usable).map((epoch) => epoch.index));
     renderProvenance(); renderFilters(); renderTargetReadout();
     hideLoader();
-    setCmp(opts.mode || (firstLoad ? "blink" : S.cmp === "play" ? "a" : S.cmp));
+    setCmp(opts.mode || (firstLoad ? "a" : S.cmp === "play" ? "a" : S.cmp));
     refreshPair();
     const target = opts.src != null ? f.sources.find((s) => s.id === +opts.src) : nearestTarget(f);
-    if (target) await select(target.id, { center: false });
+    if (target) await select(target.id, { center: false, keepTab: opts.keepTab === true });
     else inspector.close();
     loadCatalogs(r.fid);
-    if (firstLoad && opts.tour !== false && !BOOT.has("notour")) startTour();
+    if (opts.tour === true) startTour();
     firstLoad = false;
     updateUrl();
   } catch (e) {
@@ -118,24 +142,37 @@ async function loadCatalogs(fid) {
 
 // ------------------------------------------------------------- comparison
 function setCmp(mode) {
+  if (!S.field) return;
   if (mode === "play" && S.cmp === "play") { togglePlay(); return; }
   S.cmp = mode; stopTimers();
   document.querySelectorAll("[data-cmp]").forEach((b) => b.classList.toggle("active", b.dataset.cmp === mode));
   $("opacity-ctl").hidden = mode !== "overlay";
   if (mode === "blink") blinkTimer = setInterval(() => { S.blinkOn = !S.blinkOn; sky.draw(); updateHud(); }, Math.max(150, 1000 / Math.max(1, S.fps / 2.5)));
   if (mode === "diff") sky.setDiff(S.a, S.b);
-  if (mode === "play") { S.frame = S.a; S.playing = true; startPlay(); }
+  if (mode === "play") { if (!playList().includes(S.frame)) S.frame = playList()[0]; startPlay(); }
   $("play").textContent = S.playing || mode === "blink" ? "❚❚" : "▶";
   sky.draw(); timeline.render(); updateHud(); updateUrl();
 }
 function stopTimers() { clearInterval(blinkTimer); clearInterval(playTimer); blinkTimer = playTimer = null; S.playing = false; $("play").textContent = "▶"; }
 function playList() {
-  const a = S.field.epochs[S.a]?.wavelength_um;
-  return S.field.epochs.filter((e) => e.usable && (!S.matchedOnly || Math.abs(e.wavelength_um / a - 1) <= 0.02)).map((e) => e.index);
+  return epochList(S.field, S.a, S.playbackMode).map((epoch) => epoch.index);
 }
 function startPlay() {
-  clearInterval(playTimer); S.playing = true; $("play").textContent = "❚❚";
-  playTimer = setInterval(() => { const L = playList(); const i = L.indexOf(S.frame); S.frame = L[(i + 1) % L.length]; sky.draw(); timeline.render(); updateHud(); }, 1000 / S.fps);
+  clearTimeout(playTimer);
+  const fid = S.fid;
+  const token = {}; S.playToken = token;
+  if (playList().length < 2) { S.playing = false; toast("Fewer than two comparable observations. Choose another anchor A or Spectral exploration."); return; }
+  S.playing = true; $("play").textContent = "❚❚";
+  const advance = async () => {
+    if (!S.playing || S.playToken !== token || S.fid !== fid) return;
+    const next = stepEpoch(S.field, S.a, S.playbackMode, S.frame, 1);
+    try { await sky.loadFrame(next); }
+    catch (_) { stopTimers(); toast("Frame unavailable. Reopen the field to retry."); return; }
+    if (!S.playing || S.playToken !== token || S.fid !== fid) return;
+    S.frame = next; sky.draw(); timeline.update(); updateHud();
+    playTimer = setTimeout(advance, 1000 / S.fps);
+  };
+  playTimer = setTimeout(advance, 1000 / S.fps);
 }
 function togglePlay() {
   if (S.cmp === "blink") { if (blinkTimer) { clearInterval(blinkTimer); blinkTimer = null; $("play").textContent = "▶"; } else setCmp("blink"); return; }
@@ -146,7 +183,9 @@ function togglePlay() {
 async function refreshPair() {
   if (S.a == null || S.b == null || S.a === S.b) return;
   if (S.cmp === "diff") sky.setDiff(S.a, S.b);
-  try { S.pair = await getJSON(`/api/fields/${S.fid}/pair?a=${S.a}&b=${S.b}`); } catch (_) { S.pair = null; }
+  const fid = S.fid, first = S.a, second = S.b;
+  try { const pair = await getJSON(`/api/fields/${fid}/pair?a=${first}&b=${second}`); if (S.fid !== fid || S.a !== first || S.b !== second) return; S.pair = pair; }
+  catch (_) { if (S.fid !== fid || S.a !== first || S.b !== second) return; S.pair = null; }
   updateHud();
 }
 
@@ -160,6 +199,14 @@ function updateHud() {
   else if (cur.top != null) h = `${lab(S.a, "A")}<br>${lab(S.b, "B")} at ${Math.round(S.opacity * 100)}% opacity`;
   else h = lab(cur.base, cur.base === S.a ? "A" : cur.base === S.b ? "B" : `Epoch`);
   if (S.cmp === "play") h += `<br><span class="small">Frames are aligned on field stars and scaled to the reference epoch's stellar flux; differing wavelengths change relative brightness.</span>`;
+  const list = playList(), shown = cur.base ?? S.a, current = ep(shown), previous = ep(list[list.indexOf(shown)-1]);
+  $("playback-note").textContent = S.playbackMode === "motion"
+    ? `Motion: ${list.length} registered frames within 2% of A's wavelength at the field center. Elsewhere wavelength may differ. One observed frame per step; gaps are not interpolated.`
+    : `Spectral exploration: ${list.length} registered frames, changing wavelength. Brightness changes may be spectral, not temporal. One observed frame per step.`;
+  if (S.cmp === "play" && !list.includes(shown)) $("playback-note").textContent += " This manually selected exposure is outside the playback wavelength filter.";
+  $("epoch-readout").textContent = current ? `${dateTime(current.date)} UTC · ${fmt(current.wavelength_um,3)} µm${previous ? ` · ${fmt(current.mjd-previous.mjd,2)} d since prior playback frame` : ''}` : '';
+  $("play").setAttribute("aria-label", S.playing || blinkTimer ? "Pause observations" : "Play observations");
+  $("hud-legend").hidden = S.visualPreset === "clean";
   $("hud-frame").innerHTML = h;
   const notes = S.pair?.notes || [];
   const a = ep(S.a), b = ep(S.b);
@@ -178,9 +225,10 @@ function legendHTML() {
 async function select(id, { center = true, keepTab = false } = {}) {
   if (id == null) { S.selected = null; S.detail = null; inspector.close(); sky.draw(); updateUrl(); return; }
   S.selected = id;
+  const fid = S.fid;
   try {
     const d = await getJSON(`/api/fields/${S.fid}/sources/${id}`);
-    if (S.selected !== id) return;
+    if (S.selected !== id || S.fid !== fid) return;
     S.detail = d;
     if (!keepTab && S.tab === "notes") S.tab = "overview";
     inspector.open(d);
@@ -233,7 +281,14 @@ function showView(v) {
   $("timeline").hidden = !(v === "time");
   $("stage").style.gridTemplateRows = v === "time" ? "" : "1fr";
   if (v === "explore") { explorer ??= new Explorer(cfg, presets); explorer.show(); }
-  if (v === "discover") { $("sheet").innerHTML = discoverHTML(); $("sheet").querySelectorAll("tr[data-sid]").forEach((tr) => (tr.onclick = () => { showView("time"); select(+tr.dataset.sid); })); }
+  if (v !== "time") stopTimers();
+  if (v === "discover") {
+    $("sheet").innerHTML = discoverHTML();
+    $("sheet").querySelectorAll("[data-sid]").forEach((button) => (button.onclick = () => { showView("time"); select(+button.dataset.sid); }));
+    $("sheet").querySelectorAll("[data-discovery-tier]").forEach((button) => (button.onclick = () => {
+      const tier = button.dataset.discoveryTier; S.tiers.has(tier) ? S.tiers.delete(tier) : S.tiers.add(tier); renderFilters(); showView("discover");
+    }));
+  }
   if (v === "learn") renderLearn();
   if (v === "help") $("sheet").innerHTML = helpHTML(cfg);
   if (v === "time") requestAnimationFrame(() => { sky.resize(); timeline.render(); });
@@ -289,9 +344,10 @@ function toast(msg) { const t = $("toast"); t.textContent = msg; t.hidden = fals
 
 // ---------------------------------------------------------------- events
 on("select", (id) => select(id));
-on("setA", (i) => { if (!S.field.epochs[i]?.usable) return; S.a = i; if (S.a === S.b) S.b = S.field.best_pair?.b; afterPairChange(); });
+on("setA", (i) => { if (!S.field.epochs[i]?.usable) return; S.a = i; if (S.a === S.b) S.b = S.field.epochs.find(epoch => epoch.usable && epoch.index !== i)?.index; afterPairChange(); });
 on("setB", (i) => { if (!S.field.epochs[i]?.usable || i === S.a) return; S.b = i; if (!["b", "blink", "overlay", "diff"].includes(S.cmp)) S.cmp = "b"; afterPairChange(); setCmp(S.cmp); });
-on("frame", (i) => { S.frame = i; clearInterval(playTimer); S.playing = false; $("play").textContent = "▶"; sky.draw(); timeline.render(); updateHud(); });
+on("frame", (i) => { if (!S.field?.epochs[i]?.usable) return; stopTimers(); S.cmp = "play"; S.frame = i; document.querySelectorAll("[data-cmp]").forEach(button => button.classList.toggle("active", button.dataset.cmp === "play")); $("opacity-ctl").hidden = true; sky.loadFrame(i); sky.draw(); timeline.update(); updateHud(); updateUrl(); });
+on("epochUnavailable", (epoch) => toast(`Observation unavailable: ${epoch.unusable_reason || 'missing timestamp or registration'}. See Observations for provenance.`));
 on("cursor", ({ ra, dec, inside, hit }) => { $("hud-cursor").textContent = inside ? cursorText(ra, dec) + (hit ? `  ·  ${displayName(hit)}` : "") : ""; });
 on("learn", (k) => { showView("learn"); renderLearn(k); });
 on("urlchange", updateUrl);
@@ -301,11 +357,27 @@ function afterPairChange() { timeline.render(); refreshPair(); sky.draw(); updat
 document.querySelectorAll("[data-view]").forEach((b) => (b.onclick = () => showView(b.dataset.view)));
 document.querySelectorAll("[data-cmp]").forEach((b) => (b.onclick = () => setCmp(b.dataset.cmp)));
 $("play").onclick = togglePlay;
+$("sidebar-toggle").onclick = () => { const open = document.body.classList.toggle("controls-open"); $("sidebar-toggle").setAttribute("aria-expanded", open); };
 $("speed").oninput = (e) => { S.fps = +e.target.value; $("speed-out").textContent = `${S.fps}/s`; if (S.cmp === "play" && S.playing) startPlay(); if (S.cmp === "blink") setCmp("blink"); };
 $("opacity").oninput = (e) => { S.opacity = +e.target.value / 100; sky.draw(); updateHud(); };
-$("matched-only").onchange = (e) => { S.matchedOnly = e.target.checked; timeline.render(); };
+$("playback-mode").onchange = (event) => { S.playbackMode = event.target.value; S.matchedOnly = S.playbackMode === "motion"; if (S.playing) startPlay(); timeline.render(); updateHud(); };
+function stepFrame(direction) { const next = stepEpoch(S.field, S.a, S.playbackMode, sky.current().base ?? S.frame, direction); if (next != null) emit("frame", next); }
+$("step-prev").onclick = () => stepFrame(-1); $("step-next").onclick = () => stepFrame(1);
+$("frame-a").onclick = () => emit("setA", sky.current().base ?? S.frame);
+$("frame-b").onclick = () => emit("setB", sky.current().base ?? S.frame);
+$("start-tour").onclick = () => { if (S.field) { showView("time"); startTour(); } else toast("The demo is still loading."); };
+$("welcome-dismiss").onclick = () => { $("welcome").hidden = true; try { localStorage.setItem("nadir:welcome", "dismissed"); } catch (_) {} };
+try { $("welcome").hidden = localStorage.getItem("nadir:welcome") === "dismissed"; } catch (_) {}
+function setVisual(preset) {
+  S.visualPreset = preset;
+  for (const key of Object.keys(S.overlays)) S.overlays[key] = key === "grid" || (preset !== "clean" && ["sources", "tracks"].includes(key)) || preset === "research";
+  document.querySelectorAll("[data-ov]").forEach(input => { input.checked = S.overlays[input.dataset.ov]; });
+  document.querySelectorAll("[data-visual]").forEach(button => button.setAttribute("aria-pressed", button.dataset.visual === preset));
+  sky.draw(); updateHud();
+}
+document.querySelectorAll("[data-visual]").forEach(button => { button.onclick = () => setVisual(button.dataset.visual); });
 $("zoom-in").onclick = () => sky.zoomAt(1.4); $("zoom-out").onclick = () => sky.zoomAt(1 / 1.4); $("zoom-fit").onclick = () => sky.fit();
-document.querySelectorAll("[data-ov]").forEach((cb) => (cb.onchange = () => { S.overlays[cb.dataset.ov] = cb.checked; sky.draw(); }));
+document.querySelectorAll("[data-ov]").forEach((cb) => (cb.onchange = () => { S.overlays[cb.dataset.ov] = cb.checked; S.visualPreset = "custom"; document.querySelectorAll("[data-visual]").forEach(button => button.setAttribute("aria-pressed", "false")); sky.draw(); updateHud(); }));
 $("coord-form").onsubmit = (e) => {
   e.preventDefault();
   const ra = parseFloat($("ra").value), dec = parseFloat($("dec").value);
@@ -345,17 +417,17 @@ document.addEventListener("keydown", (e) => {
 window.addEventListener("resize", () => timeline.render());
 
 // ------------------------------------------------------------------- boot
-(async function boot() {
-  intro();
-  try { [cfg, presets] = await Promise.all([getJSON("/api/config"), getJSON("/api/presets")]); }
-  catch (e) { showError(e.message, { ra: 0, dec: 0, band: "D2", size: 0.2 }); return; }
-  renderPresets();
+async function boot() {
+  try { await loadConfig(); }
+  catch (e) { showStartupError(e); return; }
   const q = BOOT;
   if (q.has("ra") && q.has("dec")) {
     const query = { ra: +q.get("ra"), dec: +q.get("dec"), size: +(q.get("size") || 0.2), band: q.get("band") || "D2" };
-    if (q.get("tab")) S.tab = q.get("tab");
+    if (["overview", "motion", "spectrum", "obs", "notes"].includes(q.get("tab"))) S.tab = q.get("tab");
     firstLoad = q.get("tour") === "1";
-    await loadField(query, { a: q.has("a") ? +q.get("a") : undefined, b: q.has("b") ? +q.get("b") : undefined, mode: q.get("mode") || undefined, src: q.get("src") ?? undefined, tour: q.get("tour") === "1" });
+    await loadField(query, { a: q.has("a") ? +q.get("a") : undefined, b: q.has("b") ? +q.get("b") : undefined, mode: q.get("mode") || undefined, src: q.get("src") ?? undefined, tour: q.get("tour") === "1", keepTab: q.has("tab") });
     if (q.get("view") && q.get("view") !== "time") showView(q.get("view"));
   } else loadPreset(presets.find((p) => p.demo) || presets[0]);
-})();
+}
+intro();
+boot();

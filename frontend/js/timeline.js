@@ -1,70 +1,72 @@
-// Observation timeline: x = time (each visit gets its own segment, because
-// visits are months apart but exposures within a visit are minutes-to-days
-// apart), y = wavelength at the target.  This makes SPHEREx's linear-variable-
-// filter stepping visible: each visit climbs through wavelength.
 import { S, emit } from "./state.js";
 import { esc, fmt, dateTime, lambdaColor } from "./fmt.js";
+import { visitGroups, wavelengthMatch } from "./playback.js";
 
 export class Timeline {
-  constructor(el) { this.el = el; this.el.addEventListener("click", (e) => this._click(e)); this.el.addEventListener("keydown", (e) => this._key(e)); }
-  setField(f) { this.f = f; this.render(); }
-
-  layout() {
-    const f = this.f, eps = f.epochs.filter((e) => e.usable);
-    const visits = new Map();
-    for (const e of eps) {
-      const v = f.visits.findIndex((vv) => e.mjd >= vv.mjd_min - 1e-6 && e.mjd <= vv.mjd_max + 1e-6);
-      if (!visits.has(v)) visits.set(v, []);
-      visits.get(v).push(e);
-    }
-    return { eps, visits: [...visits.entries()].sort((a, b) => a[0] - b[0]) };
+  constructor(el) {
+    this.el = el;
+    el.addEventListener("click", (event) => this.activate(event));
+    el.addEventListener("keydown", (event) => {
+      if (["Enter", " "].includes(event.key)) { event.preventDefault(); this.activate(event); }
+      if (["ArrowLeft", "ArrowRight"].includes(event.key)) {
+        event.preventDefault(); event.stopPropagation();
+        const nodes = [...el.querySelectorAll(".tl-epoch")], current = nodes.indexOf(event.target.closest(".tl-epoch"));
+        nodes[(current + (event.key === "ArrowRight" ? 1 : -1) + nodes.length) % nodes.length]?.focus();
+      }
+    });
   }
-
+  setField(field) { this.f = field; this.render(); }
   render() {
-    const f = this.f; if (!f) return;
-    const r = this.el.getBoundingClientRect(), W = Math.max(320, r.width), H = Math.max(60, r.height);
-    const { eps, visits } = this.layout();
-    const m = { l: 44, r: 10, t: 6, b: 18 }, gap = 26;
-    const wl = eps.map((e) => e.wavelength_um), lo = Math.min(...wl), hi = Math.max(...wl);
-    const total = visits.reduce((a, [, list]) => a + Math.max(list.length, 4), 0);
-    const pw = W - m.l - m.r - gap * (visits.length - 1), unit = pw / total;
-    const Y = (w) => m.t + (H - m.t - m.b) * (1 - (w - lo) / Math.max(hi - lo, 1e-6));
-    let x = m.l, svg = `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">`;
-    svg += `<text x="4" y="${Y(hi) + 4}" fill="#7a849c" font-size="10">${fmt(hi, 2)}µm</text><text x="4" y="${Y(lo)}" fill="#7a849c" font-size="10">${fmt(lo, 2)}µm</text>`;
-    this.pos = new Map();
-    const matchedTo = S.a != null ? f.epochs[S.a]?.wavelength_um : null;
-    for (const [, list] of visits) {
-      const w = Math.max(list.length, 4) * unit;
-      svg += `<rect x="${x - 4}" y="${m.t - 2}" width="${w + 8}" height="${H - m.b - m.t + 4}" rx="6" fill="rgba(122,162,255,.035)" stroke="rgba(122,162,255,.12)"/>`;
-      const d0 = list[0].date?.slice(0, 10), d1 = list[list.length - 1].date?.slice(0, 10);
-      svg += `<text x="${x}" y="${H - 4}" fill="#aab3c8" font-size="10.5">${esc(d0 === d1 ? d0 : `${d0} → ${d1.slice(5)}`)} · ${list.length}</text>`;
-      list.forEach((e, k) => {
-        const cx = x + (k + 0.5) * w / list.length, cy = Y(e.wavelength_um);
-        this.pos.set(e.index, [cx, cy]);
-        const isA = e.index === S.a, isB = e.index === S.b, isF = S.cmp === "play" && e.index === S.frame;
-        const dim = S.matchedOnly && matchedTo && Math.abs(e.wavelength_um / matchedTo - 1) > 0.02 && !isA;
-        const reg = e.registration || {}, rms = reg.rms_native_px;
-        const title = `${e.obs_id} · ${dateTime(e.date)} UTC · λ ${fmt(e.wavelength_um, 3)} µm · ${e.release}` + (rms != null ? ` · registration ${fmt(rms, 3)} px` : "") + (e.is_reference ? " · reference epoch" : "");
-        svg += `<g class="tl-epoch" data-i="${e.index}" tabindex="0" role="option" aria-selected="${isA || isB}" aria-label="${esc(title)}"><title>${esc(title)}</title>`;
-        svg += `<rect class="hit" x="${cx - Math.max(3, w / list.length / 2)}" y="${m.t}" width="${Math.max(6, w / list.length)}" height="${H - m.t - m.b}" fill="transparent"/>`;
-        svg += `<circle cx="${cx}" cy="${cy}" r="${isA || isB || isF ? 5 : 3.2}" fill="${lambdaColor(e.wavelength_um, lo * 0.97, hi * 1.03)}" opacity="${dim ? 0.18 : 0.95}" ${isF ? 'stroke="#fff" stroke-width="2"' : ""}/>`;
-        if (isA || isB) svg += `<text x="${cx}" y="${cy - 9}" text-anchor="middle" font-size="11" font-weight="700" fill="${isA ? "#7aa2ff" : "#ffb547"}">${isA ? "A" : "B"}</text>`;
-        svg += `</g>`;
-      });
-      x += w + gap;
+    if (!this.f) return;
+    const focused = this.el.querySelector(":focus")?.dataset.i;
+    const epochs = this.f.epochs, visits = visitGroups(epochs), dated = visits.flat();
+    if (!dated.length) { this.el.textContent = "No timestamped observations available."; return; }
+    const width = Math.max(320, this.el.clientWidth), height = 74, margin = 28;
+    const start = dated[0].mjd, end = dated.at(-1).mjd;
+    const position = (mjd) => margin + (mjd - start) / Math.max(end - start, 1e-6) * (width - margin * 2);
+    let overview = `<svg viewBox="0 0 ${width} ${height}" role="img" aria-label="Coverage on a linear time axis; empty intervals contain no observations"><line x1="${margin}" x2="${width - margin}" y1="27" y2="27" stroke="#26314a"/>`;
+    visits.forEach((visit, index) => {
+      const left = position(visit[0].mjd), right = position(visit.at(-1).mjd);
+      overview += `<rect x="${left}" y="15" width="${Math.max(2, right-left)}" height="24" fill="#7aa2ff" opacity=".14"/>`;
+      for (const epoch of visit) overview += `<line x1="${position(epoch.mjd)}" x2="${position(epoch.mjd)}" y1="20" y2="34" stroke="${epoch.usable ? '#7aa2ff' : '#ff6f6f'}" opacity=".6"/>`;
+      overview += `<text data-visit="${index}" tabindex="0" role="button" aria-label="Jump to visit ${index+1}" x="${(left+right)/2}" y="51" text-anchor="middle" fill="#aab3c8" font-size="10" style="cursor:pointer">Visit ${index+1}</text>`;
+      if (index) {
+        const previous = visits[index-1].at(-1), gap = visit[0].mjd-previous.mjd;
+        overview += `<text x="${(position(previous.mjd)+left)/2}" y="24" text-anchor="middle" fill="#aab3c8" font-size="10">${fmt(gap, 1)} d gap</text>`;
+      }
+    });
+    overview += `<line id="tl-cursor" y1="9" y2="40" stroke="#ffb547" stroke-width="2"/><text x="${margin}" y="70" fill="#aab3c8" font-size="10">${esc(dated[0].date?.slice(0,10))}</text><text x="${width-margin}" y="70" text-anchor="end" fill="#aab3c8" font-size="10">${esc(dated.at(-1).date?.slice(0,10))}</text></svg>`;
+    this.position = position;
+    const item = (epoch) => {
+      const matched = wavelengthMatch(epoch.wavelength_um, this.f.epochs[S.a]?.wavelength_um);
+      const title = `${dateTime(epoch.date)} UTC · ${fmt(epoch.wavelength_um,3)} µm · ${epoch.release} · ${epoch.usable ? 'registered' : epoch.unusable_reason}`;
+      return `<button class="tl-epoch ${S.playbackMode === 'motion' && !matched ? 'unmatched' : ''}" data-i="${epoch.index}" role="option" aria-selected="false" title="${esc(title)}" aria-label="${esc(title)}" style="--epoch-color:${epoch.usable ? lambdaColor(epoch.wavelength_um) : '#ff6f6f'}"><span>${esc(epoch.date?.slice(5,16).replace('T',' ') || 'Undated')}</span><b>${fmt(epoch.wavelength_um,3)} µm</b><small>${epoch.usable ? '' : 'unavailable · '}<span data-epoch-tag="${epoch.index}"></span></small></button>`;
+    };
+    this.el.innerHTML = `<div class="coverage">${overview}</div><div class="visit-strip">${visits.map((visit,index) => `<section><h4>Visit ${index+1} · ${visit.length} observations</h4><div class="visit-epochs">${visit.map(item).join('')}</div></section>`).join('')}${epochs.some(epoch => !Number.isFinite(epoch.mjd)) ? `<section><h4>Timestamp unavailable</h4><div class="visit-epochs">${epochs.filter(epoch => !Number.isFinite(epoch.mjd)).map(item).join('')}</div></section>` : ''}</div>`;
+    this.update();
+    if (focused != null) this.el.querySelector(`[data-i="${focused}"]`)?.focus({preventScroll:true});
+  }
+  update() {
+    const current = S.cmp === "play" ? S.frame : S.cmp === "b" ? S.b : S.a;
+    this.el.querySelectorAll(".tl-epoch").forEach((node) => {
+      const index = +node.dataset.i;
+      node.setAttribute("aria-selected", index === current);
+      node.querySelector("[data-epoch-tag]").textContent = [index === S.a && 'A', index === S.b && 'B', index === current && 'viewing'].filter(Boolean).join(' · ');
+    });
+    const cursor = this.el.querySelector("#tl-cursor"), epoch = this.f?.epochs[current];
+    if (cursor && Number.isFinite(epoch?.mjd)) { cursor.setAttribute('x1',this.position(epoch.mjd)); cursor.setAttribute('x2',this.position(epoch.mjd)); }
+    const strip = this.el.querySelector('.visit-strip'), selected = this.el.querySelector('.tl-epoch[aria-selected=true]');
+    if (S.cmp === 'play' && strip && selected) {
+      const bounds = strip.getBoundingClientRect(), item = selected.getBoundingClientRect();
+      if (item.left < bounds.left || item.right > bounds.right) strip.scrollLeft += item.left-bounds.left-strip.clientWidth/2+item.width/2;
     }
-    svg += "</svg>";
-    this.el.innerHTML = svg;
   }
-
-  _click(e) {
-    const g = e.target.closest(".tl-epoch"); if (!g) return;
-    const i = +g.dataset.i;
-    if (S.cmp === "play") emit("frame", i);
-    else emit(e.shiftKey || e.altKey ? "setA" : "setB", i);
-  }
-  _key(e) {
-    const g = e.target.closest(".tl-epoch"); if (!g) return;
-    if (e.key === "Enter" || e.key === " ") { e.preventDefault(); emit(e.shiftKey ? "setA" : "setB", +g.dataset.i); }
+  activate(event) {
+    const visit = event.target.closest('[data-visit]');
+    if (visit) { this.el.querySelectorAll('.visit-strip section')[+visit.dataset.visit]?.scrollIntoView({block:'nearest',inline:'start'}); return; }
+    const node = event.target.closest(".tl-epoch"); if (!node) return;
+    const index = +node.dataset.i;
+    if (!this.f.epochs[index].usable) { emit("epochUnavailable", this.f.epochs[index]); return; }
+    emit(event.shiftKey ? "setA" : event.altKey ? "setB" : "frame", index);
   }
 }

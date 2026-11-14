@@ -116,6 +116,9 @@ def build_spectrum(observations: list[tuple[str, Observation]], ra: float, dec: 
             r = ra + pm_east_arcsec_yr * dt / 3600.0 / math.cos(math.radians(dec))
         m = forced_photometry(obs, r, d)
         m["band"] = band
+        m["source_url"] = (obs.provenance or {}).get("source_url")
+        m["response_sha256"] = (obs.provenance or {}).get("response_sha256")
+        m["release"] = obs.release
         (points if m["ok"] else rejected).append(m)
     points.sort(key=lambda p: p["wavelength_um"])
     sat = sum(1 for r in rejected if r.get("saturated"))
@@ -141,7 +144,10 @@ def blackbody_fit(points: list[dict], min_snr: float = 5.0) -> dict | None:
     real stellar spectra have absorption bands (H2O, CO in cool stars), so it
     is not an effective temperature.  Above ~5000 K the 0.75-5 um range is on
     the Rayleigh-Jeans tail and T is poorly constrained; we report that."""
-    good = [p for p in points if p["snr"] >= min_snr and p["flux_mjy"] > 0]
+    good = [p for p in points if p["snr"] >= min_snr and p["flux_mjy"] > 0
+            and not p.get("flags") and not p.get("saturated")
+            and all(math.isfinite(p[key]) for key in ("wavelength_um", "flux_mjy", "flux_err_mjy"))
+            and p["wavelength_um"] > 0 and p["flux_err_mjy"] > 0]
     if len(good) < 6:
         return None
     wl = np.array([p["wavelength_um"] for p in good])
@@ -164,7 +170,10 @@ def blackbody_fit(points: list[dict], min_snr: float = 5.0) -> dict | None:
     a = float(np.sum(f * m / e**2) / np.sum(m * m / e**2))
     grid_wl = np.geomspace(0.7, 5.1, 80)
     return {"T_color_K": T, "T_lo_K": lo, "T_hi_K": hi, "chi2_red": float(chi[k] / dof), "n_points": len(good),
-            "unconstrained_high": hi >= temps[-2], "curve": {"wavelength_um": grid_wl.tolist(),
+            "interval_grid_limited": len(inside) == 1,
+            "grid_step_K": float(temps[min(k+1,len(temps)-1)]-temps[max(k-1,0)]) / (2 if 0 < k < len(temps)-1 else 1),
+            "unconstrained_high": hi >= temps[-2], "unconstrained_low": lo <= temps[1],
+            "excluded_points": len(points) - len(good), "curve": {"wavelength_um": grid_wl.tolist(),
                                                              "flux_mjy": (a * planck_fnu(grid_wl, T)).tolist()},
             "label": "Inferred: single-blackbody colour temperature (model), not an effective temperature"}
 

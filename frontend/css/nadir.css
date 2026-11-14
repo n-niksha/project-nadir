@@ -22,7 +22,7 @@
   --sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --left-w: 292px;
   --insp-w: 420px;
-  --tl-h: 132px;
+  --tl-h: 360px;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -268,3 +268,67 @@ textarea { width: 100%; min-height: 160px; resize: vertical; line-height: 1.5; }
   .sheet { padding: 16px; }
 }
 @media (prefers-reduced-motion: reduce) { * { animation-duration: .01ms !important; transition: none !important; } .intro { animation: none; } }
+
+.welcome p { color: var(--fg-2); font-size: 13px; }
+.welcome h2 { color: var(--fg); letter-spacing: .02em; font-size: 13px; }
+.visual-presets { margin-bottom: 12px; }
+.visual-presets [aria-pressed=true], .explanation [aria-pressed=true] { color: var(--amber-2); border-bottom: 2px solid var(--amber); }
+.playback-note { font-size: 12px; color: var(--fg-2); margin: 7px 12px; }
+.epoch-actions { display: flex; gap: 6px; align-items: center; padding: 0 12px; font-size: 11px; }
+#epoch-readout { flex: 1; color: var(--amber-2); }
+.epoch-actions .btn { padding: 3px 6px; font-size: 11px; }
+.tl-track { height: auto; min-height: 0; padding: 0 12px 8px; }
+.coverage svg { display: block; width: 100%; height: 74px; }
+.visit-strip { display: flex; overflow-x: auto; gap: 18px; padding-bottom: 8px; }
+.visit-strip section { flex: none; }
+.visit-strip h4 { margin: 0 0 4px; color: var(--fg-2); font-size: 11px; font-weight: 500; }
+.visit-epochs { display: flex; gap: 4px; }
+.tl-epoch { display: grid; min-width: 103px; min-height: 63px; text-align: left; border: 1px solid var(--line); border-top: 2px solid var(--epoch-color); background: var(--bg-2); color: var(--fg-2); padding: 4px 6px; font-size: 10px; cursor: pointer; }
+.tl-epoch b { color: var(--epoch-color); font: 11px var(--mono); }
+.tl-epoch small { color: var(--amber-2); min-height: 14px; }
+.tl-epoch.unmatched { opacity: .55; }
+.tl-epoch[aria-selected=true] { outline: 1px solid var(--amber); opacity: 1; background: #1b2030; }
+.timeline { overflow-y: auto; }
+.investigation-summary { padding: 10px 16px; border-bottom: 1px solid var(--line); }
+.investigation-summary p { margin: 3px 0; }
+.investigation-summary .primary { font-size: 19px; color: var(--amber-2); font-family: var(--mono); }
+.explanation { padding: 10px 16px; border-bottom: 1px solid var(--line); font-size: 13px; }
+.explanation summary { cursor: pointer; color: var(--amber-2); }
+.explanation .seg { margin: 10px 0; }
+.explanation p { margin: 5px 0 12px; color: var(--fg-2); }
+.explanation h4 { margin: 10px 0 4px; }
+.inspector { overflow-y: auto; display: block; }
+.timeline { grid-template-rows: auto auto auto minmax(165px, 1fr); gap: 3px; }
+.timeline > * { min-width: 0; max-width: 100%; }
+.visit-strip { width: 100%; }
+.insp-body, .investigation-summary, .explanation { overflow-wrap: anywhere; min-width: 0; }
+.insp-body { overflow: visible; }
+.small, .hint { font-size: 12px; }
+.plot text { font-size: 11px; }
+.plot [tabindex] { cursor: crosshair; }
+.plot [tabindex]:focus { outline: none; filter: brightness(1.5); }
+.spec-readout { min-height: 56px; padding: 8px; background: var(--panel-2); color: var(--fg-2); font-size: 12px; }
+.evidence { margin: 12px 0; border-top: 1px solid var(--line); padding-top: 10px; overflow-x: auto; }
+.evidence summary { cursor: pointer; color: var(--blue); }
+.sidebar-toggle { display: none; }
+@media (max-width: 1280px) { :root { --tl-h: 360px; } }
+@media (max-width: 1024px) {
+  .sidebar-toggle { display: inline-block; }
+  .left { display: none; max-height: 65vh; overflow-y: auto; }
+  .controls-open .left { display: block; }
+  .stage { height: 850px; min-height: 700px; }
+  .inspector { max-height: none; overflow: visible; }
+  .hud-tr { max-width: 45%; font-size: 10px; }
+  .hud-tl { max-width: 50%; }
+}
+@media (max-width: 600px) {
+  :root { --tl-h: 410px; }
+  .stage { height: 850px; }
+  .epoch-actions { flex-wrap: wrap; }
+  #epoch-readout { flex-basis: 100%; }
+  .hud-tr { display: none; }
+  .hud-tl { max-width: calc(100% - 24px); }
+  .tl-controls { gap: 6px; }
+  .explanation, .investigation-summary, .insp-body { padding-left: 12px; padding-right: 12px; }
+  .quick-search input { width: 0; }
+}

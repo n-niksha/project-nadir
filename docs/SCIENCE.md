@@ -1,5 +1,79 @@
 # Method, validation and scientific limitations
 
+## Current multi-epoch interpretation (Milestone 3)
+
+The original pair method below remains available. The current UI additionally
+fits field-wide tracks and groups visits after gaps greater than 30 days.
+Motion uses native-pixel centroids, a catalog-free reference-star alignment,
+and east/north tangent-plane offsets. East is `−x` on the north-up display;
+`μE = μα cos δ`, and rates use 365.25 days per year. The linear fit does not
+solve for parallax. Gaia prediction curves include geocentric parallax.
+
+Significant motion requires a combined axis-error S/N ≥ 5, at least three
+visits, reduced χ² ≤ 5 in both axes and the existing blend/artifact gates.
+Masked-core sources use visit means with a 1.2″ systematic per visit. This
+floor was calibrated on Barnard's Star: its Gaia agreement is **not independent
+validation** of that floor. Cross-matching does not calibrate the alignment,
+but the floor's empirical history must still be disclosed. The Gaia comparison
+statistic uses NADIR rate errors and neglects catalog rate errors.
+
+The `stationary` tier means no significant fitted motion, not physical rest.
+Rejected two-image signals have no established physical explanation. No tier
+constitutes a newly discovered astronomical object. Discovery ranking uses
+`min(S/N,50) × consistency × quality + min(var_z,30) × clean_fraction`, with
+motion counted only above 5, consistency `min(1,5/max(χ²E,χ²N))`, quality 1 for
+significant, 0.6 for systematics-limited, otherwise 0.3×clean fraction. The
+variability term requires the existing flag; rejected/insufficient scores are
+zero. Pair comparisons can share epochs and are not independent experiments.
+This heuristic has no training set or calibrated discovery probability.
+
+### Playback is a display, not a new measurement
+
+Only real registered frames are shown. The overview uses actual MJD positions
+and labels unobserved gaps. Fixed-rate stepping is explicitly one exposure per
+step; it does not imply equally spaced observing times. Motion playback uses
+the symmetric 2% wavelength tolerance around anchor A, at the field center.
+The LVF wavelength changes across each image, so this does not ensure matching
+spectra everywhere. Spectral playback allows all wavelengths and warns that
+brightness changes can be spectral. Display frames share reference-star flux
+normalization; quantitative photometry remains on native observations.
+
+The existing frame renderer applies the registration shift evaluated at the
+field center; the astrometric analysis uses the full similarity transform.
+Small rotation/scale residuals can therefore remain at display edges. Do not
+measure astrometry from the canvas or treat a difference residual as a detection.
+
+### Spectral laboratory
+
+The archive ePSF, when present, supplies a forced flux fit. Otherwise the result
+is labelled `aperture_r3px_uncorrected`; it is not presented as an ePSF fit or
+an aperture-corrected total flux. A masked core is rejected. Surviving flagged
+points remain visible as hollow diamonds with their flags and uncertainties;
+all flagged points are conservatively excluded from the colour-model fit.
+This policy may remove usable measurements and is not a calibrated flag-weighting
+scheme. Epoch colors are derived from the actual timestamps, not a fixed demo.
+
+The single-temperature model fits `Fν = A Bν(T)` using positive, finite, clean
+points with S/N ≥ 5, at least six points and positive errors. It searches 400
+log-spaced temperatures from 500 to 30000 K with a 3% relative error floor.
+Its Δχ² ≤ 1 interval is scaled by max(reduced χ²,1). Grid-boundary intervals
+and intervals containing only one temperature sample are explicitly qualified;
+a single sample means unresolved uncertainty, not zero error. Colour temperature
+is **not effective temperature**. Extinction, contamination, variability and
+absorption structure are not separately fitted. High reduced χ² is a model
+warning, not proof of a particular physical explanation.
+
+Vertical bars show ±1σ flux errors; horizontal bars show channel half-bandwidth,
+not wavelength uncertainty. The spectrum is assembled across epochs. Optional
+molecular/atomic markers are illustrative rest wavelengths, without redshift
+correction or a detection test. No chemical percentages or molecular detections
+are inferred. 2MASS/AllWISE comparisons involve different filters and epochs;
+no universal percentage agreement threshold is claimed.
+
+See [data sources](DATA_SOURCES.md) and [the three-field validation](MILESTONE3.md).
+The older sections below describe the original milestone-1 benchmark and its
+limitations; the current ePSF cache retains overlapping tiles for spectroscopy.
+
 ## Data used
 
 SPHEREx Level-2 spectral images from IRSA, releases **DR1** and **QR3**

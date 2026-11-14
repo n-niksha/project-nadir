@@ -330,7 +330,8 @@ def test_http_api(fake_archive):
     assert len(t["points"]) == 4
     page = c.get("/")
     assert page.status_code == 200 and "Project NADIR" in page.text
-    assert c.get("/static/app.js").status_code == 200
+    assert '/static/js/main.js' in page.text
+    assert c.get("/static/js/main.js").status_code == 200
 
 
 def test_api_reports_archive_outage(monkeypatch):
@@ -339,6 +340,52 @@ def test_api_reports_archive_outage(monkeypatch):
                         lambda *a, **k: (_ for _ in ()).throw(irsa.DataAccessError("TAP timeout")))
     r = TestClient(app).get("/api/search", params={"ra": 1.0, "dec": 2.0})
     assert r.status_code == 502 and "TAP timeout" in r.json()["detail"]
+
+
+def test_field_job_frames_and_investigation(fake_archive, monkeypatch):
+    import time
+    from PIL import Image
+    from nadir import field
+    from nadir.api.server import app
+    records, provenance = irsa.find_observations(RA0, DEC0, "D2")
+    monkeypatch.setattr(irsa, "find_all_bands", lambda *args, **kwargs: (
+        {band: records if band == "D2" else [] for band in config.BANDS}, provenance))
+    monkeypatch.setattr(field, "load_observation", pipeline.load_observation)
+    client = TestClient(app)
+    query = {"ra": RA0, "dec": DEC0, "size": SIZE, "band": "D2"}
+    response = client.post("/api/fields", json=query)
+    assert response.status_code == 200
+    submitted = response.json()
+    job = submitted["job"]
+    deadline = time.monotonic() + 20
+    while job["status"] in ("queued", "running") and time.monotonic() < deadline:
+        time.sleep(0.02)
+        job = client.get(f"/api/jobs/{job['id']}").json()
+    assert job["status"] == "done", job
+    base = f"/api/fields/{submitted['fid']}"
+    summary = client.get(base).json()
+    assert len(summary["epochs"]) == 4
+    assert len(summary["failures"]) == 1
+    assert summary["sources"]
+    first, second = summary["best_pair"]["a"], summary["best_pair"]["b"]
+    images = []
+    for path in (f"frames/{first}.png", f"frames/{second}.png", f"diff.png?a={first}&b={second}"):
+        response = client.get(f"{base}/{path}")
+        assert response.status_code == 200
+        assert response.headers["content-type"] == "image/png"
+        pixels = np.asarray(Image.open(io.BytesIO(response.content)).convert("RGB"))
+        assert pixels.std() > 1
+        images.append(pixels)
+    assert not np.array_equal(images[0], images[1])
+    source = min(summary["sources"], key=lambda item: (item["ra"] - RA0)**2 + (item["dec"] - DEC0)**2)
+    detail = client.get(f"{base}/sources/{source['id']}").json()
+    assert len(detail["points"]) == 4
+    assert abs(detail["fit"]["pm_north"] - 10.4) < 0.5
+    assert client.get(f"{base}/sources/999999").status_code == 404
+    assert client.get(f"{base}/diff.png?a={first}&b={first}").status_code == 400
+    assert client.get(f"{base}/pair?a={first}&b={second}").status_code == 200
+    assert client.get(f"{base}/epochs/{first}/provenance").json()["provenance"]["response_sha256"]
+    assert client.post("/api/fields", json=query).json()["ready"] is True
 
 
 def test_empty_archive_result_is_handled(monkeypatch):

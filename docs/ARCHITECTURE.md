@@ -1,5 +1,42 @@
 # Architecture decisions
 
+## Milestone 3 additions
+
+The current web path is `frontend → nadir.api.server → nadir.field → science/data`.
+`nadir.pipeline` and its original endpoints remain for reproducibility. A field
+build is a staged background job; immutable registered PNGs and source tracks
+are reused from the field's in-memory cache.
+
+- `frontend/js/playback.js` holds pure, tested wavelength matching and visit
+  grouping. Matching uses the symmetric fractional separation used by pairing:
+  `abs(λ1−λ2)/mean(λ1,λ2) ≤ 0.02`. It applies at the field center, not every pixel.
+- The timeline has a linear calendar overview and a separate exposure list.
+  All archive-loaded epochs are listed, including unusable and undated ones.
+  Playback changes the cursor/selection in place instead of rebuilding the DOM.
+  Images are decoded before advancing; three preload workers bound concurrency.
+- Clean/Discovery/Research are overlay presets, not separate scientific data.
+  Catalog labels appear with zoom and avoid overlapping previously drawn labels.
+- `nadir.interpretation` renders no HTML, calls no model and fits no data. It
+  converts source/spectrum results into labelled Explore/Research statements.
+  Source-detail and spectrum responses include these deterministic explanations.
+- `POST /api/fields/{fid}/spectral?cached_only=true` is the UI default. It omits
+  missing cutouts and reports their number. Explicit `cached_only=false` permits
+  fetching missing data. Catalog changes and newly loaded spectra invalidate
+  the server spectrum cache. Client results are keyed by field and source.
+- A spectrum point includes its method, flags, original archive URL, release
+  and response SHA-256. The ledger exposes both accepted and rejected points.
+- Source and spectrum responses from a prior field are ignored. Notes remain
+  localStorage-only; shared URLs now restore the Notes tab correctly.
+
+The application remains vanilla ES modules with no frontend build step.
+Python regression tests, Node's built-in test runner and two Playwright scripts
+cover complementary layers. Screenshots and timings are stored in `artifacts/`.
+See [Milestone 3 results](MILESTONE3.md) for measured limits, not just test counts.
+
+The following sections retain the milestone-1 rationale; EPSF cache handling
+has since changed: cache v2 retains the tiles overlapping each cutout, while
+old caches without EPSF use an explicitly labelled aperture fallback for spectra.
+
 ## Shape
 
 ```

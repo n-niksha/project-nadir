@@ -9,7 +9,10 @@ export const S = {
   playing: false,
   fps: 4,
   opacity: 0.5,
-  matchedOnly: false,
+  matchedOnly: true,
+  playbackMode: "motion",
+  visualPreset: "discovery",
+  explanationLevel: "explore",
   selected: null,       // source id
   detail: null,         // /sources/{id}
   pair: null,           // /pair?a&b

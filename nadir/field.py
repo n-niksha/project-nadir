@@ -19,7 +19,7 @@ from dataclasses import asdict
 
 import numpy as np
 
-from . import config
+from . import config, interpretation
 from .data import catalogs, irsa
 from .jobs import Job
 from .processing import detect_many
@@ -30,7 +30,7 @@ from .science.sources import Source, robust_background
 
 log = logging.getLogger(__name__)
 
-STAGES = ["discover", "download", "read", "detect", "register", "render", "track"]
+STAGES = ["discover", "download", "read", "detect", "register", "track", "render"]
 ARTIFACT = set(motion.ARTIFACT_FLAGS)
 MAX_FIELDS = 6
 
@@ -65,6 +65,7 @@ class Field:
         self.png_cache: dict = {}
         self.catalogs: dict | None = None
         self.spectral_obs: list | None = None
+        self.spectral_missing = 0
         self.spectra: dict = {}
         self.lock = threading.Lock()
         self.built_at = None
@@ -142,6 +143,8 @@ class Field:
             d["gaia_curve"] = [{"mjd": float(m), **{k: v for k, v in motion.predicted_displacement(g, ref_mjd, m).items()
                                                    if k in ("east_arcsec", "north_arcsec")}} for m in span]
         d["history"] = getattr(t, "history", None)
+        d["explanation"] = interpretation.explain_source(clean(d), {
+            "fid": self.fid, "band": self.band, "reference_obs_id": self.observations[self.ref].obs_id})
         return clean(d)
 
 
@@ -486,6 +489,7 @@ def load_catalogs(job: Job, f: Field) -> dict:
                 errors[name] = str(exc)
             job.progress(n + 1, message=f"{name} done")
     _crossmatch(f, out)
+    f.spectra.clear()
     f.catalogs = {"data": out, "errors": errors}
     return {"fid": f.fid, "errors": errors}
 
@@ -620,7 +624,7 @@ def _gaia_class(r):
 SPECTRAL_PER_BAND = 20
 
 
-def load_spectral_set(job: Job, f: Field) -> dict:
+def load_spectral_set(job: Job, f: Field, cached_only: bool = False) -> dict:
     """Cutouts of the same field in all six detectors for spectra.  For the
     field's own band all epochs are reused; other bands take an even subset
     across time (and so across wavelength)."""
@@ -631,6 +635,9 @@ def load_spectral_set(job: Job, f: Field) -> dict:
         pick = recs if len(recs) <= SPECTRAL_PER_BAND else [recs[i] for i in np.unique(
             np.round(np.linspace(0, len(recs) - 1, SPECTRAL_PER_BAND)).astype(int))]
         plan += [(b, r) for r in pick]
+    missing = [(band, record) for band, record in plan if not irsa.is_cached(record, f.ra, f.dec, f.size_deg)]
+    if cached_only:
+        plan = [(band, record) for band, record in plan if irsa.is_cached(record, f.ra, f.dec, f.size_deg)]
     n_cached = sum(irsa.is_cached(r, f.ra, f.dec, f.size_deg) for _, r in plan)
     job.set_stage("download", f"{len(plan)} images in the other five detectors ({n_cached} cached)", total=len(plan))
     fetched = irsa.fetch_cutouts([r for _, r in plan], f.ra, f.dec, f.size_deg,
@@ -649,7 +656,9 @@ def load_spectral_set(job: Job, f: Field) -> dict:
             failures += 1
         job.progress(k + 1)
     f.spectral_obs = out
-    return {"fid": f.fid, "n_images": len(out), "failures": failures}
+    f.spectral_missing = (len(missing) if cached_only else 0) + failures
+    f.spectra.clear()
+    return {"fid": f.fid, "n_images": len(out), "failures": failures, "missing": f.spectral_missing}
 
 
 def source_spectrum(f: Field, sid: int) -> dict:
@@ -668,6 +677,7 @@ def source_spectrum(f: Field, sid: int) -> dict:
     sp = spectral.build_spectrum(f.spectral_obs, t.ra, t.dec, pm_e, pm_n, f.observations[f.ref].mjd)
     ref = spectral.catalog_photometry(cat.get("twomass"), cat.get("allwise"))
     sp.update(source_id=sid, pm_used=pm_source, catalog_points=ref,
+              missing_images=f.spectral_missing,
               catalog_comparison=spectral.compare_to_catalog(sp["points"], ref),
               reference_features=spectral.REFERENCE_FEATURES,
               gaia_teff=(cat.get("gaia") or {}).get("teff_gspphot"),
@@ -675,6 +685,7 @@ def source_spectrum(f: Field, sid: int) -> dict:
     for p in sp["rejected"]:
         p.pop("x", None), p.pop("y", None)
     sp = clean(sp)
+    sp["explanation"] = interpretation.explain_spectrum(sp)
     f.spectra[sid] = sp
     return sp
 

@@ -7,11 +7,11 @@ export function discoverHTML() {
   const f = S.field;
   if (!f) return `<h1>Discover</h1><p class="lede">Load a field first.</p>`;
   const src = f.sources.filter((s) => S.tiers.has(s.tier));
-  const ranked = src.filter((s) => s.priority > 0);
-  const rejected = f.sources.filter((s) => s.tier === "rejected");
+  const ranked = src.filter((s) => s.priority > 0).sort((first, second) => second.priority-first.priority);
+  const rejected = src.filter((s) => s.tier === "rejected");
   const counts = f.tier_counts;
   let h = `<h1>Discover in this field</h1><p class="lede">Every source NADIR found in ${f.epochs.filter((e) => e.usable).length} SPHEREx ${esc(f.band)} images of this field, judged by whether one straight-line motion explains <i>all</i> its positions across independent visits — not just two images.</p>`;
-  h += `<div class="chips">${Object.entries(TIERS).filter(([k]) => counts[k]).map(([k, t]) => `<span class="tier ${k}">${t.label} · ${counts[k]}</span>`).join(" ")}</div>`;
+  h += `<p>These are investigation priorities, not verified astronomical discoveries. Inspect the evidence and compare with reference sources.</p><div class="chips" aria-label="Filter candidates by evidence">${Object.entries(TIERS).filter(([k]) => counts[k]).map(([k, t]) => `<button class="chip" data-discovery-tier="${k}" aria-pressed="${S.tiers.has(k)}">${t.label} · ${counts[k]}</button>`).join(" ")}</div>`;
   h += `<h3>Worth investigating (ranked)</h3>`;
   if (!ranked.length) h += `<p class="small">Nothing in this field passes the motion or variability thresholds. That is the normal, honest outcome for most of the sky.</p>`;
   else h += table(ranked);
@@ -19,6 +19,8 @@ export function discoverHTML() {
   h += rejected.length ? `<p class="small">These passed a classic two-image test (≥5σ displacement between the best-matched pair) but are not reproduced by the other visits. Typical causes: blends, wavelength-dependent centroids, pixel-phase effects. This is the scientific safety net.</p>` + table(rejected)
     : `<p class="small">No two-image detection in this field was contradicted by the other visits.</p>`;
   h += `<h3>How the ranking works</h3><div class="card"><p>Priority = min(motion S/N, 50) × consistency × quality + min(var_z, 30) × clean fraction. Consistency = 1 when the straight-line fit has χ²ᵣ ≤ 5, else 5/χ²ᵣ. Quality = 1 (clean), 0.6 (saturated but consistent), 0.3 × clean fraction (candidates). Variability counts only when var_z ≥ 5 from ≥ 6 matched-wavelength comparisons.</p><p><b>This is a transparent ordering heuristic, not a probability</b>, and it was not trained on labels. See docs/SCIENCE.md for why no machine-learning model is used yet.</p></div>`;
+  const references = src.filter(source => source.tier === "stationary").sort((first, second) => second.clean_fraction-first.clean_fraction).slice(0,12);
+  h += `<details class="evidence"><summary>Compare with low-motion field sources (${references.length} examples)</summary><p>These sources have no significant fitted motion. This is a comparison list, not a guarantee that each was used in every registration.</p>${table(references)}</details>`;
   return h;
 }
 
@@ -26,7 +28,7 @@ function table(list) {
   let h = `<table class="data"><thead><tr><th>Object</th><th>Evidence</th><th>Proper motion ″/yr</th><th>S/N</th><th>visits</th><th>var_z</th><th>Gaia agrees?</th><th>priority</th></tr></thead><tbody>`;
   for (const s of list.slice(0, 80)) {
     const c = s.catalog?.pm_comparison, f = s.fit;
-    h += `<tr class="clickable" data-sid="${s.id}"><td>${esc(displayName(s))}</td><td><span class="tier ${s.tier}">${TIERS[s.tier]?.label}</span></td>
+    h += `<tr><td><button class="learn-link" data-sid="${s.id}">${esc(displayName(s))}</button><p class="small">${esc((s.reasons || []).join('; ') || 'Consistent multi-epoch fit under current quality gates.')}</p></td><td><span class="tier ${s.tier}">${TIERS[s.tier]?.label}</span></td>
       <td class="num">${f ? `${fmt(f.pm_total, 2)} (E ${pm(f.pm_east, f.pm_east_err, 1)}, N ${pm(f.pm_north, f.pm_north_err, 1)})` : "—"}</td><td class="num">${f ? fmt(f.snr, 1) : "—"}</td>
       <td class="num">${s.n_visits}</td><td class="num">${s.variability?.var_z != null ? fmt(s.variability.var_z, 1) : "—"}</td>
       <td>${c ? (c.consistent ? `yes (${fmt(c.z_total, 1)}σ)` : `<b>no</b> (${fmt(c.z_total, 1)}σ)`) : "<span class='small'>no Gaia PM</span>"}</td><td class="num">${fmt(s.priority, 1)}</td></tr>`;

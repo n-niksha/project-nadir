@@ -76,11 +76,20 @@ export class SkyView {
   loadFrame(i) {
     if (this.images.has(i)) return this.images.get(i).ready;
     const img = new Image(); img.decoding = "async";
-    const ready = new Promise((res, rej) => { img.onload = () => res(img); img.onerror = rej; });
+    const ready = new Promise((res, rej) => { img.onload = () => res(img); img.onerror = () => rej(new Error(`Observation ${i} image could not be loaded. Reopen the field to retry.`)); });
     img.src = `/api/fields/${this.f.fid}/frames/${i}.png`;
     this.images.set(i, { img, ready });
     ready.then(() => this.draw()).catch(() => {});
     return ready;
+  }
+  async preload(indices) {
+    const field = this.f;
+    const queue = [...indices];
+    await Promise.all(Array.from({length: 3}, async () => {
+      while (queue.length && this.f === field) {
+        try { await this.loadFrame(queue.shift()); } catch (_) {}
+      }
+    }));
   }
   setDiff(a, b) {
     const key = `${a}-${b}`;
@@ -114,7 +123,7 @@ export class SkyView {
     const g = this.f.grid, W = g.nx * this.k, H = g.ny * this.k;
     ctx.imageSmoothingEnabled = this.k < 3;
     const cur = this.current();
-    if (cur.diff) { if (this.diff?.img.complete) ctx.drawImage(this.diff.img, this.ox, this.oy, W, H); }
+    if (cur.diff) { if (this.diff?.img.complete && this.diff.img.naturalWidth) ctx.drawImage(this.diff.img, this.ox, this.oy, W, H); }
     else {
       const base = this._img(cur.base);
       if (base) ctx.drawImage(base, this.ox, this.oy, W, H);
@@ -171,7 +180,7 @@ export class SkyView {
       if (!this.sourceVisible(s)) continue;
       const [sx, sy] = this.gridToScreen(s.x, s.y), T = TIERS[s.tier] || TIERS.insufficient;
       const big = s.tier !== "stationary" && s.tier !== "insufficient";
-      const r = big ? Math.max(9, 2.2 * this.k) : Math.max(4, 1.3 * this.k);
+      const r = big ? Math.min(15, Math.max(7, 1.5 * this.k)) : Math.min(7, Math.max(3, this.k));
       ctx.strokeStyle = T.color; ctx.globalAlpha = big ? 1 : 0.55; ctx.lineWidth = big ? 1.8 : 1;
       ctx.setLineDash(s.tier === "systematics_limited" ? [5, 3] : s.tier === "candidate" ? [2, 3] : []);
       ctx.beginPath();
@@ -193,6 +202,8 @@ export class SkyView {
   drawCatalogs() {
     const L = S.catalogs?.layers; if (!L) return;
     const ctx = this.ctx; ctx.save(); ctx.lineWidth = 1;
+    this.labelBoxes = [];
+    ctx.font = "10px system-ui";
     const ps = this.f.grid.pixel_scale_arcsec;
     if (S.overlays.gaia && L.gaia) {
       ctx.strokeStyle = "rgba(122,162,255,.85)";
@@ -200,13 +211,14 @@ export class SkyView {
         if (!S.classes.has(g.cls === "uncertain" || g.cls === "unclassified" ? "unknown" : g.cls) && !(g.variable && S.classes.has("variable"))) continue;
         const [sx, sy] = this.gridToScreen(g.x, g.y), r = 3.5;
         ctx.beginPath(); ctx.moveTo(sx, sy - r); ctx.lineTo(sx + r, sy); ctx.lineTo(sx, sy + r); ctx.lineTo(sx - r, sy); ctx.closePath(); ctx.stroke();
+        if (S.visualPreset === "research" && this.k > 6) this.catalogLabel(ctx, `Gaia ${g.id}`, sx+5, sy-4);
         if (g.pmra && Math.hypot(g.pmra, g.pmdec) > 100) { const [ex, ey] = this.gridToScreen(g.x - g.pmra / 1e3 / ps, g.y + g.pmdec / 1e3 / ps); ctx.setLineDash([3, 2]); arrow(ctx, sx, sy, ex, ey); ctx.setLineDash([]); }
       }
     }
     for (const [key, col] of [["twomass", "rgba(255,138,101,.8)"], ["allwise", "rgba(169,139,255,.8)"]]) {
       if (!S.overlays[key] || !L[key]) continue;
       ctx.strokeStyle = col;
-      for (const g of L[key].items) { const [sx, sy] = this.gridToScreen(g.x, g.y); ctx.beginPath(); ctx.moveTo(sx - 4, sy); ctx.lineTo(sx + 4, sy); ctx.moveTo(sx, sy - 4); ctx.lineTo(sx, sy + 4); ctx.stroke(); }
+      for (const g of L[key].items) { const [sx, sy] = this.gridToScreen(g.x, g.y); ctx.beginPath(); ctx.moveTo(sx - 4, sy); ctx.lineTo(sx + 4, sy); ctx.moveTo(sx, sy - 4); ctx.lineTo(sx, sy + 4); ctx.stroke(); if (S.visualPreset === "research" && this.k > 8) this.catalogLabel(ctx, `${key === 'twomass' ? '2MASS' : 'WISE'} ${g.id}`, sx+5, sy+12); }
     }
     if (S.overlays.simbad && L.simbad) {
       ctx.fillStyle = "rgba(228,232,242,.85)"; ctx.font = "11px system-ui"; ctx.strokeStyle = "rgba(228,232,242,.6)";
@@ -214,10 +226,17 @@ export class SkyView {
         if (!g.groups.some((gp) => S.classes.has(gp))) continue;
         const [sx, sy] = this.gridToScreen(g.x, g.y);
         ctx.beginPath(); ctx.arc(sx, sy, 2, 0, 7); ctx.stroke();
-        if (this.k > 2.2 || /NAME/.test(g.id)) ctx.fillText(g.id.replace(/^NAME /, ""), sx + 5, sy - 4);
+        if (this.k > 4 || /Barnard/.test(g.id)) this.catalogLabel(ctx, g.id.replace(/^NAME /, ""), sx + 5, sy - 4);
       }
     }
     ctx.restore();
+  }
+
+  catalogLabel(ctx, text, x, y) {
+    const width = ctx.measureText(text).width;
+    if (x < 0 || y < 12 || x+width > this.c.width/this.dpr || y > this.c.height/this.dpr) return;
+    if (this.labelBoxes.some(box => x < box.x+box.width+5 && x+width+5 > box.x && Math.abs(y-box.y)<15)) return;
+    this.labelBoxes.push({x,y,width}); ctx.fillStyle = "#b8c7e1"; ctx.fillText(text,x,y);
   }
 
   drawSelected() {
@@ -267,7 +286,7 @@ export class SkyView {
   pick(sx, sy) {
     let best = null, bd = 14;
     for (const s of this.f.sources) {
-      if (!S.overlays.sources || !this.sourceVisible(s)) continue;
+      if (S.visualPreset !== "clean" && (!S.overlays.sources || !this.sourceVisible(s))) continue;
       const [px, py] = this.gridToScreen(s.x, s.y), d = Math.hypot(px - sx, py - sy);
       if (d < bd) { bd = d; best = s; }
     }

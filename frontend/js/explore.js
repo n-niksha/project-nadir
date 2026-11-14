@@ -22,15 +22,15 @@ export class Explorer {
     hint.textContent = "Loading Aladin Lite and the SPHEREx all-sky cube…";
     this.loading = (async () => {
       try {
-        await loadScript(ALADIN);
-        await window.A.init;
-        const A = window.A;
-        this.aladin = A.aladin("#aladin", { fov: 1.2, target: `${S.query?.ra ?? 269.446} ${S.query?.dec ?? 4.768}`, cooFrame: "ICRSd", projection: "TAN",
+        const { default: A } = await import(ALADIN);
+        await A.init;
+        this.A = A;
+        this.hips = A.imageHiPS(this.cfg.hips_url, { name: "SPHEREx DR1 cube", imgFormat: "png",
+          successCallback: () => this.setSlice(+document.getElementById("slice").value) });
+        await this.hips.query;
+        this.aladin = A.aladin("#aladin", { survey: this.hips, log: false, fov: 1.2, target: `${S.query?.ra ?? 269.446} ${S.query?.dec ?? 4.768}`, cooFrame: "ICRSd", projection: "TAN",
           showCooGrid: true, showReticle: true, showLayersControl: false, showGotoControl: false, showFrame: true, showFullscreenControl: false,
           showSimbadPointerControl: false, showShareControl: false, showContextMenu: false, showProjectionControl: false, showZoomControl: true });
-        this.hips = this.aladin.newImageSurvey(this.cfg.hips_url, { name: "SPHEREx DR1 cube", imgFormat: "png" });
-        this.aladin.setBaseImageLayer(this.hips);
-        this.setSlice(+document.getElementById("slice").value);
         const cat = A.catalog({ name: "NADIR presets", sourceSize: 14, color: "#ffb547", shape: "circle", onClick: "showPopup" });
         this.aladin.addCatalog(cat);
         cat.addSources(this.presets.map((p) => A.marker(p.ra, p.dec, { popupTitle: p.name, popupDesc: p.role })));
@@ -54,19 +54,26 @@ export class Explorer {
     this.aladin.gotoRaDec(S.query.ra, S.query.dec);
     this.fieldLayer?.removeAll?.();
     const h = S.query.size / 2, c = Math.cos(S.query.dec * Math.PI / 180);
-    this.fieldLayer?.add(window.A.polygon([[S.query.ra - h / c, S.query.dec - h], [S.query.ra + h / c, S.query.dec - h], [S.query.ra + h / c, S.query.dec + h], [S.query.ra - h / c, S.query.dec + h]]));
+    this.fieldLayer?.add(this.A.polygon([[S.query.ra - h / c, S.query.dec - h], [S.query.ra + h / c, S.query.dec - h], [S.query.ra + h / c, S.query.dec + h], [S.query.ra - h / c, S.query.dec + h]]));
   }
   setSlice(i) {
     document.getElementById("slice-out").textContent = label(i);
-    try { this.hips?.setSliceNumber?.(i); } catch (e) { console.warn("[NADIR] slice", e); }
+    if (!this.hips?.added) return;
+    try {
+      const minFrequency = 299792458 / this.hips.emMax;
+      const maxFrequency = 299792458 / this.hips.emMin;
+      const frequency = minFrequency + (i + 0.5) / this.hips.cubeDepth * (maxFrequency - minFrequency);
+      this.hips.setFrequency({ value: frequency, unit: "Hz" });
+    } catch (error) {
+      document.getElementById("slice-out").textContent = "Channel selection unavailable";
+      document.getElementById("explore-hint").textContent = "The atlas channel could not be selected. Do not interpret its wavelength; use the Time Machine for individual observations.";
+      console.error("[NADIR] atlas channel", error);
+    }
   }
   pick(ra, dec) {
     this.picked = { ra, dec };
-    this.pickLayer?.removeAll?.(); this.pickLayer?.add(window.A.circle(ra, dec, 0.05));
+    this.pickLayer?.removeAll?.(); this.pickLayer?.add(this.A.circle(ra, dec, 0.05));
     const b = document.getElementById("explore-go"); b.disabled = false; b.textContent = `Observe ${fmt(ra, 4)}°, ${fmt(dec, 4)}°`;
   }
 }
 export function label(i) { return `${CUBE_WL[i].toFixed(3)} µm${BLANK.has(i) ? " (blank)" : ""}`; }
-function loadScript(src) {
-  return new Promise((res, rej) => { if (window.A) return res(); const s = document.createElement("script"); s.src = src; s.onload = res; s.onerror = () => rej(new Error("script load failed")); document.head.appendChild(s); });
-}

@@ -69,7 +69,7 @@ export function plot(spec) {
       for (const d of se.data) {
         if (!Number.isFinite(d.x) || !Number.isFinite(d.y)) continue;
         const c = d.color || se.color || "#7aa2ff", r = d.r || se.r || 2.6;
-        let g = `<g opacity="${d.opacity ?? se.opacity ?? 1}">${d.title ? `<title>${esc(d.title)}</title>` : ""}`;
+        let g = `<g opacity="${d.opacity ?? se.opacity ?? 1}" ${d.title ? `tabindex="0" role="img" aria-label="${esc(d.title)}" data-point-info="${esc(d.title)}"` : ''}>${d.title ? `<title>${esc(d.title)}</title>` : ""}`;
         if (d.ex) g += `<line x1="${X(d.x - d.ex)}" x2="${X(d.x + d.ex)}" y1="${Y(d.y)}" y2="${Y(d.y)}" stroke="${c}" stroke-width="1" opacity=".55"/>`;
         if (d.ey) g += `<line x1="${X(d.x)}" x2="${X(d.x)}" y1="${Y(d.y - d.ey)}" y2="${Y(d.y + d.ey)}" stroke="${c}" stroke-width="1" opacity=".55"/>`;
         const shape = d.shape || se.shape;

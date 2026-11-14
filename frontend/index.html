@@ -19,6 +19,7 @@
 </div>
 
 <header class="topbar">
+  <button class="btn sidebar-toggle" id="sidebar-toggle" aria-expanded="false" aria-controls="left">Targets &amp; layers</button>
   <a class="brand" href="/" aria-label="Project NADIR home">
     <span class="brand-mark" aria-hidden="true"></span>
     <span class="brand-name">NADIR</span>
@@ -40,6 +41,12 @@
 
 <div class="app" id="app">
   <aside class="left" id="left" aria-label="Controls">
+    <section class="panel welcome" id="welcome">
+      <h2>Your window into the infrared sky</h2>
+      <p>Watch real observations change. Click a star to see what the evidence supports.</p>
+      <button class="btn" id="start-tour">Guide me</button>
+      <button class="learn-link" id="welcome-dismiss">Dismiss</button>
+    </section>
     <section class="panel">
       <h2>Target</h2>
       <div class="presets" id="presets" role="list"></div>
@@ -59,10 +66,16 @@
         <button class="btn primary wide" type="submit">Observe this field</button>
       </form>
       <p class="coord-readout" id="target-readout"></p>
+      <p class="hint">Search a name or decimal ICRS degrees: <span class="num">269.44627, 4.76820</span>. RA 0–360°, Dec −90–90°. Names require SIMBAD access.</p>
     </section>
 
     <section class="panel">
       <h2>Overlays</h2>
+      <div class="seg visual-presets" aria-label="Visualization preset">
+        <button data-visual="clean" aria-pressed="false">Clean</button>
+        <button data-visual="discovery" aria-pressed="true">Discovery</button>
+        <button data-visual="research" aria-pressed="false">Research</button>
+      </div>
       <div class="toggles" id="overlay-toggles">
         <label><input type="checkbox" data-ov="sources" checked> NADIR sources</label>
         <label><input type="checkbox" data-ov="tracks" checked> Motion tracks</label>
@@ -118,12 +131,16 @@
           <button data-cmp="diff">B − A</button>
           <button data-cmp="play">Animate</button>
         </div>
-        <button class="icon play" id="play" aria-label="Play">▶</button>
+        <button class="icon" id="step-prev" aria-label="Previous observation">‹</button>
+        <button class="icon play" id="play" aria-label="Play or pause observations">▶</button>
+        <button class="icon" id="step-next" aria-label="Next observation">›</button>
         <label class="speed">Speed <input type="range" id="speed" min="1" max="12" value="4" aria-label="Frames per second"><output id="speed-out">4/s</output></label>
         <label class="speed" id="opacity-ctl" hidden>B opacity <input type="range" id="opacity" min="0" max="100" value="50"></label>
-        <label class="matched"><input type="checkbox" id="matched-only"> Same wavelength as A only</label>
+        <label class="matched">Playback <select id="playback-mode"><option value="motion">Motion · matched λ</option><option value="spectral">Spectral exploration · all λ</option></select></label>
         <span class="tl-info" id="tl-info"></span>
       </div>
+      <p class="playback-note" id="playback-note">Actual epochs only; one image per step. Gaps are shown on the time axis.</p>
+      <div class="epoch-actions"><span id="epoch-readout"></span><button class="btn" id="frame-a">Set current as A</button><button class="btn" id="frame-b">Set current as B</button></div>
       <div class="tl-track" id="tl-track" role="listbox" aria-label="Epochs"></div>
     </footer>
   </main>
@@ -143,6 +160,8 @@
       <button role="tab" data-tab="obs" aria-selected="false">Observations</button>
       <button role="tab" data-tab="notes" aria-selected="false">Notes</button>
     </nav>
+    <div class="investigation-summary" id="investigation-summary"></div>
+    <details class="explanation" id="explanation"><summary>Explain this observation</summary><div class="seg"><button data-explain="explore" aria-pressed="true">Explore</button><button data-explain="research" aria-pressed="false">Research</button></div><div id="explanation-body"></div></details>
     <div class="insp-body" id="insp-body" role="tabpanel"></div>
   </aside>
 </div>

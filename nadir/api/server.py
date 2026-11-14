@@ -189,11 +189,11 @@ def field_catalogs(fid: str):
 
 
 @app.post("/api/fields/{fid}/spectral")
-def field_spectral_build(fid: str):
+def field_spectral_build(fid: str, cached_only: bool = True):
     f = _field(fid)
-    if f.spectral_obs is not None:
+    if f.spectral_obs is not None and (cached_only or not f.spectral_missing):
         return {"job": None, "ready": True}
-    job = manager.submit("spectral", f"spectral:{fid}", ["download", "read"], lambda j: field.load_spectral_set(j, f))
+    job = manager.submit("spectral", f"spectral:{fid}:{cached_only}", ["download", "read"], lambda j: field.load_spectral_set(j, f, cached_only))
     return {"job": job.snapshot(), "ready": False}
 
 

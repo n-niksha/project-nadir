@@ -20,7 +20,7 @@ def main():
     ap.add_argument("--steps", default="all")
     a = ap.parse_args()
     a.out.mkdir(parents=True, exist_ok=True)
-    log = {"console_errors": [], "steps": []}
+    log = {"console_errors": [], "network_errors": [], "atlas_tiles": [], "steps": []}
 
     def step(name, page, fn=None, wait=0.0):
         t = time.perf_counter()
@@ -37,10 +37,14 @@ def main():
         page = browser.new_page(viewport={"width": 1600, "height": 960}, device_scale_factor=1)
         page.on("console", lambda m: m.type in ("error",) and log["console_errors"].append(m.text))
         page.on("pageerror", lambda e: log["console_errors"].append(f"pageerror: {e}"))
+        page.on("requestfailed", lambda r: log["network_errors"].append({"url": r.url, "error": r.failure}))
+        page.on("response", lambda r: r.status >= 400 and log["network_errors"].append({"url": r.url, "status": r.status}))
+        page.on("response", lambda r: "spherex_allsky_cube/Norder" in r.url and r.status == 200 and log["atlas_tiles"].append(r.url))
         t0 = time.perf_counter()
-        page.goto(a.url + "/?notour", wait_until="domcontentloaded")
+        page.goto(a.url + "/?intro&notour", wait_until="domcontentloaded")
         step("01_intro", page, wait=0.8)
-        page.keyboard.press("Escape")
+        if page.locator("#intro").is_visible():
+            page.keyboard.press("Escape")
         page.wait_for_selector("#loader", state="hidden", timeout=180000)
         page.wait_for_function("document.querySelector('#inspector') && !document.querySelector('#inspector').hidden", timeout=60000)
         log["time_to_interactive_s"] = round(time.perf_counter() - t0, 2)
@@ -79,6 +83,12 @@ def main():
         step("14_help", page, wait=0.3)
         page.click("[data-view=explore]")
         step("15_explore", page, wait=8)
+        assert log["atlas_tiles"], "No actual IRSA atlas tiles loaded"
+        page.locator("#slice").fill("60")
+        page.wait_for_timeout(3000)
+        assert "3.118" in page.locator("#slice-out").inner_text()
+        assert any("_60.png" in url for url in log["atlas_tiles"]), "Channel 60 tiles did not load"
+        step("15b_explore_channel", page)
         page.click("[data-view=time]")
         # a non-demo preset with an unsaturated mover: van Maanen's star
         page.click(".preset[data-id=vanmaanen]")
@@ -90,8 +100,8 @@ def main():
         step("18_vanmaanen_motion", page, wait=0.8)
         page.click(".tabs [data-tab=spectrum]")
         page.wait_for_timeout(500)
-        if page.query_selector("#spec-load"):
-            page.click("#spec-load")
+        if page.query_selector('#spec-load:not([data-network="true"])'):
+            page.click('#spec-load:not([data-network="true"])')
         page.wait_for_selector(".insp-body svg.plot", timeout=600000)
         step("19_vanmaanen_spectrum", page, wait=0.8)
         # tablet / phone layouts

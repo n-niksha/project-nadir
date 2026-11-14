@@ -9,6 +9,9 @@ async function handle(resp) {
   if (!resp.ok) {
     let detail = resp.statusText;
     try { const j = await resp.json(); detail = typeof j.detail === "string" ? j.detail : JSON.stringify(j.detail); } catch (_) {}
+    if (resp.status === 404 && detail === "Not Found") {
+      detail = `The NADIR API endpoint ${new URL(resp.url).pathname} is unavailable. Restart the backend from this checkout (.venv/bin/python -m uvicorn nadir.api.server:app --reload --port 8000), then retry. Open the app on that server, not a separate static-file server.`;
+    }
     throw new ApiError(detail || `HTTP ${resp.status}`, resp.status);
   }
   return resp.json();
