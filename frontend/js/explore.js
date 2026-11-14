@@ -1,7 +1,7 @@
 // Explore: the whole SPHEREx sky (DR1 all-sky HiPS cube, 102 wavelengths)
 // in Aladin Lite.  Loaded lazily so the Time Machine never depends on it.
-import { S, emit } from "./state.js";
-import { fmt } from "./fmt.js";
+import { S } from "./state.js";
+import { fmt, esc } from "./fmt.js";
 
 const ALADIN = "https://cdn.jsdelivr.net/npm/aladin-lite@3.8.2/dist/aladin.js";
 // Wavelength of each cube frame (µm), from the HiPS properties (data_cube_crval3_arr).
@@ -13,7 +13,42 @@ export const CUBE_WL = [0.753, 0.771, 0.790, 0.809, 0.828, 0.848, 0.868, 0.889, 
 const BLANK = new Set([50, 51]); // dichroic channels, blank in the cube
 
 export class Explorer {
-  constructor(cfg, presets) { this.cfg = cfg; this.presets = presets; this.picked = null; }
+  constructor(cfg, presets, onOpen) {
+    this.cfg = cfg; this.presets = presets; this.onOpen = onOpen; this.picked = null; this.survey = "spherex";
+    this.renderPanel();
+    document.querySelectorAll("[data-survey]").forEach((b) => (b.onclick = () => this.setSurvey(b.dataset.survey)));
+  }
+  renderPanel() {
+    const pm = (p) => p.role?.match(/(\d+(?:\.\d+)?)"\/yr/)?.[1];
+    const panel = document.getElementById("atlas-panel");
+    panel.innerHTML = `<p class="eyebrow" style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--sun);margin:0">Sky atlas</p><h2>The whole infrared sky</h2>
+      <p>This is SPHEREx's DR1 all-sky map — a co-added mosaic, not a single observation. Drag to explore, pick a wavelength below, or start from a verified target.</p>
+      <div class="presets">${this.presets.map((p) => `<button class="preset" data-atlas="${p.id}"><b>${esc(p.name)}</b>${pm(p) ? `<span class="pm">${pm(p)}″/yr</span>` : "<span></span>"}<span class="role">${esc(p.role)}</span></button>`).join("")}</div>
+      <p class="small">Choosing a target opens its individual, dated SPHEREx observations in the Observatory. Amber circles on the atlas mark these targets.</p>`;
+    panel.querySelectorAll("[data-atlas]").forEach((b) => {
+      const p = this.presets.find((x) => x.id === b.dataset.atlas);
+      b.onclick = () => this.onOpen?.(p);
+      b.onmouseenter = () => this.aladin?.gotoRaDec(p.ra, p.dec);
+    });
+  }
+  setSurvey(name) {
+    document.querySelectorAll("[data-survey]").forEach((b) => b.setAttribute("aria-pressed", b.dataset.survey === name));
+    this.survey = name;
+    const hint = document.getElementById("explore-hint"), slice = document.getElementById("slice");
+    slice.disabled = name !== "spherex";
+    if (!this.aladin) return;
+    try {
+      if (name === "2mass") {
+        this.context ??= this.aladin.newImageSurvey("CDS/P/2MASS/color");
+        this.aladin.setBaseImageLayer(this.context);
+        hint.textContent = "Context only: 2MASS J/H/Ks colour composite (1997–2001, CDS HiPS). Not SPHEREx data; never used for NADIR measurements.";
+      } else {
+        this.aladin.setBaseImageLayer(this.hips);
+        this.setSlice(+slice.value);
+        hint.textContent = "SPHEREx DR1 all-sky cube (IRSA HiPS) · 102 wavelengths · click anywhere to choose a target, then Observe.";
+      }
+    } catch (error) { hint.textContent = "This imagery layer could not be loaded."; console.error("[NADIR] survey", error); }
+  }
   async show() {
     document.getElementById("slice-out").textContent = label(+document.getElementById("slice").value);
     if (this.aladin) { this.goto(); return; }
@@ -29,17 +64,18 @@ export class Explorer {
           successCallback: () => this.setSlice(+document.getElementById("slice").value) });
         await this.hips.query;
         this.aladin = A.aladin("#aladin", { survey: this.hips, log: false, fov: 1.2, target: `${S.query?.ra ?? 269.446} ${S.query?.dec ?? 4.768}`, cooFrame: "ICRSd", projection: "TAN",
-          showCooGrid: true, showReticle: true, showLayersControl: false, showGotoControl: false, showFrame: true, showFullscreenControl: false,
+          showCooGrid: true, showReticle: true, showLayersControl: false, showGotoControl: false, showFrame: false, showFullscreenControl: false,
           showSimbadPointerControl: false, showShareControl: false, showContextMenu: false, showProjectionControl: false, showZoomControl: true });
-        const cat = A.catalog({ name: "NADIR presets", sourceSize: 14, color: "#ffb547", shape: "circle", onClick: "showPopup" });
+        const cat = A.catalog({ name: "NADIR presets", sourceSize: 16, color: "#f2b350", shape: "circle", onClick: "showPopup" });
         this.aladin.addCatalog(cat);
         cat.addSources(this.presets.map((p) => A.marker(p.ra, p.dec, { popupTitle: p.name, popupDesc: p.role })));
-        this.fieldLayer = A.graphicOverlay({ color: "#7aa2ff", lineWidth: 1.5 }); this.aladin.addOverlay(this.fieldLayer);
-        this.pickLayer = A.graphicOverlay({ color: "#ffb547", lineWidth: 2 }); this.aladin.addOverlay(this.pickLayer);
+        this.fieldLayer = A.graphicOverlay({ color: "#8fa8e8", lineWidth: 1.5 }); this.aladin.addOverlay(this.fieldLayer);
+        this.pickLayer = A.graphicOverlay({ color: "#f2b350", lineWidth: 2 }); this.aladin.addOverlay(this.pickLayer);
         this.aladin.on("click", (e) => {
           const ra = e?.ra ?? e?.data?.ra, dec = e?.dec ?? e?.data?.dec;
           if (Number.isFinite(ra) && Number.isFinite(dec) && !e?.isDragging) this.pick(ra, dec);
         });
+        try { this.aladin.setCooGrid({ color: "#8fa8e8", opacity: 0.35, labelSize: 12, enabled: true }); } catch (_) {}
         this.goto();
         hint.textContent = "SPHEREx DR1 all-sky cube (IRSA HiPS) · 102 wavelengths · click anywhere to choose a target, then Observe.";
       } catch (err) {

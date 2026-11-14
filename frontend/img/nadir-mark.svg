@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" role="img" aria-labelledby="t">
+  <title id="t">NADIR</title>
+  <!-- The celestial sphere seen from inside: an aperture ring open at its lowest point,
+       the horizon plane, the zenith–nadir axis, and light at the nadir. -->
+  <path d="M25.94 51.15 A22 22 0 1 1 38.06 51.15" stroke="#ECE6DA" stroke-width="2.6" stroke-linecap="round"/>
+  <ellipse cx="32" cy="30" rx="22" ry="6.2" stroke="#ECE6DA" stroke-opacity=".42" stroke-width="1.4"/>
+  <path d="M32 8v33" stroke="#ECE6DA" stroke-opacity=".42" stroke-width="1.4" stroke-linecap="round"/>
+  <circle cx="32" cy="52" r="7" fill="#F2B350" fill-opacity=".18"/>
+  <circle cx="32" cy="52" r="3.8" fill="#F2B350"/>
+</svg>

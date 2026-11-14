@@ -63,26 +63,32 @@ source clicks, investigation tabs, and recovery after API 404s. Screenshots
 and the report go to `artifacts/viewer-verification/`. See
 [verification notes](docs/VERIFICATION.md) for the takeover findings.
 
-1. The real Barnard demo loads automatically. **Guide me** is optional; tools
-   are available immediately. On narrow screens use **Targets & layers**.
-2. Click an exposure on the timeline to view it. The upper axis preserves
-   calendar spacing; click a visit label to jump its exposure list into view.
-   Unusable observations remain visible with their exclusion reason.
-3. **Animate**, play/pause, speed and step buttons show actual registered images.
-   **Motion** keeps wavelengths within 2% of A at the field center;
-   **Spectral exploration** includes changing wavelengths. Playback is one
-   observation per step, not a uniform physical-time movie or interpolation.
-4. Use **Set current as A/B**, Shift-click for A, or Alt-click for B. Blink,
-   opacity overlay and B−A remain available; differences are qualitative.
-5. Switch between **Clean**, **Discovery**, and **Research** layers, then
-   customize checkboxes. Click a source for its measurements. **Explain this
-   observation** provides Explore and Research interpretations of its own data.
-6. In **Discover**, filter evidence tiers and inspect candidates or low-motion
-   comparison sources. Scores are transparent heuristics, not probabilities.
-7. For an unsaturated spectrum, select **van Maanen's Star**, open Spectrum,
-   then **Load cached spectral observations**. Missing cutouts are disclosed;
-   fetching them is an explicit optional action. Hover/focus points, inspect
-   the provenance ledger, and distinguish colour-model temperature from Teff.
+1. The real Barnard demo loads automatically. A short title moment plays once
+   per session (skip with any key; `?nointro` disables it). **Watch it move**
+   or **Guided demo** walk through the result; tools work immediately.
+2. Change target from the field name at the top left of the sky (verified,
+   cached targets; coordinates, detector and field size under the disclosure),
+   or search with <kbd>/</kbd>.
+3. The **Time Machine** shows each visit as a segment with its real gap
+   labelled ("196-day gap"); the thin line above keeps true calendar spacing.
+   Each tick is one real exposure, coloured by wavelength. Play/step, or click
+   a tick. **Motion · matched λ** keeps wavelengths within 2% of A;
+   **All wavelengths** is spectral exploration. Nothing is interpolated.
+4. **A / B / Blink / Overlay / B − A** compare two epochs. Shift-click a tick
+   for A, Alt-click for B, or use **Set as A/B**. The chevron lists every exposure.
+5. **Clean / Discovery / Research** change how much is drawn over the sky;
+   **Layers** customises overlays and switches **Presentation** (smoothed,
+   display-only) vs **Scientific pixels** (exact registered samples and masks).
+6. Click a source to open its dossier: headline measurement, evidence tier,
+   plain-language summary, **Explain this observation**, then Overview /
+   Motion / Spectrum / Observations / Notes.
+7. **Discover** lists investigation leads by evidence tier (never "discoveries");
+   **Sky atlas** browses the SPHEREx all-sky cube; **Learn** and **Data & help**
+   explain the science, provenance and limitations.
+8. For an unsaturated spectrum, pick **van Maanen's Star**, open Spectrum,
+   then **Load cached spectral observations**.
+
+Design language, tokens and components: [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md).
 
 ### Validation and demonstration
 
@@ -94,6 +100,7 @@ node --test tests/frontend.test.mjs  # Node 22+; no npm dependencies
 .venv/bin/python scripts/verify_viewer.py
 .venv/bin/python scripts/verify_milestone3.py --url http://127.0.0.1:8000
 .venv/bin/python scripts/verify_atlas.py --url http://127.0.0.1:8000  # optional: live CDN/IRSA access
+.venv/bin/python scripts/ui_screens.py --url http://127.0.0.1:8000 --out artifacts/ui-screens  # design-review screenshots, 4 widths
 .venv/bin/python scripts/validate_cached.py  # requires existing caches; network forbidden
 .venv/bin/python scripts/benchmark.py --repeat 3
 ```
@@ -131,7 +138,7 @@ nadir/field.py    field jobs, registered epochs, tracks, catalogs and spectra
 nadir/interpretation.py deterministic explanations of structured results
 nadir/api/        FastAPI endpoints + PNG rendering              (presentation)
 nadir/ml/         feature interface for future models (nothing trained)
-frontend/         static HTML/JS/CSS, no build step
+frontend/         static HTML/JS/CSS, no build step (tokens.css, fonts/, img/ logo)
 scripts/          run_demo.py, benchmark.py
 tests/            synthetic-truth tests, fully offline
 data/cache/       downloaded cutouts + provenance JSON (git-ignored)

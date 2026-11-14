@@ -104,8 +104,9 @@ def main():
         page.wait_for_selector("#note",timeout=30000)
         assert page.locator("#note").input_value() == "Milestone 3 persisted observation"
         report["checks"].append("Discovery filtering and selection; notes survive reload")
-        page.click('.preset[data-id="vanmaanen"]')
-        page.wait_for_function("document.querySelector('.preset[data-id=vanmaanen]').classList.contains('active') && document.querySelector('#loader').hidden",timeout=180000)
+        page.click("#target-btn")
+        page.click('#target-pop .preset[data-id="vanmaanen"]')
+        page.wait_for_function("document.querySelector('#target-pop .preset[data-id=vanmaanen]').classList.contains('active') && document.querySelector('#loader').hidden",timeout=180000)
         page.click('[data-tab="spectrum"]')
         page.wait_for_selector("#spec-load, #spec-readout",timeout=60000)
         started = time.perf_counter()

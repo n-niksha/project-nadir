@@ -29,6 +29,11 @@ are reused from the field's in-memory cache.
   localStorage-only; shared URLs now restore the Notes tab correctly.
 
 The application remains vanilla ES modules with no frontend build step.
+The `frontend-polish` redesign (see [DESIGN_SYSTEM.md](DESIGN_SYSTEM.md)) kept
+every module boundary and API call; it added `css/tokens.css`, `js/tokens.js`
+(runtime colour tokens for canvas/SVG), self-hosted fonts and the SVG mark.
+Presentation-mode image smoothing runs client-side on the existing frame PNGs,
+so no backend or API change was needed.
 Python regression tests, Node's built-in test runner and two Playwright scripts
 cover complementary layers. Screenshots and timings are stored in `artifacts/`.
 See [Milestone 3 results](MILESTONE3.md) for measured limits, not just test counts.

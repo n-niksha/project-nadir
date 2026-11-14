@@ -12,12 +12,13 @@ export function mjdToDate(mjd) { return new Date((mjd - 40587) * 86400000).toISO
 // SPHEREx wavelength (0.75–5 µm) -> colour: violet/blue (short) through teal to amber/red (long).
 export function lambdaColor(wl, lo = 0.75, hi = 5.0) {
   const t = Math.max(0, Math.min(1, (Math.log(wl) - Math.log(lo)) / (Math.log(hi) - Math.log(lo))));
-  const stops = [[122, 120, 255], [95, 170, 255], [79, 209, 181], [255, 210, 120], [255, 140, 90]];
+  const stops = [[150, 140, 240], [120, 170, 240], [94, 200, 176], [242, 200, 120], [239, 140, 100]];
   const p = t * (stops.length - 1), i = Math.min(stops.length - 2, Math.floor(p)), f = p - i;
   const c = stops[i].map((v, k) => Math.round(v + (stops[i + 1][k] - v) * f));
   return `rgb(${c[0]},${c[1]},${c[2]})`;
 }
-export const VISIT_COLORS = ["#7aa2ff", "#ffb547", "#4fd1b5", "#a98bff", "#ff8a65", "#5fd8ff"];
+// mirrors --series-* in css/tokens.css
+export const VISIT_COLORS = ["#8fa8e8", "#f2b350", "#5ec8b0", "#ab98ec", "#ef8f6d", "#6fd3f0"];
 export const OTYPE = {
   "*": "Star", "PM*": "High proper-motion star", "HPM*": "High proper-motion star", "BY*": "BY Draconis variable (spotted red dwarf)",
   "Fl*": "Flare star", "WD*": "White dwarf", "low-mass*": "Low-mass star", "BD*": "Brown dwarf", "**": "Double star", "SB*": "Spectroscopic binary",
@@ -26,3 +27,24 @@ export const OTYPE = {
   "HII": "HII region", "C*": "Carbon star", "RG*": "Red giant", "Ro*": "Rotating variable", "Ir*": "Irregular variable", "IR": "Infrared source",
   "X": "X-ray source", "Rad": "Radio source", "ClG": "Galaxy cluster", "GiC": "Galaxy in cluster", "Pl": "Exoplanet",
 };
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+/** "25 Aug 2025" from an ISO timestamp */
+export function niceDate(iso) {
+  if (!iso) return "Undated";
+  const [y, m, d] = iso.slice(0, 10).split("-");
+  return `${+d} ${MONTHS[+m - 1]} ${y}`;
+}
+export function shortRange(a, b) {
+  if (!a || !b) return "";
+  const [ya, ma, da] = a.slice(0, 10).split("-"), [yb, mb, db] = b.slice(0, 10).split("-");
+  if (ya === yb && ma === mb) return da === db ? `${+da} ${MONTHS[+ma - 1]} ${ya}` : `${+da}–${+db} ${MONTHS[+ma - 1]} ${ya}`;
+  if (ya === yb) return `${+da} ${MONTHS[+ma - 1]} – ${+db} ${MONTHS[+mb - 1]} ${ya}`;
+  return `${niceDate(a)} – ${niceDate(b)}`;
+}
+/** Human name for a NADIR source: SIMBAD id, else Gaia DR3 id, else NADIR index. */
+export function displayName(d) {
+  const sb = d?.catalog?.simbad;
+  if (sb) return sb.id.replace(/^NAME /, "").replace(/\s+/g, " ");
+  if (d?.catalog?.gaia) return `Gaia DR3 ${d.catalog.gaia.source_id}`;
+  return `NADIR source #${d?.id}`;
+}
