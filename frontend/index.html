@@ -3,77 +3,150 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Project NADIR — SPHEREx motion explorer</title>
-<link rel="stylesheet" href="/static/style.css">
+<title>Project NADIR — Explore the unseen</title>
+<meta name="description" content="Watch the infrared sky move: real NASA SPHEREx observations, aligned across time.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='5' fill='%23ffb547'/%3E%3Ccircle cx='16' cy='16' r='12' fill='none' stroke='%237aa2ff' stroke-width='2'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/static/css/nadir.css">
 </head>
 <body>
-<header>
-  <h1>Project NADIR</h1>
-  <span class="sub">SPHEREx time-domain explorer · scientific engine milestone 1</span>
+<div id="intro" class="intro" role="dialog" aria-label="Introduction" hidden>
+  <div class="intro-inner">
+    <div class="intro-mark" aria-hidden="true"><span></span></div>
+    <h1 class="intro-title">NADIR</h1>
+    <p class="intro-line">The universe is not still.<br>We are only learning how to see it move.</p>
+    <button id="intro-skip" class="btn ghost">Enter the observatory <kbd>Esc</kbd></button>
+  </div>
+</div>
+
+<header class="topbar">
+  <a class="brand" href="/" aria-label="Project NADIR home">
+    <span class="brand-mark" aria-hidden="true"></span>
+    <span class="brand-name">NADIR</span>
+    <span class="brand-sub">SPHEREx time-domain observatory</span>
+  </a>
+  <nav class="modes" aria-label="Views">
+    <button data-view="time" class="mode active" aria-pressed="true">Time Machine</button>
+    <button data-view="explore" class="mode" aria-pressed="false">Explore sky</button>
+    <button data-view="discover" class="mode" aria-pressed="false">Discover</button>
+    <button data-view="learn" class="mode" aria-pressed="false">Learn</button>
+    <button data-view="help" class="mode" aria-pressed="false">Data &amp; help</button>
+  </nav>
+  <form id="quick-search" class="quick-search" role="search">
+    <label class="sr-only" for="q">Object name or coordinates</label>
+    <input id="q" placeholder="Object name or RA Dec…" autocomplete="off">
+    <button class="btn primary" type="submit">Go</button>
+  </form>
 </header>
 
-<section id="controls">
-  <form id="search-form">
-    <label>Object name <input id="name" placeholder="e.g. Barnard's Star" size="18"></label>
-    <button type="button" id="resolve">Resolve</button>
-    <label>RA (deg) <input id="ra" required inputmode="decimal" size="10"></label>
-    <label>Dec (deg) <input id="dec" required inputmode="decimal" size="10"></label>
-    <label>Band
-      <select id="band">
-        <option value="D1">D1 0.75–1.1 µm</option><option value="D2" selected>D2 1.1–1.65 µm</option>
-        <option value="D3">D3 1.65–2.4 µm</option><option value="D4">D4 2.4–3.8 µm</option>
-        <option value="D5">D5 3.8–4.4 µm</option><option value="D6">D6 4.4–5.0 µm</option>
-      </select>
-    </label>
-    <label>Size (deg) <input id="size" value="0.2" size="4" inputmode="decimal"></label>
-    <button type="submit" id="search">Search SPHEREx</button>
-    <button type="button" id="preset">Barnard's Star preset</button>
-  </form>
-  <div id="status" role="status"></div>
-</section>
+<div class="app" id="app">
+  <aside class="left" id="left" aria-label="Controls">
+    <section class="panel">
+      <h2>Target</h2>
+      <div class="presets" id="presets" role="list"></div>
+      <form id="coord-form" class="coords">
+        <label>RA <span class="unit">deg</span><input id="ra" inputmode="decimal" required></label>
+        <label>Dec <span class="unit">deg</span><input id="dec" inputmode="decimal" required></label>
+        <label>Field <span class="unit">deg</span>
+          <select id="size"><option value="0.1">0.1°</option><option value="0.2" selected>0.2°</option><option value="0.3">0.3°</option><option value="0.5">0.5°</option></select>
+        </label>
+        <label>Detector
+          <select id="band">
+            <option value="D1">D1 · 0.75–1.09 µm</option><option value="D2" selected>D2 · 1.10–1.62 µm</option>
+            <option value="D3">D3 · 1.63–2.41 µm</option><option value="D4">D4 · 2.42–3.82 µm</option>
+            <option value="D5">D5 · 3.83–4.41 µm</option><option value="D6">D6 · 4.42–5.00 µm</option>
+          </select>
+        </label>
+        <button class="btn primary wide" type="submit">Observe this field</button>
+      </form>
+      <p class="coord-readout" id="target-readout"></p>
+    </section>
 
-<section id="pairbar" hidden>
-  <label>Suggested pair <select id="pairs"></select></label>
-  <label>Epoch A <select id="obs-a"></select></label>
-  <label>Epoch B <select id="obs-b"></select></label>
-  <button id="analyze">Compare</button>
-  <span id="search-info"></span>
-</section>
+    <section class="panel">
+      <h2>Overlays</h2>
+      <div class="toggles" id="overlay-toggles">
+        <label><input type="checkbox" data-ov="sources" checked> NADIR sources</label>
+        <label><input type="checkbox" data-ov="tracks" checked> Motion tracks</label>
+        <label><input type="checkbox" data-ov="grid" checked> RA/Dec grid</label>
+        <label><input type="checkbox" data-ov="gaia"> Gaia DR3 <span class="tag cat">catalog</span></label>
+        <label><input type="checkbox" data-ov="simbad"> SIMBAD names <span class="tag cat">catalog</span></label>
+        <label><input type="checkbox" data-ov="twomass"> 2MASS (~1999) <span class="tag cat">catalog</span></label>
+        <label><input type="checkbox" data-ov="allwise"> AllWISE (~2010) <span class="tag cat">catalog</span></label>
+      </div>
+      <p class="hint" id="catalog-status"></p>
+    </section>
 
-<main id="main" hidden>
-  <div id="viewer">
-    <div id="modes">
-      <button data-mode="a" class="active">Epoch A</button>
-      <button data-mode="b">Epoch B</button>
-      <button data-mode="blink">Blink</button>
-      <button data-mode="diff">Difference</button>
-      <label>Blink <input type="range" id="rate" min="150" max="1500" step="50" value="600"> <span id="rate-val">600</span> ms</label>
-      <label><input type="checkbox" id="registered" checked> star-registered B</label>
-      <label><input type="checkbox" id="overlay" checked> sources</label>
-      <label><input type="checkbox" id="show-refs"> reference stars</label>
-    </div>
-    <div id="canvas-wrap">
-      <canvas id="canvas"></canvas>
-      <div id="frame-label"></div>
-    </div>
-    <div id="legend">
-      N up, E left · <span class="k cand">◯</span> motion candidate
-      <span class="k low">◯</span> low-confidence candidate
-      <span class="k none">◯</span> no significant motion
-      <span class="k ref">◯</span> reference star
-      <span class="k un">+</span> seen in one epoch only · click a source to inspect
-    </div>
-    <div id="image-note"></div>
-  </div>
+    <section class="panel">
+      <h2>Show sources</h2>
+      <div class="chips" id="tier-filter" role="group" aria-label="Evidence filter"></div>
+      <div class="chips" id="class-filter" role="group" aria-label="Catalog class filter"></div>
+    </section>
 
-  <aside id="side">
-    <div class="panel" id="verdict-panel"><h2>Result</h2><div id="verdict"></div></div>
-    <div class="panel" id="source-panel"><h2>Selected source</h2><div id="source">Click a source in the image.</div></div>
-    <div class="panel" id="track-panel" hidden><h2>Multi-epoch track</h2>
-      <canvas id="track-plot" width="440" height="230"></canvas><div id="track"></div></div>
-    <div class="panel"><h2>Registration &amp; data</h2><div id="reg"></div></div>
+    <section class="panel provenance" id="provenance-panel" aria-live="polite"></section>
   </aside>
-</main>
-<script src="/static/app.js"></script>
+
+  <main class="stage" id="stage">
+    <div class="viewport" id="viewport">
+      <canvas id="sky" tabindex="0" aria-label="Sky image. Drag to pan, scroll or +/- to zoom, click a source to inspect it."></canvas>
+      <div class="hud hud-tl" id="hud-frame"></div>
+      <div class="hud hud-tr" id="hud-legend"></div>
+      <div class="hud hud-bl" id="hud-cursor"></div>
+      <div class="hud hud-br zoom-ctl">
+        <button class="icon" id="zoom-in" aria-label="Zoom in">+</button>
+        <button class="icon" id="zoom-out" aria-label="Zoom out">−</button>
+        <button class="icon" id="zoom-fit" aria-label="Fit field">⤢</button>
+      </div>
+      <div class="loader" id="loader" hidden role="status" aria-live="polite"></div>
+      <div class="tour" id="tour" hidden></div>
+    </div>
+    <div class="explore" id="explore" hidden>
+      <div id="aladin" class="aladin"></div>
+      <div class="explore-bar">
+        <label class="lambda">Wavelength <input type="range" id="slice" min="0" max="101" value="23" aria-label="SPHEREx wavelength channel"><output id="slice-out"></output></label>
+        <span class="hint" id="explore-hint">SPHEREx DR1 all-sky cube (IRSA HiPS), 102 wavelengths. Click the sky to choose a target.</span>
+        <button class="btn primary" id="explore-go" disabled>Observe here</button>
+      </div>
+    </div>
+    <div class="sheet" id="sheet" hidden></div>
+
+    <footer class="timeline" id="timeline" aria-label="Observation timeline">
+      <div class="tl-controls">
+        <div class="seg" role="group" aria-label="Comparison mode">
+          <button data-cmp="a" class="active">A</button>
+          <button data-cmp="b">B</button>
+          <button data-cmp="blink">Blink</button>
+          <button data-cmp="overlay">Overlay</button>
+          <button data-cmp="diff">B − A</button>
+          <button data-cmp="play">Animate</button>
+        </div>
+        <button class="icon play" id="play" aria-label="Play">▶</button>
+        <label class="speed">Speed <input type="range" id="speed" min="1" max="12" value="4" aria-label="Frames per second"><output id="speed-out">4/s</output></label>
+        <label class="speed" id="opacity-ctl" hidden>B opacity <input type="range" id="opacity" min="0" max="100" value="50"></label>
+        <label class="matched"><input type="checkbox" id="matched-only"> Same wavelength as A only</label>
+        <span class="tl-info" id="tl-info"></span>
+      </div>
+      <div class="tl-track" id="tl-track" role="listbox" aria-label="Epochs"></div>
+    </footer>
+  </main>
+
+  <aside class="inspector" id="inspector" aria-label="Object investigation" hidden>
+    <header class="insp-head">
+      <div>
+        <div class="insp-kicker" id="insp-kicker">Object</div>
+        <h2 id="insp-title">—</h2>
+      </div>
+      <button class="icon" id="insp-close" aria-label="Close investigation panel">×</button>
+    </header>
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-tab="overview" class="active" aria-selected="true">Overview</button>
+      <button role="tab" data-tab="motion" aria-selected="false">Motion</button>
+      <button role="tab" data-tab="spectrum" aria-selected="false">Spectrum</button>
+      <button role="tab" data-tab="obs" aria-selected="false">Observations</button>
+      <button role="tab" data-tab="notes" aria-selected="false">Notes</button>
+    </nav>
+    <div class="insp-body" id="insp-body" role="tabpanel"></div>
+  </aside>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<script type="module" src="/static/js/main.js"></script>
 </body>
 </html>

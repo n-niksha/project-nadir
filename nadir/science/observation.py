@@ -58,6 +58,9 @@ class Observation:
     path: str | None = None
     provenance: dict | None = None
     issues: list[str] = field(default_factory=list)
+    epsf: object | None = None  # psf.EPSFGrid when the archive ePSF table is available
+    wcs_det: WCS | None = None  # cutout pixel -> detector pixel (alternate WCS 'A')
+    pixel_sr: float | None = None  # median pixel solid angle (OMEGA_MEDIAN), steradian
 
     def bitmask(self, names) -> int:
         m = 0
@@ -198,7 +201,22 @@ def load_observation(path, ref_radec: tuple[float, float] | None = None,
         if hdr.get("FINAST", 0) != 0:
             issues.append("fine astrometric solution flagged not good (FINAST != 0)")
 
+        epsf = wcs_det = None
+        if "EPSF" in names:
+            try:
+                from .psf import EPSFGrid
+                epsf = EPSFGrid.from_hdu(hdul["EPSF"])
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore")
+                    wcs_det = WCS(hdr, key="A")
+            except Exception as exc:  # optional
+                issues.append(f"EPSF unreadable: {exc}")
+                epsf = wcs_det = None
+        omega = hdr.get("OMEGA_MEDIAN")
+        pixel_sr = float(omega) * (np.pi / 180 / 3600) ** 2 if omega else None
+
         return Observation(
+            epsf=epsf, wcs_det=wcs_det, pixel_sr=pixel_sr,
             obs_id=str(hdr.get("OBSID", path.stem)) + (f"D{hdr['DETECTOR']}" if "DETECTOR" in hdr else ""),
             image=image, flags=flags, variance=variance, wcs=wcs, flag_bits=flag_bits,
             mjd=mjd, date_iso=hdr.get("DATE-AVG") or hdr.get("DATE-OBS"),

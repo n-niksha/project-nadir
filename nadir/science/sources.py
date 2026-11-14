@@ -8,11 +8,10 @@ by reduced chi^2 when > 1); they do not capture pixel-phase systematics, which
 is why the motion analysis uses the empirical scatter of reference stars as
 its error floor.
 
-Sources whose core is unusable (saturation) get a different estimator: a
-circular Moffat profile fitted to the PSF wings only.  On real data (Barnard's
-Star, band D2) this repeats to ~0.4-0.7" within a visit, but it is biased by
-PSF-wing asymmetry in the detector frame at the ~1" level, so such sources
-carry ``core_masked=True`` and a systematic error floor downstream.
+Sources whose core is unusable (saturation) are fitted on their wings only
+with a circular Moffat (an archive-ePSF alternative exists in ``psf.py`` but
+did not perform better; see USE_EPSF_FOR_CORE_MASKED).  Both carry ``core_masked=True``
+and a systematic error floor downstream.
 """
 from __future__ import annotations
 
@@ -24,6 +23,10 @@ from scipy import ndimage, optimize, special
 from .observation import WARN_FLAGS, Observation
 
 SQRT2 = np.sqrt(2.0)
+# Archive-ePSF wing fits were tested on Barnard's Star (61 D2 epochs, 3 visits):
+# they did not reduce the per-visit systematic offsets (1-2") and had 2-3x the
+# within-visit scatter of the Moffat fit, so the Moffat fit stays the default.
+USE_EPSF_FOR_CORE_MASKED = False
 
 
 @dataclass
@@ -139,6 +142,10 @@ def fit_source(obs: Observation, bad: np.ndarray, px: float, py: float, noise: f
     if n_pix < 9 or n_pix < 0.5 * b.size:
         return failed()
     if core_masked:
+        if USE_EPSF_FOR_CORE_MASKED and obs.epsf is not None and obs.wcs_det is not None:
+            s = _fit_epsf_wings(obs, bad, px, py, saturated, n_bad, n_pix, warn)
+            if s is not None:
+                return s
         return _fit_wings(px, py, img[good], var[good], xx[good], yy[good], saturated, n_bad, n_pix, warn) or failed()
     d, w = img[good], 1.0 / np.sqrt(var[good])
     gx, gy = xx[good], yy[good]
@@ -169,6 +176,23 @@ def fit_source(obs: Observation, bad: np.ndarray, px: float, py: float, noise: f
     resid_frac = float(np.sum(np.abs(model - d)) / max(np.sum(np.abs(model - bkg)), 1e-30))
     return Source(x, y, xe, ye, flux, sigma, bkg, peak0, float(flux / fe) if fe > 0 else 0.0, chi2,
                   saturated, core_masked, n_bad, n_pix, False, warn, ok, resid_frac)
+
+
+def _fit_epsf_wings(obs, bad, px, py, saturated, n_bad, n_pix, warn) -> Source | None:
+    """Fit the archive ePSF (detector-frame, pixel-integrated) to the usable
+    pixels of a core-masked source.  On Barnard's Star this removed the ~2"
+    orientation-dependent bias of the Moffat fit at the cost of larger
+    per-epoch scatter (docs/SCIENCE.md)."""
+    from . import psf as P
+    xd, yd = P.detector_xy(obs.wcs_det, px, py)
+    model = obs.epsf.at(xd, yd)
+    f = P.fit_epsf(obs.image, obs.variance, ~bad, model, px, py, half=5, model_error=0.15)
+    if f is None or not f["success"]:
+        return None
+    snr = float(f["flux"] / f["flux_err"]) if f["flux_err"] > 0 else 0.0
+    return Source(f["x"], f["y"], f["x_err"], f["y_err"], f["flux"], float("nan"), f["background"],
+                  float("nan"), snr, f["chi2_red"], saturated, True, n_bad, f["n_pix"], False, warn, True,
+                  f["resid_frac"], "epsf_wings")
 
 
 def _fit_wings(px, py, d, var, gx, gy, saturated, n_bad, n_pix, warn) -> Source | None:

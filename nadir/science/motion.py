@@ -27,10 +27,11 @@ DETECTION_SIGMA = 5.0  # combined 2-D significance required for a motion candida
 MATCH_RADIUS_NATIVE_PX = 3.0
 # Flags that suggest the *detection itself* may be an artifact rather than a star.
 ARTIFACT_FLAGS = ("SNOWBALL", "STREAK", "GHOST_FPA", "GHOST_EXT", "PERSIST", "CROSSTALK")
-# Systematic floor (native pixels, per axis, per pair) for sources centroided on
-# PSF wings because their core is saturated/masked.  Empirical: Barnard's Star in
-# band D2 shows a ~1.2" detector-frame bias that flips with spacecraft orientation
-# (docs/SCIENCE.md).  It is a floor, not a correction.
+# Systematic floor (native pixels, per axis, per epoch) for sources centroided on
+# PSF wings because their core is saturated/masked: Barnard's Star wing-fit
+# positions repeat to 0.3-0.7" within a visit (days apart; no Gaia needed).
+# Visit-to-visit offsets are larger (1-2"); those are handled by
+# fieldtrack.VISIT_SYSTEMATIC_ARCSEC.  It is a floor, not a correction.
 CORE_MASKED_FLOOR_PX = 0.2
 
 

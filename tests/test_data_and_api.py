@@ -52,7 +52,7 @@ def test_fetch_caches_strips_epsf_and_records_provenance(monkeypatch):
     monkeypatch.setattr(irsa, "_http_get", lambda url: calls.append(url) or payload)
     path, prov = irsa.fetch_cutout(record(), RA0, DEC0, SIZE)
     assert path.exists() and config.CACHE_DIR in path.parents
-    assert "EPSF" in prov["hdus_received"] and "EPSF" not in prov["hdus_cached"]
+    assert "EPSF" in prov["hdus_received"]
     assert path.stat().st_size < len(payload) / 2
     import hashlib
     assert prov["response_sha256"] == hashlib.sha256(payload).hexdigest()
@@ -97,13 +97,67 @@ def test_find_observations_parses_rows_and_skips_incomplete(monkeypatch):
             {"uri": "ibe/data/spherex/dr1/level2/b.fits", "time_bounds_lower": None, "time_bounds_upper": None}]
     seen = {}
     monkeypatch.setattr(irsa, "cached_tap", lambda adql, **k: (seen.setdefault("q", adql) and rows, {"adql": adql}))
-    recs, prov = irsa.find_observations(10.0, -5.0, "D3")
+    recs, prov = irsa.find_observations_tap(10.0, -5.0, "D3")
     assert len(recs) == 1 and recs[0].release == "qr3" and recs[0].band == "D3"
     assert "SPHEREx-D3" in seen["q"] and "POINT('ICRS', 10.000000, -5.000000)" in seen["q"]
     with pytest.raises(ValueError):
         irsa.find_observations(400.0, 0.0)
     with pytest.raises(ValueError):
         irsa.find_observations(10.0, 0.0, "D9")
+
+
+SIA_ROWS = [
+    {"access_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/W/l2b-v27-2026-268/2/level2_W_0371_1D2_spx_l2b-v27-2026-268.fits",
+     "t_min": 61305.6, "t_max": 61305.61, "energy_bandpassname": "SPHEREx-D2", "obs_publisher_did": "ivo://x?a/D2",
+     "obs_id": "2026W39_1A_0371_1", "obs_collection": "spherex_qr3", "em_min": 1.1033e-06, "em_max": 1.6499e-06,
+     "dataproduct_subtype": "science"},
+    {"access_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/V/l2b-v27-2026-229/2/level2_V_0090_4D2_spx_l2b-v27-2026-229.fits",
+     "t_min": 60908.98, "t_max": 60908.99, "energy_bandpassname": "SPHEREx-D2", "obs_publisher_did": "ivo://x?b/D2",
+     "obs_id": "2025W34_2B_0090_4", "obs_collection": "spherex_dr1", "em_min": 1.1033e-06, "em_max": 1.6499e-06,
+     "dataproduct_subtype": "science"},
+    {"access_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/V/x/6/level2_V_0090_4D6_spx.fits",
+     "t_min": None, "t_max": None, "energy_bandpassname": "SPHEREx-D6", "obs_publisher_did": "",
+     "obs_id": "", "obs_collection": "spherex_dr1", "em_min": 4.4e-06, "em_max": 5.0e-06, "dataproduct_subtype": "science"},
+]
+
+
+def test_sia_discovery_groups_bands_sorts_time_and_skips_incomplete(monkeypatch):
+    monkeypatch.setattr(irsa, "_sia_sync", lambda ra, dec: SIA_ROWS)
+    grouped, prov = irsa.find_all_bands(269.4, 4.7)
+    assert set(grouped) == {"D1", "D2", "D3", "D4", "D5", "D6"}
+    d2 = grouped["D2"]
+    assert [r.release for r in d2] == ["dr1", "qr3"] and d2[0].mjd_start < d2[1].mjd_start
+    assert d2[0].uri.startswith("ibe/data/spherex/dr1/") and d2[0].pipeline_version == "l2b-v27"
+    assert abs(d2[0].wl_min_um - 1.1033) < 1e-6 and grouped["D6"] == []
+    assert prov["service"].endswith("/SIA") and prov["cached"] is False
+
+
+def test_sia_failure_falls_back_to_tap(monkeypatch):
+    def boom(ra, dec):
+        raise irsa.DataAccessError("SIA down")
+    monkeypatch.setattr(irsa, "_sia_sync", boom)
+    calls = []
+
+    def tap(ra, dec, band, refresh=False):
+        calls.append(band)
+        return ([record(mjd=1.0)] if band == "D2" else []), {"adql": "t", "service": "TAP"}
+    monkeypatch.setattr(irsa, "find_observations_tap", tap)
+    grouped, prov = irsa.find_all_bands(1.0, 2.0)
+    assert len(calls) == 6 and len(grouped["D2"]) == 1 and prov["fallback_from"] == "SIA" and "SIA down" in prov["sia_error"]
+
+
+def test_stale_cache_is_served_when_archive_fails(monkeypatch):
+    calls = []
+    monkeypatch.setattr(irsa, "_sia_sync", lambda ra, dec: calls.append(1) or SIA_ROWS[:1])
+    irsa.find_all_bands(5.0, 6.0)
+    def boom(ra, dec):
+        raise irsa.DataAccessError("timeout")
+    monkeypatch.setattr(irsa, "_sia_sync", boom)
+    grouped, prov = irsa.find_all_bands(5.0, 6.0, refresh=True)  # force a refetch attempt
+    assert len(grouped["D2"]) == 1 and prov["stale"] is True and "timeout" in prov["archive_error"]
+    monkeypatch.setattr(irsa, "find_observations_tap", lambda *a, **k: (_ for _ in ()).throw(irsa.DataAccessError("tap down")))
+    with pytest.raises(irsa.DataAccessError):
+        irsa.find_all_bands(7.0, 8.0)  # no cache at all -> error surfaces
 
 
 def test_tap_cache_is_reused(monkeypatch):
