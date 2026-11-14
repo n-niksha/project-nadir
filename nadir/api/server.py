@@ -27,6 +27,8 @@ FRONTEND = Path(__file__).resolve().parent.parent.parent / "frontend"
 app = FastAPI(title="Project NADIR", version=__version__,
               description="SPHEREx time-domain explorer: real NASA SPHEREx images, registered across epochs.")
 app.add_middleware(GZipMiddleware, minimum_size=1000)
+from .science import router as science_router
+app.include_router(science_router)
 
 
 @app.on_event("startup")

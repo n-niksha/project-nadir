@@ -1,0 +1,234 @@
+{
+  "joint_separation": [
+    {
+      "separation_px": 0.0,
+      "ratio": 0.5,
+      "flux_per_exposure": 100,
+      "n": 24,
+      "single_bic_favors_two": 0,
+      "joint_bic_favors_two": 0,
+      "single_separation_rmse": 1.922774953818379,
+      "joint_separation_rmse": 1.6218215099749385,
+      "heldout_successful": 24,
+      "heldout_delta_chi2_gt10": 0,
+      "heldout_median_delta_chi2": 0.49886825564563964
+    },
+    {
+      "separation_px": 0.75,
+      "ratio": 0.5,
+      "flux_per_exposure": 100,
+      "n": 24,
+      "single_bic_favors_two": 0,
+      "joint_bic_favors_two": 0,
+      "single_separation_rmse": 1.0229840216765809,
+      "joint_separation_rmse": 0.5717586280832555,
+      "heldout_successful": 24,
+      "heldout_delta_chi2_gt10": 6,
+      "heldout_median_delta_chi2": 4.265852036439448
+    },
+    {
+      "separation_px": 1.5,
+      "ratio": 0.5,
+      "flux_per_exposure": 100,
+      "n": 24,
+      "single_bic_favors_two": 21,
+      "joint_bic_favors_two": 24,
+      "single_separation_rmse": 0.1435307293311225,
+      "joint_separation_rmse": 0.09341584621589903,
+      "heldout_successful": 24,
+      "heldout_delta_chi2_gt10": 24,
+      "heldout_median_delta_chi2": 37.91356484290039
+    }
+  ],
+  "crowded_photometry": [
+    {
+      "separation_px": 0.5,
+      "n": 100,
+      "single_bias": 91.09466271755369,
+      "joint_bias": -1.0206996731913593,
+      "single_rmse": 91.14208181648009,
+      "joint_rmse": 7.1811096781650425,
+      "joint_coverage95": 0.96
+    },
+    {
+      "separation_px": 1.0,
+      "n": 100,
+      "single_bias": 68.80478689071371,
+      "joint_bias": -0.5690677334774565,
+      "single_rmse": 68.86725423524894,
+      "joint_rmse": 4.055835027730027,
+      "joint_coverage95": 0.96
+    },
+    {
+      "separation_px": 2.0,
+      "n": 100,
+      "single_bias": 19.82253513537596,
+      "joint_bias": -0.3280524559174418,
+      "single_rmse": 20.03820952482801,
+      "joint_rmse": 3.0083802866929488,
+      "joint_coverage95": 0.96
+    }
+  ],
+  "failure_matrix": [
+    {
+      "case": "nominal",
+      "state": "ambiguous",
+      "evidence": {
+        "delta_chi2": 0.7039571633545165,
+        "delta_bic": -13.683414473435732,
+        "extended_minus_two_bic": -8.887623927433594,
+        "bootstrap_p": null,
+        "bootstrap_n": 0,
+        "bootstrap_seed": 0,
+        "bootstrap_resolution": null,
+        "support_rule": "per-exposure chi2 reduction > 10; descriptive, not independently calibrated",
+        "selected_count_rule": "lower descriptive BIC among H1 and H2, subject to state and alternative-model caveats",
+        "p_interpretation": "plug-in null tail frequency, not probability of a blend"
+      },
+      "flags": []
+    },
+    {
+      "case": "correlated_noise",
+      "state": "consistent_with_one_source",
+      "evidence": {
+        "delta_chi2": 0.0,
+        "delta_bic": -14.387371636804488,
+        "extended_minus_two_bic": -9.591581091207217,
+        "bootstrap_p": null,
+        "bootstrap_n": 0,
+        "bootstrap_seed": 0,
+        "bootstrap_resolution": null,
+        "support_rule": "per-exposure chi2 reduction > 10; descriptive, not independently calibrated",
+        "selected_count_rule": "lower descriptive BIC among H1 and H2, subject to state and alternative-model caveats",
+        "p_interpretation": "plug-in null tail frequency, not probability of a blend"
+      },
+      "flags": []
+    },
+    {
+      "case": "psf_ellipticity",
+      "state": "ambiguous",
+      "evidence": {
+        "delta_chi2": 356.38585156622014,
+        "delta_bic": 341.99847992942995,
+        "extended_minus_two_bic": 175.8587378612658,
+        "bootstrap_p": null,
+        "bootstrap_n": 0,
+        "bootstrap_seed": 0,
+        "bootstrap_resolution": null,
+        "support_rule": "per-exposure chi2 reduction > 10; descriptive, not independently calibrated",
+        "selected_count_rule": "lower descriptive BIC among H1 and H2, subject to state and alternative-model caveats",
+        "p_interpretation": "plug-in null tail frequency, not probability of a blend",
+        "elliptical_minus_two_bic": -9.718129039085284
+      },
+      "flags": []
+    },
+    {
+      "case": "saturated",
+      "state": "invalid_or_contaminated_observation",
+      "evidence": {
+        "delta_chi2": 3.354690899059648,
+        "delta_bic": -10.853904446123863,
+        "extended_minus_two_bic": -6.122066781628405,
+        "bootstrap_p": null,
+        "bootstrap_n": 0,
+        "bootstrap_seed": 0,
+        "bootstrap_resolution": null,
+        "support_rule": "per-exposure chi2 reduction > 10; descriptive, not independently calibrated",
+        "selected_count_rule": "lower descriptive BIC among H1 and H2, subject to state and alternative-model caveats",
+        "p_interpretation": "plug-in null tail frequency, not probability of a blend"
+      },
+      "flags": [
+        "OVERFLOW"
+      ]
+    },
+    {
+      "case": "cosmic_ray",
+      "state": "invalid_or_contaminated_observation",
+      "evidence": {
+        "delta_chi2": 4740.4602069413595,
+        "delta_bic": 4726.072835304569,
+        "extended_minus_two_bic": 3888.7418820784733,
+        "bootstrap_p": null,
+        "bootstrap_n": 0,
+        "bootstrap_seed": 0,
+        "bootstrap_resolution": null,
+        "support_rule": "per-exposure chi2 reduction > 10; descriptive, not independently calibrated",
+        "selected_count_rule": "lower descriptive BIC among H1 and H2, subject to state and alternative-model caveats",
+        "p_interpretation": "plug-in null tail frequency, not probability of a blend",
+        "elliptical_minus_two_bic": 1705.4798979208317
+      },
+      "flags": [
+        "TRANSIENT"
+      ]
+    },
+    {
+      "case": "faint",
+      "state": "insufficient_data",
+      "evidence": {
+        "delta_chi2": 1.7048370182237704e-07,
+        "delta_bic": -14.387371466306519,
+        "extended_minus_two_bic": -9.591581061092825,
+        "bootstrap_p": null,
+        "bootstrap_n": 0,
+        "bootstrap_seed": 0,
+        "bootstrap_resolution": null,
+        "support_rule": "per-exposure chi2 reduction > 10; descriptive, not independently calibrated",
+        "selected_count_rule": "lower descriptive BIC among H1 and H2, subject to state and alternative-model caveats",
+        "p_interpretation": "plug-in null tail frequency, not probability of a blend"
+      },
+      "flags": []
+    },
+    {
+      "case": "masked",
+      "state": "insufficient_data",
+      "evidence": {},
+      "flags": []
+    },
+    {
+      "case": "structured_background",
+      "state": "invalid_or_contaminated_observation",
+      "evidence": {
+        "delta_chi2": 13.078155706255359,
+        "delta_bic": -1.3092159305348332,
+        "extended_minus_two_bic": 3.48657461447948,
+        "bootstrap_p": null,
+        "bootstrap_n": 0,
+        "bootstrap_seed": 0,
+        "bootstrap_resolution": null,
+        "support_rule": "per-exposure chi2 reduction > 10; descriptive, not independently calibrated",
+        "selected_count_rule": "lower descriptive BIC among H1 and H2, subject to state and alternative-model caveats",
+        "p_interpretation": "plug-in null tail frequency, not probability of a blend"
+      },
+      "flags": []
+    }
+  ],
+  "pointing": [
+    {
+      "unmodeled_registration_sigma_px": 0.0,
+      "n": 50,
+      "joint_rmse_px": 0.005175053342261952
+    },
+    {
+      "unmodeled_registration_sigma_px": 0.05,
+      "n": 50,
+      "joint_rmse_px": 0.03456444112652116
+    },
+    {
+      "unmodeled_registration_sigma_px": 0.2,
+      "n": 50,
+      "joint_rmse_px": 0.1373610370400707
+    }
+  ],
+  "timings": {
+    "one_source_median_s": 0.002003040979616344,
+    "two_source_median_s": 0.12348166690208018,
+    "coaddition_median_s": 0.00024120905436575413,
+    "forced_photometry_median_s": 9.179196786135435e-05
+  },
+  "caveats": [
+    "BIC selection is descriptive, not calibrated significance.",
+    "Forced component positions are true injected positions; real catalog uncertainty will worsen performance.",
+    "PSF mismatch or correlated noise can pass simple residual tests."
+  ],
+  "elapsed_s": 56.865385499899276
+}

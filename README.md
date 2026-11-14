@@ -140,6 +140,11 @@ data/cache/       downloaded cutouts + provenance JSON (git-ignored)
 Design rationale: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 Method, validation and limitations: [docs/SCIENCE.md](docs/SCIENCE.md).
 
+Milestone 4 optional research engine: [experiments and scientific review](docs/MILESTONE4.md)
+and [backend API contract](docs/MILESTONE4_API.md). Native-pixel decomposition,
+joint fitting, reconstruction covariance and multi-feature screening are
+experimental; no new object or real-data super-resolution is claimed.
+
 ## Data
 
 SPHEREx data are served by the NASA/IPAC Infrared Science Archive (IRSA).
