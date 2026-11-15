@@ -1,0 +1,882 @@
+{
+  "alignment": {
+    "per_observation": {
+      "0": {
+        "ok": true,
+        "reference": true
+      },
+      "1": {
+        "converged": true,
+        "model": "similarity",
+        "n_matched_clean": 45,
+        "n_used": 41,
+        "ok": true,
+        "rms_east_arcsec": 0.6766904732229754,
+        "rms_native_px": 0.09211182259926042,
+        "rms_north_arcsec": 0.4269923018780054,
+        "rotation_deg": 0.012567869516967213,
+        "scale": 1.000476010245906,
+        "shift_east_arcsec": 0.05627641768105208,
+        "shift_north_arcsec": 0.10564618922615257
+      },
+      "2": {
+        "converged": true,
+        "model": "similarity",
+        "n_matched_clean": 50,
+        "n_used": 43,
+        "ok": true,
+        "rms_east_arcsec": 0.4860635958378538,
+        "rms_native_px": 0.06897549635952104,
+        "rms_north_arcsec": 0.3503483176671235,
+        "rotation_deg": -0.01298772947050397,
+        "scale": 1.000228286640106,
+        "shift_east_arcsec": 0.016206909671764542,
+        "shift_north_arcsec": 0.240645000575843
+      },
+      "3": {
+        "converged": true,
+        "model": "similarity",
+        "n_matched_clean": 50,
+        "n_used": 48,
+        "ok": true,
+        "rms_east_arcsec": 0.5525958750255612,
+        "rms_native_px": 0.07225438228487817,
+        "rms_north_arcsec": 0.2976281757995424,
+        "rotation_deg": -0.013611055704154489,
+        "scale": 0.9998170830372657,
+        "shift_east_arcsec": 0.07011168166978024,
+        "shift_north_arcsec": 0.03199126650969212
+      },
+      "4": {
+        "converged": true,
+        "model": "similarity",
+        "n_matched_clean": 55,
+        "n_used": 51,
+        "ok": true,
+        "rms_east_arcsec": 0.6011751812658233,
+        "rms_native_px": 0.08075749493022974,
+        "rms_north_arcsec": 0.3615386365966437,
+        "rotation_deg": -0.012528668941336358,
+        "scale": 0.9996619318898241,
+        "shift_east_arcsec": 0.1345353319812015,
+        "shift_north_arcsec": -0.10206199277479272
+      }
+    },
+    "reference_index": 0
+  },
+  "catalog_comparisons": {
+    "matches": {
+      "simbad": {
+        "dec": 66.75497941722,
+        "groups": [
+          "star",
+          "variable"
+        ],
+        "id": "V* R Dra",
+        "otype": "Mi*",
+        "pmdec": 6.149,
+        "pmra": -20.643,
+        "ra": 248.16761083295,
+        "separation_arcsec": 1.5866440277888954,
+        "sp_type": "M4.5-6+e"
+      }
+    },
+    "role": "external comparison; catalog PM may be used for epoch matching and spectral positioning, not the motion fit",
+    "services": {
+      "catalogs": {
+        "simbad": {
+          "n_rows": 7,
+          "provenance": {
+            "adql": "SIMBAD SELECT main_id, ra, dec, otype, sp_type, pmra, pmdec FROM basic WHERE CONTAINS(POINT('ICRS', ra, dec), CIRCLE('ICRS', 248.167233, 66.755024, 0.15000)) = 1",
+            "cached": true,
+            "catalog": "SIMBAD (basic table; CDS primary, CfA mirror)",
+            "retrieved_utc": "2026-11-15T00:43:43+00:00",
+            "service": "SIMBAD TAP",
+            "stale": false
+          }
+        }
+      },
+      "errors": {
+        "allwise": "IRSA TAP query failed: DataAccessError: Offline validation: remote service disabled",
+        "gaia": "IRSA TAP query failed: DataAccessError: Offline validation: remote service disabled",
+        "twomass": "IRSA TAP query failed: DataAccessError: Offline validation: remote service disabled"
+      }
+    }
+  },
+  "classification": {
+    "discovery_confirmed": false,
+    "experimental_results_included": false,
+    "reasons": [
+      "measured in 2 visit(s), 2 epoch(s)"
+    ],
+    "tier": "insufficient"
+  },
+  "failure_reasons": [
+    {
+      "code": "insufficient_motion_evidence",
+      "retryable": false
+    },
+    {
+      "code": "catalog_query_failed",
+      "retryable": true,
+      "services": {
+        "allwise": "IRSA TAP query failed: DataAccessError: Offline validation: remote service disabled",
+        "gaia": "IRSA TAP query failed: DataAccessError: Offline validation: remote service disabled",
+        "twomass": "IRSA TAP query failed: DataAccessError: Offline validation: remote service disabled"
+      }
+    },
+    {
+      "code": "core_masked_astrometric_systematics",
+      "retryable": false
+    }
+  ],
+  "field": {
+    "band": "D2",
+    "dec": 66.75502382666444,
+    "fid": "3b412ca2688b",
+    "ra": 248.16723307280128,
+    "reference_index": 0,
+    "size_deg": 0.2
+  },
+  "motion": {
+    "limitations": [
+      "Includes empirical floors; reference-star motion and shared registration covariance remain limitations.",
+      "No independently measured parallax. Saturated/blended centroids may move without physical motion."
+    ],
+    "measurement": null,
+    "method": "existing visit-aware relative astrometry",
+    "units": "arcsec/year; positional residuals arcsec"
+  },
+  "observations": [
+    {
+      "bad_fraction": 0.002410694718387026,
+      "bandwidth_um": 0.03371664235440842,
+      "date": "2025-06-08T18:55:19.221",
+      "detector": 2,
+      "detector_pa_deg": 262.573803381728,
+      "exptime_s": 113.5826,
+      "index": 0,
+      "issues": [],
+      "local_sha256": "0b93df7ee4ace498cec822cf13153851333ec92eac75dcfa63f8e54828768f52",
+      "mjd": 60834.788416907,
+      "obs_id": "2025W23_2B_0696_1D2",
+      "pipeline_version": "7.0.5",
+      "provenance": {
+        "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+        "archive_record": {
+          "archive_checksum": "",
+          "band": "D2",
+          "mjd_end": 60834.789083,
+          "mjd_start": 60834.787751,
+          "obs_id": "2025W23_2B_0696_1",
+          "pipeline_version": "l2b-v27",
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W23_2B_0696_1/D2",
+          "uri": "ibe/data/spherex/dr1/level2/2025W23_2B/l2b-v27-2026-201/2/level2_2025W23_2B_0696_1D2_spx_l2b-v27-2026-201.fits",
+          "wl_max_um": 1.6499000000000001,
+          "wl_min_um": 1.1033000000000002
+        },
+        "hdus_cached": [
+          "PRIMARY",
+          "IMAGE",
+          "FLAGS",
+          "VARIANCE",
+          "ZODI",
+          "WCS-WAVE",
+          "EPSF"
+        ],
+        "hdus_received": [
+          "PRIMARY",
+          "IMAGE",
+          "FLAGS",
+          "VARIANCE",
+          "ZODI",
+          "EPSF",
+          "WCS-WAVE"
+        ],
+        "mission": "SPHEREx",
+        "nadir_version": "0.1.0",
+        "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+        "product": "Level 2 spectral image (cutout)",
+        "release": "dr1",
+        "request": {
+          "dec_deg": 66.75502382666444,
+          "ra_deg": 248.16723307280128,
+          "size_deg": 0.2
+        },
+        "response_bytes": 4173120,
+        "response_sha256": "8fcc1ee4ac954f804ee03c4325684f9080746dfaaa5fc0e689707af3e0a0ae88",
+        "retrieved_utc": "2026-11-15T00:41:20+00:00",
+        "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W23_2B/l2b-v27-2026-201/2/level2_2025W23_2B_0696_1D2_spx_l2b-v27-2026-201.fits?center=248.167233,66.755024d&size=0.2000"
+      },
+      "psf_fwhm_arcsec": 7.46070125580342,
+      "release": "dr1",
+      "retrieved_utc": "2026-11-15T00:41:20+00:00",
+      "shape": [
+        117,
+        117
+      ],
+      "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W23_2B/l2b-v27-2026-201/2/level2_2025W23_2B_0696_1D2_spx_l2b-v27-2026-201.fits?center=248.167233,66.755024d&size=0.2000",
+      "unavailable_reason": "",
+      "usable": true,
+      "wavelength_um": 1.4046932724550194
+    },
+    {
+      "bad_fraction": 0.0038717218204397694,
+      "bandwidth_um": 0.02712364707568209,
+      "date": "2025-06-22T15:37:00.945",
+      "detector": 2,
+      "detector_pa_deg": 270.24793549147415,
+      "exptime_s": 113.5826,
+      "index": 1,
+      "issues": [],
+      "local_sha256": "e97dac49a7da0a77ee79ac501c841f9684e24c4fa13d35f13af14c062b407da0",
+      "mjd": 60848.650705379,
+      "obs_id": "2025W25_2A_0633_3D2",
+      "pipeline_version": "7.0.5",
+      "provenance": {
+        "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+        "archive_record": {
+          "archive_checksum": "",
+          "band": "D2",
+          "mjd_end": 60848.651372,
+          "mjd_start": 60848.650039,
+          "obs_id": "2025W25_2A_0633_3",
+          "pipeline_version": "l2b-v27",
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W25_2A_0633_3/D2",
+          "uri": "ibe/data/spherex/dr1/level2/2025W25_2A/l2b-v27-2026-213/2/level2_2025W25_2A_0633_3D2_spx_l2b-v27-2026-213.fits",
+          "wl_max_um": 1.6499000000000001,
+          "wl_min_um": 1.1033000000000002
+        },
+        "hdus_cached": [
+          "PRIMARY",
+          "IMAGE",
+          "FLAGS",
+          "VARIANCE",
+          "ZODI",
+          "WCS-WAVE",
+          "EPSF"
+        ],
+        "hdus_received": [
+          "PRIMARY",
+          "IMAGE",
+          "FLAGS",
+          "VARIANCE",
+          "ZODI",
+          "EPSF",
+          "WCS-WAVE"
+        ],
+        "mission": "SPHEREx",
+        "nadir_version": "0.1.0",
+        "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+        "product": "Level 2 spectral image (cutout)",
+        "release": "dr1",
+        "request": {
+          "dec_deg": 66.75502382666444,
+          "ra_deg": 248.16723307280128,
+          "size_deg": 0.2
+        },
+        "response_bytes": 4173120,
+        "response_sha256": "cbaa1c23b6640eacf48436c2536358f61f0cc1154b64ff17c5949ea8a772c6b5",
+        "retrieved_utc": "2026-11-15T00:41:23+00:00",
+        "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W25_2A/l2b-v27-2026-213/2/level2_2025W25_2A_0633_3D2_spx_l2b-v27-2026-213.fits?center=248.167233,66.755024d&size=0.2000"
+      },
+      "psf_fwhm_arcsec": 7.46070125580342,
+      "release": "dr1",
+      "retrieved_utc": "2026-11-15T00:41:23+00:00",
+      "shape": [
+        117,
+        117
+      ],
+      "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W25_2A/l2b-v27-2026-213/2/level2_2025W25_2A_0633_3D2_spx_l2b-v27-2026-213.fits?center=248.167233,66.755024d&size=0.2000",
+      "unavailable_reason": "",
+      "usable": true,
+      "wavelength_um": 1.1353965697365265
+    },
+    {
+      "bad_fraction": 0.0035064650449265836,
+      "bandwidth_um": 0.036331766837304255,
+      "date": "2025-11-18T17:40:23.971",
+      "detector": 2,
+      "detector_pa_deg": 88.7934578583004,
+      "exptime_s": 113.5826,
+      "index": 2,
+      "issues": [],
+      "local_sha256": "3758e68aa1b6ca90f0a987930d4719d7aa0c0e76f4b0beff9ab0ce3660de5e8a",
+      "mjd": 60997.73638855,
+      "obs_id": "2025W47_1A_0388_3D2",
+      "pipeline_version": "7.0.5",
+      "provenance": {
+        "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+        "archive_record": {
+          "archive_checksum": "",
+          "band": "D2",
+          "mjd_end": 60997.737055,
+          "mjd_start": 60997.735722,
+          "obs_id": "2025W47_1A_0388_3",
+          "pipeline_version": "l2b-v27",
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W47_1A_0388_3/D2",
+          "uri": "ibe/data/spherex/dr1/level2/2025W47_1A/l2b-v27-2026-208/2/level2_2025W47_1A_0388_3D2_spx_l2b-v27-2026-208.fits",
+          "wl_max_um": 1.6499000000000001,
+          "wl_min_um": 1.1033000000000002
+        },
+        "hdus_cached": [
+          "PRIMARY",
+          "IMAGE",
+          "FLAGS",
+          "VARIANCE",
+          "ZODI",
+          "WCS-WAVE",
+          "EPSF"
+        ],
+        "hdus_received": [
+          "PRIMARY",
+          "IMAGE",
+          "FLAGS",
+          "VARIANCE",
+          "ZODI",
+          "EPSF",
+          "WCS-WAVE"
+        ],
+        "mission": "SPHEREx",
+        "nadir_version": "0.1.0",
+        "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+        "product": "Level 2 spectral image (cutout)",
+        "release": "dr1",
+        "request": {
+          "dec_deg": 66.75502382666444,
+          "ra_deg": 248.16723307280128,
+          "size_deg": 0.2
+        },
+        "response_bytes": 4173120,
+        "response_sha256": "8516dabfb14958f3219aa6774ce1afd5af8529545cc5d760635b2d0d5d96d70f",
+        "retrieved_utc": "2026-11-15T00:41:30+00:00",
+        "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W47_1A/l2b-v27-2026-208/2/level2_2025W47_1A_0388_3D2_spx_l2b-v27-2026-208.fits?center=248.167233,66.755024d&size=0.2000"
+      },
+      "psf_fwhm_arcsec": 7.46070125580342,
+      "release": "dr1",
+      "retrieved_utc": "2026-11-15T00:41:30+00:00",
+      "shape": [
+        117,
+        117
+      ],
+      "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W47_1A/l2b-v27-2026-208/2/level2_2025W47_1A_0388_3D2_spx_l2b-v27-2026-208.fits?center=248.167233,66.755024d&size=0.2000",
+      "unavailable_reason": "",
+      "usable": true,
+      "wavelength_um": 1.4784333431324168
+    },
+    {
+      "bad_fraction": 0.0035795164000292207,
+      "bandwidth_um": 0.03016692912692418,
+      "date": "2026-06-21T03:26:02.856",
+      "detector": 2,
+      "detector_pa_deg": 263.65175639647174,
+      "exptime_s": 113.5826,
+      "index": 3,
+      "issues": [],
+      "local_sha256": "7ac28f84849c0a99501726dd4ae59fdee714936f5100de87a4995360ba68f37a",
+      "mjd": 61212.143088608,
+      "obs_id": "2026W25_2A_0573_1D2",
+      "pipeline_version": "7.0.5",
+      "provenance": {
+        "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+        "archive_record": {
+          "archive_checksum": "",
+          "band": "D2",
+          "mjd_end": 61212.143755,
+          "mjd_start": 61212.142422,
+          "obs_id": "2026W25_2A_0573_1",
+          "pipeline_version": "l2b-v27",
+          "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W25_2A_0573_1/D2",
+          "uri": "ibe/data/spherex/qr3/level2/2026W25_2A/l2b-v27-2026-273/2/level2_2026W25_2A_0573_1D2_spx_l2b-v27-2026-273.fits",
+          "wl_max_um": 1.6499000000000001,
+          "wl_min_um": 1.1033000000000002
+        },
+        "hdus_cached": [
+          "PRIMARY",
+          "IMAGE",
+          "FLAGS",
+          "VARIANCE",
+          "ZODI",
+          "WCS-WAVE",
+          "EPSF"
+        ],
+        "hdus_received": [
+          "PRIMARY",
+          "IMAGE",
+          "FLAGS",
+          "VARIANCE",
+          "ZODI",
+          "EPSF",
+          "WCS-WAVE"
+        ],
+        "mission": "SPHEREx",
+        "nadir_version": "0.1.0",
+        "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+        "product": "Level 2 spectral image (cutout)",
+        "release": "qr3",
+        "request": {
+          "dec_deg": 66.75502382666444,
+          "ra_deg": 248.16723307280128,
+          "size_deg": 0.2
+        },
+        "response_bytes": 4173120,
+        "response_sha256": "60e0d9e003e6dd5abd314ab89a54c7c8faaedd32bf070a10354c37b8296e9dfd",
+        "retrieved_utc": "2026-11-15T00:41:36+00:00",
+        "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W25_2A/l2b-v27-2026-273/2/level2_2026W25_2A_0573_1D2_spx_l2b-v27-2026-273.fits?center=248.167233,66.755024d&size=0.2000"
+      },
+      "psf_fwhm_arcsec": 7.46070125580342,
+      "release": "qr3",
+      "retrieved_utc": "2026-11-15T00:41:36+00:00",
+      "shape": [
+        117,
+        117
+      ],
+      "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W25_2A/l2b-v27-2026-273/2/level2_2026W25_2A_0573_1D2_spx_l2b-v27-2026-273.fits?center=248.167233,66.755024d&size=0.2000",
+      "unavailable_reason": "",
+      "usable": true,
+      "wavelength_um": 1.2627950672735984
+    },
+    {
+      "bad_fraction": 0.0026298487836949377,
+      "bandwidth_um": 0.029002466993188893,
+      "date": "2026-06-23T10:54:15.217",
+      "detector": 2,
+      "detector_pa_deg": 267.7202348480122,
+      "exptime_s": 113.5826,
+      "index": 4,
+      "issues": [],
+      "local_sha256": "935384a231a0c003e4f9cd6a4d560ba6203e48a109def862855fbf8a93d05a18",
+      "mjd": 61214.454342786,
+      "obs_id": "2026W26_1A_0324_3D2",
+      "pipeline_version": "7.0.5",
+      "provenance": {
+        "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+        "archive_record": {
+          "archive_checksum": "",
+          "band": "D2",
+          "mjd_end": 61214.455009,
+          "mjd_start": 61214.453677,
+          "obs_id": "2026W26_1A_0324_3",
+          "pipeline_version": "l2b-v27",
+          "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W26_1A_0324_3/D2",
+          "uri": "ibe/data/spherex/qr3/level2/2026W26_1A/l2b-v27-2026-273/2/level2_2026W26_1A_0324_3D2_spx_l2b-v27-2026-273.fits",
+          "wl_max_um": 1.6499000000000001,
+          "wl_min_um": 1.1033000000000002
+        },
+        "hdus_cached": [
+          "PRIMARY",
+          "IMAGE",
+          "FLAGS",
+          "VARIANCE",
+          "ZODI",
+          "WCS-WAVE",
+          "EPSF"
+        ],
+        "hdus_received": [
+          "PRIMARY",
+          "IMAGE",
+          "FLAGS",
+          "VARIANCE",
+          "ZODI",
+          "EPSF",
+          "WCS-WAVE"
+        ],
+        "mission": "SPHEREx",
+        "nadir_version": "0.1.0",
+        "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+        "product": "Level 2 spectral image (cutout)",
+        "release": "qr3",
+        "request": {
+          "dec_deg": 66.75502382666444,
+          "ra_deg": 248.16723307280128,
+          "size_deg": 0.2
+        },
+        "response_bytes": 4173120,
+        "response_sha256": "8d97c44d01cb79ab14db3c4ba1e6d83e2d39f6baf1a6524110176980bb3fd791",
+        "retrieved_utc": "2026-11-15T00:41:40+00:00",
+        "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W26_1A/l2b-v27-2026-273/2/level2_2026W26_1A_0324_3D2_spx_l2b-v27-2026-273.fits?center=248.167233,66.755024d&size=0.2000"
+      },
+      "psf_fwhm_arcsec": 7.46070125580342,
+      "release": "qr3",
+      "retrieved_utc": "2026-11-15T00:41:40+00:00",
+      "shape": [
+        117,
+        117
+      ],
+      "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W26_1A/l2b-v27-2026-273/2/level2_2026W26_1A_0324_3D2_spx_l2b-v27-2026-273.fits?center=248.167233,66.755024d&size=0.2000",
+      "unavailable_reason": "",
+      "usable": true,
+      "wavelength_um": 1.2005697878806751
+    }
+  ],
+  "processing_failures": [],
+  "report_sha256": "626d29dc4c1c66c3c350019b1807321c1ffa8eb2a7b3b3b54d5c05a86a5073c0",
+  "report_type": "nadir_scientific_investigation",
+  "reproducibility": {
+    "dataset_sha256": "50348d7b0f7593f42ca68816ced3a32a15c141c233c21d6307cbd2d8dafaa9d4",
+    "dependency_versions": {
+      "astropy": "6.1.7",
+      "fastapi": "0.162.5",
+      "numpy": "2.2.6",
+      "scipy": "1.14.1"
+    },
+    "field_built_at": "2026-11-15T00:57:53Z",
+    "hash_notes": "local_sha256 hashes actual cached FITS; response_sha256 in provenance hashes original archive response.",
+    "nadir_version": "0.1.0",
+    "query": {
+      "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+      "n_downloaded": 0,
+      "n_from_cache": 5,
+      "query": {
+        "original": {
+          "counts": {
+            "D1": 91,
+            "D2": 89,
+            "D3": 91,
+            "D4": 88,
+            "D5": 89,
+            "D6": 91
+          },
+          "mjd_range": [
+            60811.955829,
+            61237.873234
+          ],
+          "provenance": {
+            "adql": "SIA spherex dr1+qr3 248.167233 66.755024",
+            "cached": false,
+            "retrieved_utc": "2026-11-15T00:41:15+00:00",
+            "service": "https://irsa.ipac.caltech.edu/SIA",
+            "stale": false
+          }
+        },
+        "validation_manifest": true
+      },
+      "releases": [
+        "dr1",
+        "qr3"
+      ]
+    },
+    "reproduction": "Use observation source URLs and parameters; verify local/response hashes and scientific code digest.",
+    "scientific_code_sha256": "dabac245f246e98932557923abad47fae3e3b927aa00904f191e6e7018864c75",
+    "snapshot_policy": "No new catalogs, downloads, spectra, deblending or reconstruction run while exporting."
+  },
+  "schema_version": 1,
+  "source": {
+    "baseline_days": 379.66592587899504,
+    "blended_fraction": 0.0,
+    "catalog": {
+      "simbad": {
+        "dec": 66.75497941722,
+        "groups": [
+          "star",
+          "variable"
+        ],
+        "id": "V* R Dra",
+        "otype": "Mi*",
+        "pmdec": 6.149,
+        "pmra": -20.643,
+        "ra": 248.16761083295,
+        "separation_arcsec": 1.5866440277888954,
+        "sp_type": "M4.5-6+e"
+      }
+    },
+    "clean_fraction": 0.0,
+    "coordinate_epoch_mjd": 60834.788416907,
+    "coordinate_frame": "ICRS",
+    "core_masked_fraction": 1.0,
+    "dec": 66.75545337757082,
+    "fit": null,
+    "flux_ref": 12743.366432938406,
+    "id": 1,
+    "id_scope": "Integer ID is local to this field build; use source_key and dataset fingerprint for saved evidence.",
+    "n_epochs": 2,
+    "n_visits": 2,
+    "pair": null,
+    "points": [
+      {
+        "artifact": false,
+        "blended": false,
+        "core_masked": true,
+        "east_arcsec": -0.0,
+        "flux": 12743.366432938406,
+        "frame": 0,
+        "is_reference_epoch": true,
+        "mjd": 60834.788416907,
+        "north_arcsec": 0.0,
+        "obs_index": 0,
+        "sigma_east_arcsec": 1.2284810284393357,
+        "sigma_north_arcsec": 1.2284810284393357,
+        "visit": 0,
+        "wavelength_um": 1.4046932724550194
+      },
+      {
+        "artifact": false,
+        "blended": false,
+        "core_masked": true,
+        "east_arcsec": 0.7829838938084344,
+        "flux": 66594.99887411388,
+        "frame": 4,
+        "is_reference_epoch": false,
+        "mjd": 61214.454342786,
+        "north_arcsec": 0.5099872235275704,
+        "obs_index": 4,
+        "sigma_east_arcsec": 1.2298324090276171,
+        "sigma_north_arcsec": 1.2298324090276171,
+        "visit": 2,
+        "wavelength_um": 1.2005697878806751
+      }
+    ],
+    "priority": 0.0,
+    "ra": 248.167002185901,
+    "reasons": [
+      "measured in 2 visit(s), 2 epoch(s)"
+    ],
+    "saturated": true,
+    "source_key": "3b412ca2688b:50348d7b0f7593f4:1",
+    "tier": "insufficient",
+    "variability": null,
+    "x": 117.10667823680826,
+    "y": 117.50288906350885
+  },
+  "spectrum": {
+    "failures": [],
+    "limitations": [
+      "Non-simultaneous wavelength sampling; WCS-WAVE approximate.",
+      "Photometry/model estimates are not chemical abundances or confirmed classifications."
+    ],
+    "missing_images": 0,
+    "result": {
+      "bands": [],
+      "catalog_comparison": [],
+      "catalog_points": [],
+      "explanation": {
+        "explore": "0 accepted flux measurements and 7 rejected measurements. Flux density measures received light per frequency interval; 1 mJy = 10\u207b\u00b2\u2079 W m\u207b\u00b2 Hz\u207b\u00b9. These wavelengths were observed at different times, not in a single simultaneous spectrum. No supported blackbody fit: at least six clean positive measurements at S/N \u2265 5 are required.",
+        "research": "No supported blackbody fit: at least six clean positive measurements at S/N \u2265 5 are required. The model minimizes \u03a3[(F\u03bd \u2212 A B\u03bd(T))/\u03c3]\u00b2 on a 500\u201330000 K grid, with a fitted normalization and a 3% error floor. The \u0394\u03c7\u00b2 \u2264 1 interval is scaled by max(\u03c7\u00b2\u1d63,1); it is conditional on the model and does not include all calibration systematics. An interval containing only one grid sample is unresolved, not zero uncertainty. Flagged points are displayed but excluded from fitting. Feature markers are illustrative rest wavelengths, not detections or abundances."
+      },
+      "gaia_teff": null,
+      "missing_images": 0,
+      "n_measured": 0,
+      "n_saturated": 7,
+      "pm_used": null,
+      "points": [],
+      "reference_features": [
+        {
+          "kind": "H recombination line (emission in nebulae, young stars)",
+          "label": "Pa-beta",
+          "wavelength_um": 1.282
+        },
+        {
+          "kind": "water vapour absorption band (cool stars, brown dwarfs)",
+          "label": "H2O",
+          "wavelength_um": 1.4
+        },
+        {
+          "kind": "H recombination line",
+          "label": "Pa-alpha",
+          "wavelength_um": 1.875
+        },
+        {
+          "kind": "water vapour absorption band",
+          "label": "H2O",
+          "wavelength_um": 1.9
+        },
+        {
+          "kind": "H recombination line",
+          "label": "Br-gamma",
+          "wavelength_um": 2.166
+        },
+        {
+          "kind": "carbon monoxide overtone absorption (cool giants and dwarfs)",
+          "label": "CO",
+          "wavelength_um": 2.3
+        },
+        {
+          "kind": "water vapour absorption band",
+          "label": "H2O",
+          "wavelength_um": 2.7
+        },
+        {
+          "kind": "water ice absorption toward cold clouds (SPHEREx ice survey)",
+          "label": "H2O ice",
+          "wavelength_um": 3.05
+        },
+        {
+          "kind": "methane absorption (T dwarfs) or PAH emission (dusty galaxies)",
+          "label": "CH4 / PAH",
+          "wavelength_um": 3.3
+        },
+        {
+          "kind": "carbon dioxide ice absorption",
+          "label": "CO2 ice",
+          "wavelength_um": 4.27
+        },
+        {
+          "kind": "CO fundamental band (gas absorption / ice at 4.67)",
+          "label": "CO",
+          "wavelength_um": 4.67
+        }
+      ],
+      "rejected": [
+        {
+          "band": "D2",
+          "bandwidth_um": 0.03371696970511542,
+          "covariance_assumption": "diagonal pixel variance; correlated noise and PSF errors not modeled",
+          "flags": [
+            "OVERFLOW",
+            "SUR_ERROR",
+            "BLOOM"
+          ],
+          "interpretation": "model-dependent photometry; non-simultaneous spectral samples",
+          "method": null,
+          "mjd": 60834.788416907,
+          "obs_id": "2025W23_2B_0696_1D2",
+          "ok": false,
+          "reason": "core pixels saturated or unusable: flux not measurable",
+          "release": "dr1",
+          "response_sha256": "8fcc1ee4ac954f804ee03c4325684f9080746dfaaa5fc0e689707af3e0a0ae88",
+          "saturated": true,
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W23_2B/l2b-v27-2026-201/2/level2_2025W23_2B_0696_1D2_spx_l2b-v27-2026-201.fits?center=248.167233,66.755024d&size=0.2000",
+          "wavelength_calibration": "WCS-WAVE approximate; science CWAVE/CBAND maps not loaded",
+          "wavelength_um": 1.4046849749046142
+        },
+        {
+          "band": "D2",
+          "bandwidth_um": 0.027122718748370595,
+          "covariance_assumption": "diagonal pixel variance; correlated noise and PSF errors not modeled",
+          "flags": [
+            "OVERFLOW",
+            "SUR_ERROR",
+            "BLOOM"
+          ],
+          "interpretation": "model-dependent photometry; non-simultaneous spectral samples",
+          "method": null,
+          "mjd": 60848.650705379,
+          "obs_id": "2025W25_2A_0633_3D2",
+          "ok": false,
+          "reason": "core pixels saturated or unusable: flux not measurable",
+          "release": "dr1",
+          "response_sha256": "cbaa1c23b6640eacf48436c2536358f61f0cc1154b64ff17c5949ea8a772c6b5",
+          "saturated": true,
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W25_2A/l2b-v27-2026-213/2/level2_2025W25_2A_0633_3D2_spx_l2b-v27-2026-213.fits?center=248.167233,66.755024d&size=0.2000",
+          "wavelength_calibration": "WCS-WAVE approximate; science CWAVE/CBAND maps not loaded",
+          "wavelength_um": 1.1353830378929044
+        },
+        {
+          "band": "D2",
+          "bandwidth_um": 0.03633196638899656,
+          "covariance_assumption": "diagonal pixel variance; correlated noise and PSF errors not modeled",
+          "flags": [
+            "OVERFLOW",
+            "SUR_ERROR",
+            "BLOOM"
+          ],
+          "interpretation": "model-dependent photometry; non-simultaneous spectral samples",
+          "method": null,
+          "mjd": 60997.73638855,
+          "obs_id": "2025W47_1A_0388_3D2",
+          "ok": false,
+          "reason": "core pixels saturated or unusable: flux not measurable",
+          "release": "dr1",
+          "response_sha256": "8516dabfb14958f3219aa6774ce1afd5af8529545cc5d760635b2d0d5d96d70f",
+          "saturated": true,
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W47_1A/l2b-v27-2026-208/2/level2_2025W47_1A_0388_3D2_spx_l2b-v27-2026-208.fits?center=248.167233,66.755024d&size=0.2000",
+          "wavelength_calibration": "WCS-WAVE approximate; science CWAVE/CBAND maps not loaded",
+          "wavelength_um": 1.478441097651734
+        },
+        {
+          "band": "D2",
+          "bandwidth_um": 0.030166339300578344,
+          "covariance_assumption": "diagonal pixel variance; correlated noise and PSF errors not modeled",
+          "flags": [
+            "OVERFLOW",
+            "SUR_ERROR",
+            "BLOOM"
+          ],
+          "interpretation": "model-dependent photometry; non-simultaneous spectral samples",
+          "method": null,
+          "mjd": 61212.143088608,
+          "obs_id": "2026W25_2A_0573_1D2",
+          "ok": false,
+          "reason": "core pixels saturated or unusable: flux not measurable",
+          "release": "qr3",
+          "response_sha256": "60e0d9e003e6dd5abd314ab89a54c7c8faaedd32bf070a10354c37b8296e9dfd",
+          "saturated": true,
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W25_2A/l2b-v27-2026-273/2/level2_2026W25_2A_0573_1D2_spx_l2b-v27-2026-273.fits?center=248.167233,66.755024d&size=0.2000",
+          "wavelength_calibration": "WCS-WAVE approximate; science CWAVE/CBAND maps not loaded",
+          "wavelength_um": 1.2627891592745746
+        },
+        {
+          "band": "D2",
+          "bandwidth_um": 0.029002188909538675,
+          "covariance_assumption": "diagonal pixel variance; correlated noise and PSF errors not modeled",
+          "flags": [
+            "OVERFLOW",
+            "SUR_ERROR",
+            "BLOOM"
+          ],
+          "interpretation": "model-dependent photometry; non-simultaneous spectral samples",
+          "method": null,
+          "mjd": 61214.454342786,
+          "obs_id": "2026W26_1A_0324_3D2",
+          "ok": false,
+          "reason": "core pixels saturated or unusable: flux not measurable",
+          "release": "qr3",
+          "response_sha256": "8d97c44d01cb79ab14db3c4ba1e6d83e2d39f6baf1a6524110176980bb3fd791",
+          "saturated": true,
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W26_1A/l2b-v27-2026-273/2/level2_2026W26_1A_0324_3D2_spx_l2b-v27-2026-273.fits?center=248.167233,66.755024d&size=0.2000",
+          "wavelength_calibration": "WCS-WAVE approximate; science CWAVE/CBAND maps not loaded",
+          "wavelength_um": 1.20055834138798
+        },
+        {
+          "band": "D1",
+          "bandwidth_um": 0.02413608517331547,
+          "covariance_assumption": "diagonal pixel variance; correlated noise and PSF errors not modeled",
+          "flags": [
+            "OVERFLOW",
+            "SUR_ERROR",
+            "BLOOM"
+          ],
+          "interpretation": "model-dependent photometry; non-simultaneous spectral samples",
+          "method": null,
+          "mjd": 60832.474553631,
+          "obs_id": "2025W23_2B_0206_1D1",
+          "ok": false,
+          "reason": "core pixels saturated or unusable: flux not measurable",
+          "release": "dr1",
+          "response_sha256": "0062478d328a4ce2ced736be97c55462f963d6432e405591b5429eeb5e7cc796",
+          "saturated": true,
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W23_2B/l2b-v27-2026-201/1/level2_2025W23_2B_0206_1D1_spx_l2b-v27-2026-201.fits?center=248.167233,66.755024d&size=0.2000",
+          "wavelength_calibration": "WCS-WAVE approximate; science CWAVE/CBAND maps not loaded",
+          "wavelength_um": 0.9436207078806521
+        },
+        {
+          "band": "D6",
+          "bandwidth_um": 0.03673217052240899,
+          "covariance_assumption": "diagonal pixel variance; correlated noise and PSF errors not modeled",
+          "flags": [
+            "TRANSIENT",
+            "OVERFLOW",
+            "SUR_ERROR",
+            "BLOOM"
+          ],
+          "interpretation": "model-dependent photometry; non-simultaneous spectral samples",
+          "method": null,
+          "mjd": 61203.861570807,
+          "obs_id": "2026W24_2B_0242_4D6",
+          "ok": false,
+          "reason": "core pixels saturated or unusable: flux not measurable",
+          "release": "qr3",
+          "response_sha256": "5a7ceac4e2a63edc05c73c876d96ff536724fbf41e9930f088ae35efe1ad3ea0",
+          "saturated": true,
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W24_2B/l2b-v27-2026-272/6/level2_2026W24_2B_0242_4D6_spx_l2b-v27-2026-272.fits?center=248.167233,66.755024d&size=0.2000",
+          "wavelength_calibration": "WCS-WAVE approximate; science CWAVE/CBAND maps not loaded",
+          "wavelength_um": 4.677653767128164
+        }
+      ],
+      "simbad_sp_type": "M4.5-6+e",
+      "source_id": 1
+    },
+    "state": "available"
+  },
+  "variability": null
+}

@@ -31,7 +31,10 @@ def forced_photometry(obs: Observation, ra: float, dec: float, half: int = 4) ->
     """Flux density (mJy) of a point source at (ra, dec) in one observation."""
     x, y = (float(v) for v in obs.wcs.all_world2pix([[ra, dec]], 0)[0])
     ny, nx = obs.image.shape
-    out = {"obs_id": obs.obs_id, "mjd": obs.mjd, "x": x, "y": y, "ok": False, "method": None}
+    out = {"obs_id": obs.obs_id, "mjd": obs.mjd, "x": x, "y": y, "ok": False, "method": None,
+           "wavelength_calibration": "WCS-WAVE approximate; science CWAVE/CBAND maps not loaded",
+           "covariance_assumption": "diagonal pixel variance; correlated noise and PSF errors not modeled",
+           "interpretation": "model-dependent photometry; non-simultaneous spectral samples"}
     if obs.wavelength_um is None:
         out["reason"] = "wavelength unknown"
         return out
@@ -68,7 +71,9 @@ def forced_photometry(obs: Observation, ra: float, dec: float, half: int = 4) ->
         resid = (A @ coef - img[good]) * w
         chi2 = float(np.sum(resid**2) / max(good.sum() - 2, 1))
         flux, err = float(coef[0]), float(math.sqrt(cov[0, 0]) * math.sqrt(max(chi2, 1.0)))
-        out.update(method="epsf_forced", chi2_red=chi2)
+        out.update(method="epsf_forced", chi2_red=chi2,
+                   quality="model_mismatch" if chi2 > 3 else "conditional_measurement",
+                   quality_reason="Excess residuals; PSF/position/confusion errors may bias flux." if chi2 > 3 else None)
     else:
         r = np.hypot(xx - x, yy - y)
         ap = good & (r <= 3.0)
@@ -145,7 +150,7 @@ def blackbody_fit(points: list[dict], min_snr: float = 5.0) -> dict | None:
     is not an effective temperature.  Above ~5000 K the 0.75-5 um range is on
     the Rayleigh-Jeans tail and T is poorly constrained; we report that."""
     good = [p for p in points if p["snr"] >= min_snr and p["flux_mjy"] > 0
-            and not p.get("flags") and not p.get("saturated")
+            and not p.get("flags") and not p.get("saturated") and p.get("quality") != "model_mismatch"
             and all(math.isfinite(p[key]) for key in ("wavelength_um", "flux_mjy", "flux_err_mjy"))
             and p["wavelength_um"] > 0 and p["flux_err_mjy"] > 0]
     if len(good) < 6:

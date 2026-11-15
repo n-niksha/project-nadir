@@ -1,0 +1,1790 @@
+{
+  "schema_version": 1,
+  "mode": "bounded_live_validation",
+  "targets": [
+    {
+      "key": "barnard",
+      "name": "Barnard's Star",
+      "ra": 269.44627,
+      "dec": 4.7682,
+      "band": "D2",
+      "discovery": {
+        "provenance": {
+          "adql": "SIA spherex dr1+qr3 269.446270 4.768200",
+          "service": "https://irsa.ipac.caltech.edu/SIA",
+          "retrieved_utc": "2026-11-14T03:52:27+00:00",
+          "cached": true,
+          "stale": false
+        },
+        "counts": {
+          "D1": 60,
+          "D2": 61,
+          "D3": 59,
+          "D4": 59,
+          "D5": 61,
+          "D6": 58
+        },
+        "mjd_range": [
+          60902.864715,
+          61305.628021
+        ]
+      },
+      "failures": [],
+      "timings": {
+        "resolve_s": 6.124959327280521e-06,
+        "discovery_s": 0.0014867499703541398,
+        "cutouts_s": 2.0749983377754688e-05
+      },
+      "build_s": 5.369366958970204,
+      "state": "field_built",
+      "epochs": 12,
+      "usable_epochs": 12,
+      "wavelengths_um": [
+        1.101180434543162,
+        1.5167707689604377,
+        1.2681544740975197,
+        1.4607389361918612,
+        1.5535587786764957,
+        1.6292248069679511,
+        1.1183464820228426,
+        1.5847960720032828,
+        1.139365180412641,
+        1.3128824157203522,
+        1.477442164658737,
+        1.5111848641234804
+      ],
+      "registration": {
+        "0": {
+          "model": "similarity",
+          "n_matched_clean": 104,
+          "n_used": 101,
+          "converged": true,
+          "shift_east_arcsec": -0.16162706196163043,
+          "shift_north_arcsec": 0.1075109135948186,
+          "rotation_deg": 0.003445964299058139,
+          "scale": 0.9997577121058332,
+          "rms_east_arcsec": 0.24551473486212477,
+          "rms_north_arcsec": 0.38987438789324635,
+          "rms_native_px": 0.05306337655239016,
+          "ok": true
+        },
+        "1": {
+          "ok": true,
+          "reference": true
+        },
+        "2": {
+          "model": "similarity",
+          "n_matched_clean": 117,
+          "n_used": 109,
+          "converged": true,
+          "shift_east_arcsec": -0.06965294005868661,
+          "shift_north_arcsec": 0.12303218522690883,
+          "rotation_deg": -0.002965382668531924,
+          "scale": 0.9998910625313915,
+          "rms_east_arcsec": 0.2537058062970382,
+          "rms_north_arcsec": 0.40456695446063307,
+          "rms_native_px": 0.05499805769864969,
+          "ok": true
+        },
+        "3": {
+          "model": "similarity",
+          "n_matched_clean": 112,
+          "n_used": 109,
+          "converged": true,
+          "shift_east_arcsec": -0.11025753653294776,
+          "shift_north_arcsec": 0.006845638272287062,
+          "rotation_deg": 0.003494598406338809,
+          "scale": 0.9997100708969666,
+          "rms_east_arcsec": 0.30788688158463945,
+          "rms_north_arcsec": 0.46591960114971437,
+          "rms_native_px": 0.06431783162099881,
+          "ok": true
+        },
+        "4": {
+          "model": "similarity",
+          "n_matched_clean": 112,
+          "n_used": 109,
+          "converged": true,
+          "shift_east_arcsec": -0.27638408761193567,
+          "shift_north_arcsec": -0.13154336693642765,
+          "rotation_deg": 0.0025844010649005615,
+          "scale": 0.999971866636754,
+          "rms_east_arcsec": 0.27447829656498784,
+          "rms_north_arcsec": 0.4171544480824613,
+          "rms_native_px": 0.057510995898118415,
+          "ok": true
+        },
+        "5": {
+          "model": "similarity",
+          "n_matched_clean": 114,
+          "n_used": 113,
+          "converged": true,
+          "shift_east_arcsec": -0.29879470714934375,
+          "shift_north_arcsec": -0.05353002570249017,
+          "rotation_deg": -0.0029519092198448454,
+          "scale": 0.9999737276935604,
+          "rms_east_arcsec": 0.2804481961345687,
+          "rms_north_arcsec": 0.44542355700560715,
+          "rms_native_px": 0.060620919802814574,
+          "ok": true
+        },
+        "6": {
+          "model": "similarity",
+          "n_matched_clean": 112,
+          "n_used": 105,
+          "converged": true,
+          "shift_east_arcsec": -0.23484692720325687,
+          "shift_north_arcsec": -0.11987741266394979,
+          "rotation_deg": 0.0007109850476274508,
+          "scale": 1.0001001598417842,
+          "rms_east_arcsec": 0.2737010545822309,
+          "rms_north_arcsec": 0.3430173935541158,
+          "rms_native_px": 0.05054040908949337,
+          "ok": true
+        },
+        "7": {
+          "model": "similarity",
+          "n_matched_clean": 115,
+          "n_used": 109,
+          "converged": true,
+          "shift_east_arcsec": -0.014377475588247274,
+          "shift_north_arcsec": 0.16308934575973433,
+          "rotation_deg": -0.006411774706459526,
+          "scale": 0.9997931531226357,
+          "rms_east_arcsec": 0.3149497753678004,
+          "rms_north_arcsec": 0.38639736490744575,
+          "rms_native_px": 0.057411749294924874,
+          "ok": true
+        },
+        "8": {
+          "model": "similarity",
+          "n_matched_clean": 116,
+          "n_used": 110,
+          "converged": true,
+          "shift_east_arcsec": -0.06054832165169654,
+          "shift_north_arcsec": -0.023597587794951646,
+          "rotation_deg": -0.006271402275175336,
+          "scale": 0.9998798745123204,
+          "rms_east_arcsec": 0.25477951667852816,
+          "rms_north_arcsec": 0.3291146544853151,
+          "rms_native_px": 0.047934831114945536,
+          "ok": true
+        },
+        "9": {
+          "model": "similarity",
+          "n_matched_clean": 111,
+          "n_used": 109,
+          "converged": true,
+          "shift_east_arcsec": -0.07083349834201325,
+          "shift_north_arcsec": 0.010204409590654513,
+          "rotation_deg": -0.00287800598138452,
+          "scale": 0.9999575981915105,
+          "rms_east_arcsec": 0.25339091292871796,
+          "rms_north_arcsec": 0.3990663256908819,
+          "rms_native_px": 0.05444294242201855,
+          "ok": true
+        },
+        "10": {
+          "model": "similarity",
+          "n_matched_clean": 115,
+          "n_used": 110,
+          "converged": true,
+          "shift_east_arcsec": -0.0779884294699706,
+          "shift_north_arcsec": 0.04274441921259215,
+          "rotation_deg": -0.002328832052917818,
+          "scale": 0.9996952983042771,
+          "rms_east_arcsec": 0.25526606069593993,
+          "rms_north_arcsec": 0.3690012815132529,
+          "rms_native_px": 0.05167580027421555,
+          "ok": true
+        },
+        "11": {
+          "model": "similarity",
+          "n_matched_clean": 115,
+          "n_used": 113,
+          "converged": true,
+          "shift_east_arcsec": -0.05253206444524278,
+          "shift_north_arcsec": -0.192942571971434,
+          "rotation_deg": 0.00942535700706329,
+          "scale": 1.000058976059193,
+          "rms_east_arcsec": 0.24620527439483486,
+          "rms_north_arcsec": 0.38139279582145447,
+          "rms_native_px": 0.05228247281782677,
+          "ok": true
+        }
+      },
+      "unusable_reasons": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "field_timings": {
+        "discover_s": 0.0,
+        "download_s": 0.0,
+        "read_s": 0.46,
+        "detect_s": 4.472,
+        "register_s": 0.04,
+        "track_s": 0.063,
+        "render_s": 0.333
+      },
+      "catalog_errors": {},
+      "tier_counts": {
+        "systematics_limited": 1,
+        "insufficient": 3,
+        "rejected": 2,
+        "stationary": 136
+      },
+      "nearest_track_arcsec": 3.0286384369534094,
+      "target_state": "provisional_position_match_not_independent_identity_confirmation",
+      "source": {
+        "id": 0,
+        "ra": 269.4460920262266,
+        "dec": 4.7673776190279105,
+        "x": 117.20763868671999,
+        "y": 116.0372125472121,
+        "tier": "systematics_limited",
+        "reasons": [
+          "core saturated/masked in most epochs: centroids from PSF wings; accuracy limited by a systematic floor"
+        ],
+        "fit": {
+          "pm_east": -1.0767551558745425,
+          "pm_east_err": 2.1764613828404906,
+          "pm_north": 10.25065654495005,
+          "pm_north_err": 1.541387877951685,
+          "pm_total": 10.307053956792393,
+          "pm_pa_deg": 354.0034954170486,
+          "snr": 6.6686536174021445,
+          "chi2_red_east": 1.9871435276257472,
+          "chi2_red_north": 0.08259743117940724,
+          "n_used": 4,
+          "t0_mjd": 60912.714812798,
+          "offset_east": 0.639060239224912,
+          "offset_north": 0.02967018267916292,
+          "model": "visit-mean fit, 1.2\" per-visit systematic (saturated source); linear proper motion relative to the field, parallax not fitted",
+          "visit_points": [
+            {
+              "visit": 0,
+              "n": 4,
+              "mjd": 60913.159264887254,
+              "east_arcsec": -0.3002401542268158,
+              "sigma_east_arcsec": 1.2204494467356868,
+              "north_arcsec": 0.2200085244648042,
+              "sigma_north_arcsec": 1.220117546940989
+            },
+            {
+              "visit": 1,
+              "n": 3,
+              "mjd": 61116.29821399034,
+              "east_arcsec": 2.034528331201113,
+              "sigma_east_arcsec": 1.212856200862907,
+              "north_arcsec": 5.341916884959388,
+              "sigma_north_arcsec": 1.2101172626989505
+            },
+            {
+              "visit": 2,
+              "n": 4,
+              "mjd": 61272.90735212075,
+              "east_arcsec": -0.8612563227315928,
+              "sigma_east_arcsec": 1.2162304675176545,
+              "north_arcsec": 10.361189104533347,
+              "sigma_north_arcsec": 1.2087720744307253
+            },
+            {
+              "visit": 3,
+              "n": 1,
+              "mjd": 61305.628686803,
+              "east_arcsec": -1.7883038135189009,
+              "sigma_east_arcsec": 1.716987885452455,
+              "north_arcsec": 11.062782699048919,
+              "sigma_north_arcsec": 1.716987885452455
+            }
+          ]
+        },
+        "n_epochs": 12,
+        "n_visits": 4,
+        "baseline_days": 396.6460919910023,
+        "clean_fraction": 0.0,
+        "core_masked_fraction": 1.0,
+        "blended_fraction": 0.0,
+        "priority": 4.0011921704412865,
+        "variability": {
+          "var_z": null,
+          "n_pairs": 0,
+          "flag": null,
+          "note": "saturated: no reliable relative photometry",
+          "max_abs_mag_change": null
+        },
+        "pair": {
+          "significance": 9.123421957559577,
+          "d_east_arcsec": -1.7883038135189009,
+          "d_north_arcsec": 11.062782699048919,
+          "sigma_east_arcsec": 1.2283100255536303,
+          "sigma_north_arcsec": 1.2283100255536303,
+          "status": "candidate_motion_low_confidence",
+          "reasons": [
+            "saturated core (OVERFLOW flag): centroid rests on PSF wings; a 0.2 px systematic floor is applied"
+          ]
+        },
+        "catalog": {
+          "gaia": {
+            "source_id": "4472832130942575872",
+            "ra": 269.44850252544,
+            "dec": 4.73942005111,
+            "pmra": -801.551,
+            "pmdec": 10362.394,
+            "parallax": 546.9759,
+            "pmra_error": 0.03200000151991844,
+            "pmdec_error": 0.035999998450279236,
+            "gmag": 8.193973541259766,
+            "ruwe": 1.0850000381469727,
+            "bp_rp": 2.8336970806121826,
+            "teff_gspphot": 3099.60009765625,
+            "variable": false,
+            "non_single_star": false,
+            "p_star": 0.9976670145988464,
+            "p_galaxy": 0.0,
+            "p_quasar": 0.0,
+            "separation_arcsec": 1.1291358956433493,
+            "n_within_6arcsec": 1
+          },
+          "pm_comparison": {
+            "gaia_pm_east": -0.801551,
+            "gaia_pm_north": 10.362394,
+            "z_east": -0.12644568750187274,
+            "z_north": -0.07249145828137354,
+            "z_total": 0.14575158116322917,
+            "consistent": true
+          },
+          "simbad": {
+            "id": "NAME Barnard's star",
+            "ra": 269.4520769586187,
+            "dec": 4.693364966576667,
+            "otype": "BY*",
+            "sp_type": "M4V",
+            "pmra": -801.551,
+            "pmdec": 10362.394,
+            "separation_arcsec": 1.1295476591608713,
+            "groups": [
+              "star",
+              "variable"
+            ]
+          },
+          "twomass": {
+            "id": "17574849+0441405",
+            "ra": 269.452044,
+            "dec": 4.694597,
+            "mjd": 51692.42840000009,
+            "ph_qual": "AAA",
+            "cc_flg": "000",
+            "mags": {
+              "J": 5.24399995803833,
+              "H": 4.834000110626221,
+              "K": 4.52400016784668
+            },
+            "mag_errs": {
+              "J": 0.010999999940395355,
+              "H": 0.03099999949336052,
+              "K": 0.013000000268220901
+            },
+            "separation_arcsec": 1.1966908545741706,
+            "pm_used_for_match": true
+          },
+          "allwise": {
+            "id": "J175747.94+044323.8",
+            "ra": 269.44977,
+            "dec": 4.72328,
+            "mjd": 55358.86444576,
+            "ph_qual": "BBAA",
+            "cc_flags": "hHH0",
+            "extended": true,
+            "mags": {
+              "W1": 4.357999801635742,
+              "W2": 3.6579999923706055
+            },
+            "mag_errs": {
+              "W1": 0.257999986410141,
+              "W2": 0.23199999332427979
+            },
+            "separation_arcsec": 1.5549069130765036,
+            "pm_used_for_match": true
+          }
+        },
+        "flux_ref": 34678.96963077846,
+        "saturated": true
+      },
+      "spectrum": {
+        "n_measured": 0,
+        "n_rejected": 18,
+        "n_model_mismatch": 0,
+        "blackbody": null,
+        "rejection_reasons": [
+          "core pixels saturated or unusable: flux not measurable"
+        ]
+      },
+      "evidence_export_s": 0.13358333299402148,
+      "optional_decomposition": {
+        "state": "invalid_or_contaminated_observation",
+        "measurements_unchanged": true
+      },
+      "evidence_hash": "6f46c55c177345c9c41ff53146453b03f9bb9506ff169ef3e97318e19667adbe",
+      "selected_obs_ids": [
+        "2025W34_2B_0090_4D2",
+        "2025W35_1A_0146_1D2",
+        "2025W35_1A_0444_2D2",
+        "2025W35_2A_0221_4D2",
+        "2026W11_2A_0501_4D2",
+        "2026W11_2A_0550_2D2",
+        "2026W12_2A_0371_2D2",
+        "2026W34_1A_0363_3D2",
+        "2026W34_2A_0178_4D2",
+        "2026W34_2A_0233_2D2",
+        "2026W34_2A_0249_3D2",
+        "2026W39_1A_0371_1D2"
+      ],
+      "api_verified": {
+        "field": 200,
+        "source": 200,
+        "spectrum": 200
+      },
+      "reuse_s": 2.65840208157897e-05,
+      "reused": true,
+      "total_s": 6.911675249924883
+    },
+    {
+      "key": "epsilon_indi_b",
+      "name": "eps Ind B",
+      "ra": 331.09664385226796,
+      "dec": -56.80066020400499,
+      "band": "D2",
+      "discovery": {
+        "provenance": {
+          "adql": "SIA spherex dr1+qr3 331.096644 -56.800660",
+          "service": "https://irsa.ipac.caltech.edu/SIA",
+          "retrieved_utc": "2026-11-15T00:40:06+00:00",
+          "cached": false,
+          "stale": false
+        },
+        "counts": {
+          "D1": 46,
+          "D2": 93,
+          "D3": 96,
+          "D4": 46,
+          "D5": 84,
+          "D6": 93
+        },
+        "mjd_range": [
+          60789.855522,
+          61315.478076
+        ]
+      },
+      "failures": [
+        {
+          "stage": "cutout",
+          "uri": "ibe/data/spherex/dr1/level2/2025W42_2A/l2b-v27-2026-243/2/level2_2025W42_2A_0033_2D2_spx_l2b-v27-2026-243.fits",
+          "code": "cutout_unavailable",
+          "message": "Cutout download failed for https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W42_2A/l2b-v27-2026-243/2/level2_2025W42_2A_0033_2D2_spx_l2b-v27-2026-243.fits?center=331.096644,-56.800660d&size=0.2000: HTTP 503, non-FITS response: 'Server busy, retry later.'"
+        },
+        {
+          "stage": "cutout",
+          "uri": "ibe/data/spherex/qr3/level2/2026W40_1A/l2b-v27-2026-276/2/level2_2026W40_1A_0435_3D2_spx_l2b-v27-2026-276.fits",
+          "code": "cutout_unavailable",
+          "message": "Cutout download failed for https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W40_1A/l2b-v27-2026-276/2/level2_2026W40_1A_0435_3D2_spx_l2b-v27-2026-276.fits?center=331.096644,-56.800660d&size=0.2000: HTTP 503, non-FITS response: 'Server busy, retry later.'"
+        },
+        {
+          "stage": "cutout",
+          "uri": "ibe/data/spherex/qr3/level2/2026W40_2A/l2b-v27-2026-285/2/level2_2026W40_2A_0216_2D2_spx_l2b-v27-2026-285.fits",
+          "code": "cutout_unavailable",
+          "message": "Cutout download failed for https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W40_2A/l2b-v27-2026-285/2/level2_2026W40_2A_0216_2D2_spx_l2b-v27-2026-285.fits?center=331.096644,-56.800660d&size=0.2000: HTTP 503, non-FITS response: 'Server busy, retry later.'"
+        },
+        {
+          "stage": "cutout",
+          "uri": "ibe/data/spherex/qr3/level2/2026W40_1A/l2b-v27-2026-276/6/level2_2026W40_1A_0070_2D6_spx_l2b-v27-2026-276.fits",
+          "code": "cutout_unavailable",
+          "message": "Cutout download failed for https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W40_1A/l2b-v27-2026-276/6/level2_2026W40_1A_0070_2D6_spx_l2b-v27-2026-276.fits?center=331.096644,-56.800660d&size=0.2000: HTTP 503, non-FITS response: 'Server busy, retry later.'"
+        }
+      ],
+      "timings": {
+        "resolve_s": 0.9229156250366941,
+        "discovery_s": 3.1525856249500066,
+        "cutouts_s": 13.477950499975123
+      },
+      "build_s": 1.7297222919296473,
+      "state": "field_built",
+      "epochs": 3,
+      "usable_epochs": 3,
+      "wavelengths_um": [
+        1.5618218272086852,
+        1.6513978931891118,
+        1.275882028425708
+      ],
+      "registration": {
+        "0": {
+          "ok": true,
+          "reference": true
+        },
+        "1": {
+          "model": "similarity",
+          "n_matched_clean": 53,
+          "n_used": 46,
+          "converged": true,
+          "shift_east_arcsec": 0.032603736073152915,
+          "shift_north_arcsec": 0.20564875245096037,
+          "rotation_deg": -0.005317238953795485,
+          "scale": 0.9999392908440177,
+          "rms_east_arcsec": 0.45226453329038546,
+          "rms_north_arcsec": 0.47673869348175135,
+          "rms_native_px": 0.07568199877987312,
+          "ok": true
+        },
+        "2": {
+          "model": "similarity",
+          "n_matched_clean": 66,
+          "n_used": 64,
+          "converged": true,
+          "shift_east_arcsec": -0.1484931040116524,
+          "shift_north_arcsec": 0.2389650540640995,
+          "rotation_deg": 0.010706960722664432,
+          "scale": 1.0000683112211235,
+          "rms_east_arcsec": 0.5140484295916236,
+          "rms_north_arcsec": 0.6103181991198795,
+          "rms_native_px": 0.09190068851020533,
+          "ok": true
+        }
+      },
+      "unusable_reasons": [
+        "",
+        "",
+        ""
+      ],
+      "field_timings": {
+        "discover_s": 0.0,
+        "download_s": 0.0,
+        "read_s": 0.112,
+        "detect_s": 1.475,
+        "register_s": 0.005,
+        "track_s": 0.016,
+        "render_s": 0.121
+      },
+      "catalog_errors": {
+        "twomass": "IRSA TAP query failed: ReadTimeout: HTTPSConnectionPool(host='irsa.ipac.caltech.edu', port=443): Read timed out. (read timeout=30.0)",
+        "gaia": "IRSA TAP query failed: ReadTimeout: HTTPSConnectionPool(host='irsa.ipac.caltech.edu', port=443): Read timed out. (read timeout=30.0)",
+        "allwise": "IRSA TAP query failed: ReadTimeout: HTTPSConnectionPool(host='irsa.ipac.caltech.edu', port=443): Read timed out. (read timeout=30.0)"
+      },
+      "tier_counts": {
+        "insufficient": 30,
+        "candidate": 1,
+        "stationary": 48
+      },
+      "nearest_track_arcsec": 0.5752410466797772,
+      "target_state": "provisional_position_match_not_independent_identity_confirmation",
+      "source": {
+        "id": 2,
+        "ra": 331.0955088255186,
+        "dec": -56.80026774172888,
+        "x": 117.72760327900005,
+        "y": 117.45946200010633,
+        "tier": "stationary",
+        "reasons": [
+          "proper motion 4.7 sigma (< 5)"
+        ],
+        "fit": {
+          "pm_east": 2.6732331026653946,
+          "pm_east_err": 0.8513335610250865,
+          "pm_north": -3.502089480381906,
+          "pm_north_err": 1.0018177789717282,
+          "pm_total": 4.405769620598388,
+          "pm_pa_deg": 142.64459418856498,
+          "snr": 4.698946744679391,
+          "chi2_red_east": 0.7634580110452158,
+          "chi2_red_north": 0.0030716188263924856,
+          "n_used": 3,
+          "t0_mjd": 60789.85618796,
+          "offset_east": 0.00593899266154118,
+          "offset_north": -0.0003456401796044034,
+          "model": "linear proper motion relative to the field (parallax not fitted)",
+          "visit_points": null
+        },
+        "n_epochs": 3,
+        "n_visits": 2,
+        "baseline_days": 160.16716108800028,
+        "clean_fraction": 1.0,
+        "core_masked_fraction": 0.0,
+        "blended_fraction": 0.0,
+        "priority": 0.0,
+        "variability": null,
+        "pair": {
+          "significance": 3.3453036149747475,
+          "d_east_arcsec": 1.1559254124913896,
+          "d_north_arcsec": -1.5341870412638234,
+          "sigma_east_arcsec": 0.5190765435847103,
+          "sigma_north_arcsec": 0.614559170716025,
+          "status": "reference",
+          "reasons": []
+        },
+        "catalog": {
+          "simbad": {
+            "id": "* eps Ind B",
+            "ra": 331.04414658852124,
+            "dec": -56.782844195116105,
+            "otype": "BD*",
+            "sp_type": "T1V+T6V",
+            "pmra": 3981.977,
+            "pmdec": -2466.832,
+            "separation_arcsec": 0.5741088106974934,
+            "groups": [
+              "star"
+            ]
+          }
+        },
+        "flux_ref": 41.656355933035755,
+        "saturated": false
+      },
+      "spectrum": {
+        "n_measured": 4,
+        "n_rejected": 0,
+        "n_model_mismatch": 3,
+        "blackbody": null,
+        "rejection_reasons": []
+      },
+      "evidence_export_s": 0.011345417005941272,
+      "optional_decomposition": {
+        "state": "ambiguous",
+        "measurements_unchanged": true
+      },
+      "evidence_hash": "2a1231124a64edfb418b676a91cb445c13fa8499b546ae0a56b8edfd6c1960c1",
+      "selected_obs_ids": [
+        "2025W17_4B_0017_1D2",
+        "2025W18_2B_0489_3D2",
+        "2025W40_1A_0661_4D2"
+      ],
+      "api_verified": {
+        "field": 200,
+        "source": 200,
+        "spectrum": 200
+      },
+      "reuse_s": 2.3374916054308414e-05,
+      "reused": true,
+      "total_s": 32.18938620900735
+    },
+    {
+      "key": "wise0855",
+      "name": "WISE J085510.83-071442.5",
+      "ra": 133.75976461144327,
+      "dec": -7.242186000000001,
+      "band": "D6",
+      "discovery": {
+        "provenance": {
+          "adql": "SIA spherex dr1+qr3 133.759765 -7.242186",
+          "service": "https://irsa.ipac.caltech.edu/SIA",
+          "retrieved_utc": "2026-11-15T00:40:23+00:00",
+          "cached": false,
+          "stale": false
+        },
+        "counts": {
+          "D1": 36,
+          "D2": 48,
+          "D3": 45,
+          "D4": 36,
+          "D5": 48,
+          "D6": 45
+        },
+        "mjd_range": [
+          60800.700028,
+          61174.287218
+        ]
+      },
+      "failures": [
+        {
+          "stage": "cutout",
+          "uri": "ibe/data/spherex/dr1/level2/2025W46_2A/l2b_retry-v27-2026-207/6/level2_2025W46_2A_0226_2D6_spx_l2b_retry-v27-2026-207.fits",
+          "code": "cutout_unavailable",
+          "message": "Cutout download failed for https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W46_2A/l2b_retry-v27-2026-207/6/level2_2025W46_2A_0226_2D6_spx_l2b_retry-v27-2026-207.fits?center=133.759765,-7.242186d&size=0.2000: HTTP 503, non-FITS response: 'Server busy, retry later.'"
+        },
+        {
+          "stage": "cutout",
+          "uri": "ibe/data/spherex/dr1/level2/2026W17_1B/l2b-v27-2026-242/6/level2_2026W17_1B_0227_4D6_spx_l2b-v27-2026-242.fits",
+          "code": "cutout_unavailable",
+          "message": "Cutout download failed for https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2026W17_1B/l2b-v27-2026-242/6/level2_2026W17_1B_0227_4D6_spx_l2b-v27-2026-242.fits?center=133.759765,-7.242186d&size=0.2000: HTTP 503, non-FITS response: 'Server busy, retry later.'"
+        },
+        {
+          "stage": "cutout",
+          "uri": "ibe/data/spherex/dr1/level2/2026W20_1A/l2b-v27-2026-246/6/level2_2026W20_1A_0033_1D6_spx_l2b-v27-2026-246.fits",
+          "code": "cutout_unavailable",
+          "message": "Cutout download failed for https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2026W20_1A/l2b-v27-2026-246/6/level2_2026W20_1A_0033_1D6_spx_l2b-v27-2026-246.fits?center=133.759765,-7.242186d&size=0.2000: HTTP 503, non-FITS response: 'Server busy, retry later.'"
+        },
+        {
+          "stage": "cutout",
+          "uri": "ibe/data/spherex/dr1/level2/2026W20_1A/l2b-v27-2026-246/5/level2_2026W20_1A_1166_1D5_spx_l2b-v27-2026-246.fits",
+          "code": "cutout_unavailable",
+          "message": "Cutout download failed for https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2026W20_1A/l2b-v27-2026-246/5/level2_2026W20_1A_1166_1D5_spx_l2b-v27-2026-246.fits?center=133.759765,-7.242186d&size=0.2000: HTTP 503, non-FITS response: 'Server busy, retry later.'"
+        }
+      ],
+      "timings": {
+        "resolve_s": 0.6052554589696229,
+        "discovery_s": 2.4977181249996647,
+        "cutouts_s": 16.359915458015166
+      },
+      "build_s": 0.7959779590601102,
+      "state": "field_built",
+      "epochs": 3,
+      "usable_epochs": 3,
+      "wavelengths_um": [
+        4.967350267038674,
+        4.579676258190287,
+        4.753121775604522
+      ],
+      "registration": {
+        "0": {
+          "model": "similarity",
+          "n_matched_clean": 11,
+          "n_used": 11,
+          "converged": true,
+          "shift_east_arcsec": 0.30523925065219143,
+          "shift_north_arcsec": -0.7730406173836462,
+          "rotation_deg": -0.02856050893738022,
+          "scale": 1.0002256318394318,
+          "rms_east_arcsec": 0.37875003031853083,
+          "rms_north_arcsec": 0.5179195673671391,
+          "rms_native_px": 0.07363741295665803,
+          "ok": true
+        },
+        "1": {
+          "ok": true,
+          "reference": true
+        },
+        "2": {
+          "model": "similarity",
+          "n_matched_clean": 14,
+          "n_used": 13,
+          "converged": true,
+          "shift_east_arcsec": 0.35292192062078537,
+          "shift_north_arcsec": 0.00656460864974662,
+          "rotation_deg": -0.006662339934739605,
+          "scale": 1.000622004277278,
+          "rms_east_arcsec": 0.41848735666826714,
+          "rms_north_arcsec": 0.4363383540771018,
+          "rms_native_px": 0.06938561168723756,
+          "ok": true
+        }
+      },
+      "unusable_reasons": [
+        "",
+        "",
+        ""
+      ],
+      "field_timings": {
+        "discover_s": 0.0,
+        "download_s": 0.0,
+        "read_s": 0.113,
+        "detect_s": 0.56,
+        "register_s": 0.003,
+        "track_s": 0.004,
+        "render_s": 0.116
+      },
+      "catalog_errors": {
+        "twomass": "IRSA TAP query failed: ReadTimeout: HTTPSConnectionPool(host='irsa.ipac.caltech.edu', port=443): Read timed out. (read timeout=30.0)",
+        "allwise": "IRSA TAP query failed: ReadTimeout: HTTPSConnectionPool(host='irsa.ipac.caltech.edu', port=443): Read timed out. (read timeout=30.0)",
+        "gaia": "IRSA TAP query failed: ReadTimeout: HTTPSConnectionPool(host='irsa.ipac.caltech.edu', port=443): Read timed out. (read timeout=30.0)"
+      },
+      "tier_counts": {
+        "insufficient": 15,
+        "stationary": 11
+      },
+      "nearest_track_arcsec": 1.781630791632653,
+      "target_state": "provisional_position_match_not_independent_identity_confirmation",
+      "source": {
+        "id": 18,
+        "ra": 133.759654364167,
+        "dec": -7.242460276882474,
+        "x": 117.12804020331788,
+        "y": 116.67889534157656,
+        "tier": "insufficient",
+        "reasons": [
+          "measured in 1 visit(s), 1 epoch(s)"
+        ],
+        "fit": null,
+        "n_epochs": 1,
+        "n_visits": 1,
+        "baseline_days": 0.0,
+        "clean_fraction": 1.0,
+        "core_masked_fraction": 0.0,
+        "blended_fraction": 0.0,
+        "priority": 0.0,
+        "variability": null,
+        "pair": null,
+        "catalog": {
+          "simbad": {
+            "id": "WISEA J085510.74-071442.5",
+            "ra": 133.81890825,
+            "dec": -7.247048000000001,
+            "otype": "BD*",
+            "sp_type": "Y2",
+            "pmra": -8123.7,
+            "pmdec": 673.2,
+            "separation_arcsec": 1.7816407805198586,
+            "groups": [
+              "star"
+            ]
+          }
+        },
+        "flux_ref": 0.8171023529282224,
+        "saturated": false
+      },
+      "spectrum": {
+        "n_measured": 4,
+        "n_rejected": 0,
+        "n_model_mismatch": 1,
+        "blackbody": null,
+        "rejection_reasons": []
+      },
+      "evidence_export_s": 0.010433541960082948,
+      "optional_decomposition": {
+        "state": "consistent_with_one_source",
+        "measurements_unchanged": true
+      },
+      "evidence_hash": "5185576f526848caaec6512e471164a5ce255a27110a215249915e79e60c765c",
+      "selected_obs_ids": [
+        "2025W19_1B_0116_1D6",
+        "2025W46_1A_0090_2D6",
+        "2026W17_2A_0609_1D6"
+      ],
+      "api_verified": {
+        "field": 200,
+        "source": 200,
+        "spectrum": 200
+      },
+      "reuse_s": 2.8084032237529755e-05,
+      "reused": true,
+      "total_s": 32.24475099996198
+    },
+    {
+      "key": "rw_aur",
+      "name": "RW Aur",
+      "ra": 76.95658657557826,
+      "dec": 30.401291346111112,
+      "band": "D2",
+      "discovery": {
+        "provenance": {
+          "adql": "SIA spherex dr1+qr3 76.956587 30.401291",
+          "service": "https://irsa.ipac.caltech.edu/SIA",
+          "retrieved_utc": "2026-11-15T00:40:42+00:00",
+          "cached": false,
+          "stale": false
+        },
+        "counts": {
+          "D1": 56,
+          "D2": 55,
+          "D3": 56,
+          "D4": 56,
+          "D5": 56,
+          "D6": 56
+        },
+        "mjd_range": [
+          60919.419647,
+          61299.895897
+        ]
+      },
+      "failures": [
+        {
+          "stage": "cutout",
+          "uri": "ibe/data/spherex/dr1/level2/2025W37_1A/l2b-v27-2026-235/2/level2_2025W37_1A_0068_1D2_spx_l2b-v27-2026-235.fits",
+          "code": "cutout_unavailable",
+          "message": "Cutout download failed for https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W37_1A/l2b-v27-2026-235/2/level2_2025W37_1A_0068_1D2_spx_l2b-v27-2026-235.fits?center=76.956587,30.401291d&size=0.2000: HTTP 503, non-FITS response: 'Server busy, retry later.'"
+        },
+        {
+          "stage": "cutout",
+          "uri": "ibe/data/spherex/qr3/level2/2026W37_2A/l2b-v27-2026-259/2/level2_2026W37_2A_0516_2D2_spx_l2b-v27-2026-259.fits",
+          "code": "cutout_unavailable",
+          "message": "Cutout download failed for https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W37_2A/l2b-v27-2026-259/2/level2_2026W37_2A_0516_2D2_spx_l2b-v27-2026-259.fits?center=76.956587,30.401291d&size=0.2000: HTTP 503, non-FITS response: 'Server busy, retry later.'"
+        },
+        {
+          "stage": "cutout",
+          "uri": "ibe/data/spherex/qr3/level2/2026W38_1A/l2b-v27-2026-261/6/level2_2026W38_1A_0565_1D6_spx_l2b-v27-2026-261.fits",
+          "code": "cutout_unavailable",
+          "message": "Cutout download failed for https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W38_1A/l2b-v27-2026-261/6/level2_2026W38_1A_0565_1D6_spx_l2b-v27-2026-261.fits?center=76.956587,30.401291d&size=0.2000: HTTP 503, non-FITS response: 'Server busy, retry later.'"
+        }
+      ],
+      "timings": {
+        "resolve_s": 0.4566395840374753,
+        "discovery_s": 1.7016735420329496,
+        "cutouts_s": 30.553743958938867
+      },
+      "build_s": 1.9300507500302047,
+      "state": "field_built",
+      "epochs": 4,
+      "usable_epochs": 4,
+      "wavelengths_um": [
+        1.2726092921721968,
+        1.3614580791261186,
+        1.14617932321851,
+        1.4510895917302853
+      ],
+      "registration": {
+        "0": {
+          "model": "similarity",
+          "n_matched_clean": 111,
+          "n_used": 107,
+          "converged": true,
+          "shift_east_arcsec": -0.07223475110239828,
+          "shift_north_arcsec": -0.04921304071083155,
+          "rotation_deg": -0.003414486893119691,
+          "scale": 0.999742069946255,
+          "rms_east_arcsec": 0.29139199381640707,
+          "rms_north_arcsec": 0.3956625320368079,
+          "rms_native_px": 0.05662268287541236,
+          "ok": true
+        },
+        "1": {
+          "ok": true,
+          "reference": true
+        },
+        "2": {
+          "model": "similarity",
+          "n_matched_clean": 107,
+          "n_used": 106,
+          "converged": true,
+          "shift_east_arcsec": -0.026356297930863394,
+          "shift_north_arcsec": -0.009010115945893474,
+          "rotation_deg": 0.005452664984107476,
+          "scale": 1.000091727021913,
+          "rms_east_arcsec": 0.35458232549941576,
+          "rms_north_arcsec": 0.38676322847988387,
+          "rms_native_px": 0.06046220806355589,
+          "ok": true
+        },
+        "3": {
+          "model": "similarity",
+          "n_matched_clean": 109,
+          "n_used": 108,
+          "converged": true,
+          "shift_east_arcsec": -0.09783126728543885,
+          "shift_north_arcsec": -0.14888871010847202,
+          "rotation_deg": 0.0018048846069937115,
+          "scale": 0.9999231569567306,
+          "rms_east_arcsec": 0.28577023715049554,
+          "rms_north_arcsec": 0.4941257861444306,
+          "rms_native_px": 0.06577512361920324,
+          "ok": true
+        }
+      },
+      "unusable_reasons": [
+        "",
+        "",
+        "",
+        ""
+      ],
+      "field_timings": {
+        "discover_s": 0.0,
+        "download_s": 0.0,
+        "read_s": 0.151,
+        "detect_s": 1.593,
+        "register_s": 0.012,
+        "track_s": 0.037,
+        "render_s": 0.136
+      },
+      "catalog_errors": {
+        "twomass": "IRSA TAP query failed: ReadTimeout: HTTPSConnectionPool(host='irsa.ipac.caltech.edu', port=443): Read timed out. (read timeout=30.0)",
+        "gaia": "IRSA TAP query failed: ReadTimeout: HTTPSConnectionPool(host='irsa.ipac.caltech.edu', port=443): Read timed out. (read timeout=30.0)",
+        "allwise": "IRSA TAP query failed: ReadTimeout: HTTPSConnectionPool(host='irsa.ipac.caltech.edu', port=443): Read timed out. (read timeout=30.0)"
+      },
+      "tier_counts": {
+        "insufficient": 20,
+        "rejected": 1,
+        "stationary": 120
+      },
+      "nearest_track_arcsec": 1.7053149430439154,
+      "target_state": "provisional_position_match_not_independent_identity_confirmation",
+      "source": {
+        "id": 2,
+        "ra": 76.95604643138469,
+        "dec": 30.401206485221444,
+        "x": 117.54541579859536,
+        "y": 116.90065196674011,
+        "tier": "stationary",
+        "reasons": [
+          "proper motion 0.1 sigma (< 5)"
+        ],
+        "fit": {
+          "pm_east": 0.3236504833643862,
+          "pm_east_err": 2.3925859890496723,
+          "pm_north": -0.007201586417573787,
+          "pm_north_err": 2.3925843606614263,
+          "pm_total": 0.32373059513881386,
+          "pm_pa_deg": 91.27468504175171,
+          "snr": 0.13530573059003534,
+          "chi2_red_east": 0.3438066506431313,
+          "chi2_red_north": 0.005948266393927447,
+          "n_used": 3,
+          "t0_mjd": 61100.210519025,
+          "offset_east": 0.5715848916430061,
+          "offset_north": -0.11662728751937634,
+          "model": "visit-mean fit, 1.2\" per-visit systematic (saturated source); linear proper motion relative to the field, parallax not fitted",
+          "visit_points": [
+            {
+              "visit": 0,
+              "n": 1,
+              "mjd": 60927.843664175,
+              "east_arcsec": 0.9514035711405416,
+              "sigma_east_arcsec": 1.7174165283295983,
+              "north_arcsec": -0.18331113329245774,
+              "sigma_north_arcsec": 1.7174165283295983
+            },
+            {
+              "visit": 1,
+              "n": 2,
+              "mjd": 61103.2636364615,
+              "east_arcsec": 0.0788106933687871,
+              "sigma_east_arcsec": 1.2020308217438416,
+              "north_arcsec": -0.051609724223474096,
+              "sigma_north_arcsec": 1.2008713131691042
+            },
+            {
+              "visit": 2,
+              "n": 1,
+              "mjd": 61298.337316455,
+              "east_arcsec": 1.2259446216319168,
+              "sigma_east_arcsec": 1.7172355104293473,
+              "north_arcsec": -0.18354201149876348,
+              "sigma_north_arcsec": 1.7172355104293473
+            }
+          ]
+        },
+        "n_epochs": 4,
+        "n_visits": 3,
+        "baseline_days": 370.49365227999806,
+        "clean_fraction": 0.0,
+        "core_masked_fraction": 1.0,
+        "blended_fraction": 0.0,
+        "priority": 0.0,
+        "variability": null,
+        "pair": {
+          "significance": 1.0095249821795371,
+          "d_east_arcsec": 1.2259446216319168,
+          "d_north_arcsec": -0.18354201149876348,
+          "sigma_east_arcsec": 1.2279121152722854,
+          "sigma_north_arcsec": 1.2279121152722854,
+          "status": "no_significant_motion",
+          "reasons": [
+            "saturated core (OVERFLOW flag): centroid rests on PSF wings; a 0.2 px systematic floor is applied",
+            "detector orientation differs by 180 deg between epochs, so PSF-wing asymmetry bias does not cancel"
+          ]
+        },
+        "catalog": {
+          "simbad": {
+            "id": "V* RW Aur A",
+            "ra": 76.95606758838,
+            "dec": 30.401326356130003,
+            "otype": "Or*",
+            "sp_type": "K6",
+            "pmra": 2.641,
+            "pmdec": -27.398,
+            "separation_arcsec": 0.31549560284384354,
+            "groups": [
+              "variable"
+            ]
+          }
+        },
+        "flux_ref": 1591.0822445642546,
+        "saturated": true
+      },
+      "spectrum": {
+        "n_measured": 1,
+        "n_rejected": 4,
+        "n_model_mismatch": 1,
+        "blackbody": null,
+        "rejection_reasons": [
+          "core pixels saturated or unusable: flux not measurable"
+        ]
+      },
+      "evidence_export_s": 0.021575083024799824,
+      "optional_decomposition": {
+        "state": "invalid_or_contaminated_observation",
+        "measurements_unchanged": true
+      },
+      "evidence_hash": "04550d5ecc6fb79c1d7bb7fe859a299e8e40b21af7ea287dfed2f73f98caf61f",
+      "selected_obs_ids": [
+        "2025W37_1A_0366_4D2",
+        "2026W09_2A_0503_4D2",
+        "2026W10_2B_0340_1D2",
+        "2026W38_1A_0254_3D2"
+      ],
+      "api_verified": {
+        "field": 200,
+        "source": 200,
+        "spectrum": 200
+      },
+      "reuse_s": 3.116694279015064e-05,
+      "reused": true,
+      "total_s": 33.49613450001925
+    },
+    {
+      "key": "r_dra",
+      "name": "R Dra",
+      "ra": 248.16723307280128,
+      "dec": 66.75502382666444,
+      "band": "D2",
+      "discovery": {
+        "provenance": {
+          "adql": "SIA spherex dr1+qr3 248.167233 66.755024",
+          "service": "https://irsa.ipac.caltech.edu/SIA",
+          "retrieved_utc": "2026-11-15T00:41:15+00:00",
+          "cached": false,
+          "stale": false
+        },
+        "counts": {
+          "D1": 91,
+          "D2": 89,
+          "D3": 91,
+          "D4": 88,
+          "D5": 89,
+          "D6": 91
+        },
+        "mjd_range": [
+          60811.955829,
+          61237.873234
+        ]
+      },
+      "failures": [
+        {
+          "stage": "cutout",
+          "uri": "ibe/data/spherex/dr1/level2/2025W50_1A/l2b-v27-2026-209/2/level2_2025W50_1A_0661_2D2_spx_l2b-v27-2026-209.fits",
+          "code": "cutout_unavailable",
+          "message": "Cutout download failed for https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W50_1A/l2b-v27-2026-209/2/level2_2025W50_1A_0661_2D2_spx_l2b-v27-2026-209.fits?center=248.167233,66.755024d&size=0.2000: HTTP 503, non-FITS response: 'Server busy, retry later.'"
+        }
+      ],
+      "timings": {
+        "resolve_s": 0.5082456660456955,
+        "discovery_s": 2.291044457932003,
+        "cutouts_s": 38.738171750097536
+      },
+      "build_s": 3.3551889579975978,
+      "state": "field_built",
+      "epochs": 5,
+      "usable_epochs": 5,
+      "wavelengths_um": [
+        1.4046932724550194,
+        1.1353965697365265,
+        1.4784333431324168,
+        1.2627950672735984,
+        1.2005697878806751
+      ],
+      "registration": {
+        "0": {
+          "ok": true,
+          "reference": true
+        },
+        "1": {
+          "model": "similarity",
+          "n_matched_clean": 45,
+          "n_used": 41,
+          "converged": true,
+          "shift_east_arcsec": 0.05627641768105208,
+          "shift_north_arcsec": 0.10564618922615257,
+          "rotation_deg": 0.012567869516967213,
+          "scale": 1.000476010245906,
+          "rms_east_arcsec": 0.6766904732229754,
+          "rms_north_arcsec": 0.4269923018780054,
+          "rms_native_px": 0.09211182259926042,
+          "ok": true
+        },
+        "2": {
+          "model": "similarity",
+          "n_matched_clean": 50,
+          "n_used": 43,
+          "converged": true,
+          "shift_east_arcsec": 0.016206909671764542,
+          "shift_north_arcsec": 0.240645000575843,
+          "rotation_deg": -0.01298772947050397,
+          "scale": 1.000228286640106,
+          "rms_east_arcsec": 0.4860635958378538,
+          "rms_north_arcsec": 0.3503483176671235,
+          "rms_native_px": 0.06897549635952104,
+          "ok": true
+        },
+        "3": {
+          "model": "similarity",
+          "n_matched_clean": 50,
+          "n_used": 48,
+          "converged": true,
+          "shift_east_arcsec": 0.07011168166978024,
+          "shift_north_arcsec": 0.03199126650969212,
+          "rotation_deg": -0.013611055704154489,
+          "scale": 0.9998170830372657,
+          "rms_east_arcsec": 0.5525958750255612,
+          "rms_north_arcsec": 0.2976281757995424,
+          "rms_native_px": 0.07225438228487817,
+          "ok": true
+        },
+        "4": {
+          "model": "similarity",
+          "n_matched_clean": 55,
+          "n_used": 51,
+          "converged": true,
+          "shift_east_arcsec": 0.1345353319812015,
+          "shift_north_arcsec": -0.10206199277479272,
+          "rotation_deg": -0.012528668941336358,
+          "scale": 0.9996619318898241,
+          "rms_east_arcsec": 0.6011751812658233,
+          "rms_north_arcsec": 0.3615386365966437,
+          "rms_native_px": 0.08075749493022974,
+          "ok": true
+        }
+      },
+      "unusable_reasons": [
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "field_timings": {
+        "discover_s": 0.0,
+        "download_s": 0.0,
+        "read_s": 0.321,
+        "detect_s": 2.792,
+        "register_s": 0.011,
+        "track_s": 0.023,
+        "render_s": 0.207
+      },
+      "catalog_errors": {
+        "gaia": "IRSA TAP query failed: ReadTimeout: HTTPSConnectionPool(host='irsa.ipac.caltech.edu', port=443): Read timed out. (read timeout=30.0)",
+        "allwise": "IRSA TAP query failed: ReadTimeout: HTTPSConnectionPool(host='irsa.ipac.caltech.edu', port=443): Read timed out. (read timeout=30.0)",
+        "twomass": "IRSA TAP query failed: ReadTimeout: HTTPSConnectionPool(host='irsa.ipac.caltech.edu', port=443): Read timed out. (read timeout=30.0)"
+      },
+      "tier_counts": {
+        "insufficient": 17,
+        "rejected": 1,
+        "stationary": 56
+      },
+      "nearest_track_arcsec": 1.5866453045774231,
+      "target_state": "provisional_position_match_not_independent_identity_confirmation",
+      "source": {
+        "id": 1,
+        "ra": 248.167002185901,
+        "dec": 66.75545337757082,
+        "x": 117.10667823680826,
+        "y": 117.50288906350885,
+        "tier": "insufficient",
+        "reasons": [
+          "measured in 2 visit(s), 2 epoch(s)"
+        ],
+        "fit": null,
+        "n_epochs": 2,
+        "n_visits": 2,
+        "baseline_days": 379.66592587899504,
+        "clean_fraction": 0.0,
+        "core_masked_fraction": 1.0,
+        "blended_fraction": 0.0,
+        "priority": 0.0,
+        "variability": null,
+        "pair": null,
+        "catalog": {
+          "simbad": {
+            "id": "V* R Dra",
+            "ra": 248.16761083295,
+            "dec": 66.75497941722,
+            "otype": "Mi*",
+            "sp_type": "M4.5-6+e",
+            "pmra": -20.643,
+            "pmdec": 6.149,
+            "separation_arcsec": 1.5866440277888954,
+            "groups": [
+              "star",
+              "variable"
+            ]
+          }
+        },
+        "flux_ref": 12743.366432938406,
+        "saturated": true
+      },
+      "spectrum": {
+        "n_measured": 0,
+        "n_rejected": 7,
+        "n_model_mismatch": 0,
+        "blackbody": null,
+        "rejection_reasons": [
+          "core pixels saturated or unusable: flux not measurable"
+        ]
+      },
+      "evidence_export_s": 0.012443291954696178,
+      "optional_decomposition": {
+        "state": "invalid_or_contaminated_observation",
+        "measurements_unchanged": true
+      },
+      "evidence_hash": "e35918a8b2ac4e7a197c4d87a9fc2fd603765363a1ef864b4bfcbf76059607c3",
+      "selected_obs_ids": [
+        "2025W23_2B_0696_1D2",
+        "2025W25_2A_0633_3D2",
+        "2025W47_1A_0388_3D2",
+        "2026W25_2A_0573_1D2",
+        "2026W26_1A_0324_3D2"
+      ],
+      "api_verified": {
+        "field": 200,
+        "source": 200,
+        "spectrum": 200
+      },
+      "reuse_s": 2.4042092263698578e-05,
+      "reused": true,
+      "total_s": 34.035788917099126
+    },
+    {
+      "key": "teegarden",
+      "name": "Teegarden's Star",
+      "ra": 43.2796,
+      "dec": 16.8538,
+      "band": "D2",
+      "discovery": {
+        "provenance": {
+          "adql": "SIA spherex dr1+qr3 43.279600 16.853800",
+          "service": "https://irsa.ipac.caltech.edu/SIA",
+          "retrieved_utc": "2026-11-14T03:58:44+00:00",
+          "cached": true,
+          "stale": false
+        },
+        "counts": {
+          "D1": 56,
+          "D2": 56,
+          "D3": 54,
+          "D4": 56,
+          "D5": 55,
+          "D6": 55
+        },
+        "mjd_range": [
+          60889.254658,
+          61269.687968
+        ]
+      },
+      "failures": [],
+      "timings": {
+        "resolve_s": 5.749985575675964e-06,
+        "discovery_s": 0.001541833975352347,
+        "cutouts_s": 2.1707965061068535e-05
+      },
+      "build_s": 3.449118125019595,
+      "state": "field_built",
+      "epochs": 12,
+      "usable_epochs": 12,
+      "wavelengths_um": [
+        1.5738332310362175,
+        1.1489862275283829,
+        1.2924893398861739,
+        1.4536194801116986,
+        1.1799833840301475,
+        1.3274829568735231,
+        1.4943367440533921,
+        1.6055052956710159,
+        1.1115066140836996,
+        1.2501801254781792,
+        1.4053591840057116,
+        1.583340065291004
+      ],
+      "registration": {
+        "0": {
+          "ok": true,
+          "reference": true
+        },
+        "1": {
+          "model": "similarity",
+          "n_matched_clean": 41,
+          "n_used": 40,
+          "converged": true,
+          "shift_east_arcsec": 0.1483482249032112,
+          "shift_north_arcsec": 0.12391131501182752,
+          "rotation_deg": -0.011956901897239124,
+          "scale": 1.0001356661641168,
+          "rms_east_arcsec": 0.5735500606532797,
+          "rms_north_arcsec": 0.531373290287679,
+          "rms_native_px": 0.09001256389721271,
+          "ok": true
+        },
+        "2": {
+          "model": "similarity",
+          "n_matched_clean": 43,
+          "n_used": 40,
+          "converged": true,
+          "shift_east_arcsec": -0.04988238750185173,
+          "shift_north_arcsec": 0.3185915334094417,
+          "rotation_deg": -0.015989938210548574,
+          "scale": 0.9998907397830635,
+          "rms_east_arcsec": 0.408917794680987,
+          "rms_north_arcsec": 0.4485079819537877,
+          "rms_native_px": 0.0698737104108162,
+          "ok": true
+        },
+        "3": {
+          "model": "similarity",
+          "n_matched_clean": 46,
+          "n_used": 45,
+          "converged": true,
+          "shift_east_arcsec": -0.04730559131237327,
+          "shift_north_arcsec": 0.10258617589396707,
+          "rotation_deg": 0.03323698563767286,
+          "scale": 1.000475092804618,
+          "rms_east_arcsec": 0.5740227225198168,
+          "rms_north_arcsec": 0.6824580661416899,
+          "rms_native_px": 0.10266489021274962,
+          "ok": true
+        },
+        "4": {
+          "model": "similarity",
+          "n_matched_clean": 49,
+          "n_used": 48,
+          "converged": true,
+          "shift_east_arcsec": 0.04174909313918566,
+          "shift_north_arcsec": 0.16979161685089667,
+          "rotation_deg": 0.03819122284101583,
+          "scale": 1.0003243683567853,
+          "rms_east_arcsec": 0.7087457477671845,
+          "rms_north_arcsec": 0.7727130677327382,
+          "rms_native_px": 0.12071156033451814,
+          "ok": true
+        },
+        "5": {
+          "model": "similarity",
+          "n_matched_clean": 45,
+          "n_used": 45,
+          "converged": true,
+          "shift_east_arcsec": 0.07793451976258922,
+          "shift_north_arcsec": 0.1161155724842358,
+          "rotation_deg": 0.016359593770631137,
+          "scale": 1.0003440932622238,
+          "rms_east_arcsec": 0.5170381890504055,
+          "rms_north_arcsec": 0.5302998364148099,
+          "rms_native_px": 0.08526611883744575,
+          "ok": true
+        },
+        "6": {
+          "model": "similarity",
+          "n_matched_clean": 48,
+          "n_used": 46,
+          "converged": true,
+          "shift_east_arcsec": 0.00547756343894785,
+          "shift_north_arcsec": 0.40235294613245925,
+          "rotation_deg": 0.02363475327555874,
+          "scale": 1.0002570747975703,
+          "rms_east_arcsec": 0.5886910694627284,
+          "rms_north_arcsec": 0.6837654829205468,
+          "rms_native_px": 0.10387395350810369,
+          "ok": true
+        },
+        "7": {
+          "model": "similarity",
+          "n_matched_clean": 45,
+          "n_used": 45,
+          "converged": true,
+          "shift_east_arcsec": -0.018633907411453324,
+          "shift_north_arcsec": 0.38356318126966693,
+          "rotation_deg": -0.051560157118166285,
+          "scale": 1.0002434337572348,
+          "rms_east_arcsec": 0.5280612892370202,
+          "rms_north_arcsec": 0.44569763162823833,
+          "rms_native_px": 0.07955258015405739,
+          "ok": true
+        },
+        "8": {
+          "model": "similarity",
+          "n_matched_clean": 45,
+          "n_used": 42,
+          "converged": true,
+          "shift_east_arcsec": 0.16069328762214755,
+          "shift_north_arcsec": 0.2579589042468521,
+          "rotation_deg": 0.009561361163428964,
+          "scale": 1.0001128395337318,
+          "rms_east_arcsec": 0.5589011397216413,
+          "rms_north_arcsec": 0.5192893736243235,
+          "rms_native_px": 0.08783006747958437,
+          "ok": true
+        },
+        "9": {
+          "model": "similarity",
+          "n_matched_clean": 43,
+          "n_used": 43,
+          "converged": true,
+          "shift_east_arcsec": -0.10886156087236024,
+          "shift_north_arcsec": 0.1456397578166199,
+          "rotation_deg": 0.013484204719643384,
+          "scale": 1.0003942432364443,
+          "rms_east_arcsec": 0.5777892750673931,
+          "rms_north_arcsec": 0.6219895815401372,
+          "rms_native_px": 0.09773509289238873,
+          "ok": true
+        },
+        "10": {
+          "model": "similarity",
+          "n_matched_clean": 45,
+          "n_used": 45,
+          "converged": true,
+          "shift_east_arcsec": -0.08191888166544099,
+          "shift_north_arcsec": 0.10713190696914018,
+          "rotation_deg": -0.00534936399034732,
+          "scale": 1.0002374848498363,
+          "rms_east_arcsec": 0.4699550966589411,
+          "rms_north_arcsec": 0.6136205780017244,
+          "rms_native_px": 0.08898115895396175,
+          "ok": true
+        },
+        "11": {
+          "model": "similarity",
+          "n_matched_clean": 50,
+          "n_used": 50,
+          "converged": true,
+          "shift_east_arcsec": 0.11271081230665421,
+          "shift_north_arcsec": 0.20173971722942843,
+          "rotation_deg": -0.0010749476297760544,
+          "scale": 0.9997265980994666,
+          "rms_east_arcsec": 0.5678292191443814,
+          "rms_north_arcsec": 0.6436584882986701,
+          "rms_native_px": 0.09881500271175772,
+          "ok": true
+        }
+      },
+      "unusable_reasons": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "field_timings": {
+        "discover_s": 0.0,
+        "download_s": 0.0,
+        "read_s": 0.364,
+        "detect_s": 2.691,
+        "register_s": 0.021,
+        "track_s": 0.027,
+        "render_s": 0.345
+      },
+      "catalog_errors": {},
+      "tier_counts": {
+        "insufficient": 1,
+        "rejected": 1,
+        "stationary": 61
+      },
+      "nearest_track_arcsec": 2.731276137862582,
+      "target_state": "provisional_position_match_not_independent_identity_confirmation",
+      "source": {
+        "id": 0,
+        "ra": 43.27933235248812,
+        "dec": 16.85451413839501,
+        "x": 117.29988346850321,
+        "y": 117.8360646655716,
+        "tier": "stationary",
+        "reasons": [
+          "proper motion 3.0 sigma (< 5)"
+        ],
+        "fit": {
+          "pm_east": 3.587501853869026,
+          "pm_east_err": 1.726967788158317,
+          "pm_north": -3.6729723323343815,
+          "pm_north_err": 1.6975816066108198,
+          "pm_total": 5.134286250844178,
+          "pm_pa_deg": 135.6744561536997,
+          "snr": 2.999454741069542,
+          "chi2_red_east": 1.04551646731744,
+          "chi2_red_north": 0.06059914122435847,
+          "n_used": 3,
+          "t0_mjd": 60893.330689604,
+          "offset_east": -0.3383194423640432,
+          "offset_north": -0.793244971283567,
+          "model": "visit-mean fit, 1.2\" per-visit systematic (saturated source); linear proper motion relative to the field, parallax not fitted",
+          "visit_points": [
+            {
+              "visit": 0,
+              "n": 4,
+              "mjd": 60895.115923819256,
+              "east_arcsec": 0.20063325989764458,
+              "sigma_east_arcsec": 1.2069194363767077,
+              "north_arcsec": -0.6828592258885609,
+              "sigma_north_arcsec": 1.2189096012366942
+            },
+            {
+              "visit": 1,
+              "n": 4,
+              "mjd": 61072.69753309875,
+              "east_arcsec": 0.4133946552445698,
+              "sigma_east_arcsec": 1.2086726328408135,
+              "north_arcsec": -2.837643002550101,
+              "sigma_north_arcsec": 1.2010615397514237
+            },
+            {
+              "visit": 2,
+              "n": 4,
+              "mjd": 61263.342690929,
+              "east_arcsec": 3.777469019725176,
+              "sigma_east_arcsec": 1.2017208971467188,
+              "north_arcsec": -4.397790502321797,
+              "sigma_north_arcsec": 1.2023280785069317
+            }
+          ]
+        },
+        "n_epochs": 12,
+        "n_visits": 3,
+        "baseline_days": 371.19973413200205,
+        "clean_fraction": 0.08333333333333333,
+        "core_masked_fraction": 0.9166666666666666,
+        "blended_fraction": 0.0,
+        "priority": 0.0,
+        "variability": {
+          "var_z": null,
+          "n_pairs": 0,
+          "flag": null,
+          "note": "saturated: no reliable relative photometry",
+          "max_abs_mag_change": null
+        },
+        "pair": {
+          "significance": 4.633369925921923,
+          "d_east_arcsec": 3.7163636019592765,
+          "d_north_arcsec": -4.330056641373543,
+          "sigma_east_arcsec": 1.2315448072817647,
+          "sigma_north_arcsec": 1.2315448072817647,
+          "status": "no_significant_motion",
+          "reasons": [
+            "saturated core (OVERFLOW flag): centroid rests on PSF wings; a 0.2 px systematic floor is applied"
+          ]
+        },
+        "catalog": {
+          "gaia": {
+            "source_id": "35227046884571776",
+            "ra": 43.26964247679,
+            "dec": 16.86437381898,
+            "pmra": 3429.083,
+            "pmdec": -3805.541,
+            "parallax": 260.9884,
+            "pmra_error": 0.08799999952316284,
+            "pmdec_error": 0.08299999684095383,
+            "gmag": 12.263102531433105,
+            "ruwe": 1.3040000200271606,
+            "bp_rp": 4.528501987457275,
+            "teff_gspphot": 0.0,
+            "variable": false,
+            "non_single_star": false,
+            "p_star": 0.9999979734420776,
+            "p_galaxy": 0.0,
+            "p_quasar": 0.0,
+            "separation_arcsec": 1.1286412671162385,
+            "n_within_6arcsec": 1
+          },
+          "pm_comparison": {
+            "gaia_pm_east": 3.429083,
+            "gaia_pm_north": -3.8055410000000003,
+            "z_east": 0.09173237332814892,
+            "z_north": 0.07809266261448775,
+            "z_total": 0.12047112629437437,
+            "consistent": true
+          },
+          "simbad": {
+            "id": "NAME Teegarden's Star",
+            "ra": 43.253715805170415,
+            "dec": 16.881286719482496,
+            "otype": "LM*",
+            "sp_type": "dM6",
+            "pmra": 3429.083,
+            "pmdec": -3805.541,
+            "separation_arcsec": 1.1293991048874021,
+            "groups": [
+              "star"
+            ]
+          },
+          "twomass": {
+            "id": "02530084+1652532",
+            "ra": 43.253536,
+            "dec": 16.881466,
+            "mjd": 51486.2237999998,
+            "ph_qual": "AAA",
+            "cc_flg": "000",
+            "mags": {
+              "J": 8.394000053405762,
+              "H": 7.882999897003174,
+              "K": 7.585000038146973
+            },
+            "mag_errs": {
+              "J": 0.020999999716877937,
+              "H": 0.03700000047683716,
+              "K": 0.0430000014603138
+            },
+            "separation_arcsec": 1.1342543463342734,
+            "pm_used_for_match": true
+          },
+          "allwise": {
+            "id": "J025303.34+165213.2",
+            "ra": 43.2639363,
+            "dec": 16.8703546,
+            "mjd": 55322.42277723,
+            "ph_qual": "AAAA",
+            "cc_flags": "0000",
+            "extended": true,
+            "mags": {
+              "W1": 7.144999980926514,
+              "W2": 6.980000019073486
+            },
+            "mag_errs": {
+              "W1": 0.05400000140070915,
+              "W2": 0.017999999225139618
+            },
+            "separation_arcsec": 1.2602610129649265,
+            "pm_used_for_match": true
+          }
+        },
+        "flux_ref": 605.1621904057948,
+        "saturated": true
+      },
+      "spectrum": {
+        "n_measured": 4,
+        "n_rejected": 14,
+        "n_model_mismatch": 4,
+        "blackbody": null,
+        "rejection_reasons": [
+          "core pixels saturated or unusable: flux not measurable"
+        ]
+      },
+      "evidence_export_s": 0.02590770903043449,
+      "optional_decomposition": {
+        "state": "invalid_or_contaminated_observation",
+        "measurements_unchanged": true
+      },
+      "evidence_hash": "adbdd26eafc17aac3d997f3a8a6a8286dbae3133bb6938ddd73eae176581348a",
+      "selected_obs_ids": [
+        "2025W32_1A_0502_1D2",
+        "2025W32_1A_0538_4D2",
+        "2025W32_2D_0337_2D2",
+        "2025W32_2D_0526_3D2",
+        "2026W05_2A_0128_2D2",
+        "2026W05_2A_0608_3D2",
+        "2026W06_1A_0050_4D2",
+        "2026W06_1A_0390_3D2",
+        "2026W33_1A_0102_2D2",
+        "2026W33_1A_0223_3D2",
+        "2026W33_1A_0247_4D2",
+        "2026W33_1A_0496_1D2"
+      ],
+      "api_verified": {
+        "field": 200,
+        "source": 200,
+        "spectrum": 200
+      },
+      "reuse_s": 1.8582912161946297e-05,
+      "reused": true,
+      "total_s": 4.279844042030163
+    }
+  ],
+  "blocked_network_attempts": null,
+  "subset_policy": "12 cached or 6 newly acquired primary exposures; extra bands limited",
+  "validated_code_base": "984a742 plus milestone 5 reliability changes"
+}

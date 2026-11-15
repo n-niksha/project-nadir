@@ -8,6 +8,7 @@ from __future__ import annotations
 import math
 
 from .irsa import DataAccessError, cached_tap
+from .http import TimeoutSession
 
 # Tried in order; the CDS primary was answering 404 during development (2026-11),
 # the CfA mirror serves the same database.
@@ -71,7 +72,7 @@ def resolve_name(name: str, epoch_year: float | None = None) -> dict:
     tab, errors = None, []
     for url in SIMBAD_TAP_MIRRORS:
         try:
-            tab = pyvo.dal.TAPService(url).search(adql).to_table()
+            tab = pyvo.dal.TAPService(url, session=TimeoutSession()).search(adql).to_table()
             break
         except Exception as exc:  # try the next mirror
             errors.append(f"{url}: {exc}")
@@ -160,7 +161,7 @@ def simbad_region(ra: float, dec: float, radius_deg: float) -> tuple[list[dict],
         errors = []
         for url in SIMBAD_TAP_MIRRORS:
             try:
-                tab = pyvo.dal.TAPService(url).search(adql).to_table()
+                tab = pyvo.dal.TAPService(url, session=TimeoutSession()).search(adql).to_table()
                 return [{c: (row[c].item() if hasattr(row[c], "item") else row[c]) for c in tab.colnames} for row in tab]
             except Exception as exc:
                 errors.append(f"{url}: {exc}")

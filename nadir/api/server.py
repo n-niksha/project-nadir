@@ -27,6 +27,8 @@ FRONTEND = Path(__file__).resolve().parent.parent.parent / "frontend"
 app = FastAPI(title="Project NADIR", version=__version__,
               description="SPHEREx time-domain explorer: real NASA SPHEREx images, registered across epochs.")
 app.add_middleware(GZipMiddleware, minimum_size=1000)
+from .science import router as science_router
+app.include_router(science_router)
 
 
 @app.on_event("startup")
@@ -177,7 +179,7 @@ def field_provenance(fid: str, index: int):
 @app.post("/api/fields/{fid}/catalogs")
 def field_catalogs_build(fid: str):
     f = _field(fid)
-    if f.catalogs is not None:
+    if f.catalogs is not None and not f.catalogs.get("errors"):
         return {"job": None, "ready": True}
     job = manager.submit("catalogs", f"catalogs:{fid}", ["catalogs"], lambda j: field.load_catalogs(j, f))
     return {"job": job.snapshot(), "ready": False}

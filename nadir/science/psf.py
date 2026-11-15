@@ -1,7 +1,7 @@
 """Archive-provided effective PSF (ePSF) model and ePSF fitting.
 
 Every SPHEREx Level-2 image ships an ``EPSF`` table: a 21 x 21 grid of
-detector tiles, each with a 33 x 33 effective PSF oversampled 5x (so it spans
+detector tiles (11 x 41 on detector 3), each with a 33 x 33 effective PSF oversampled 5x (so it spans
 +-3.2 native pixels), already in the image's pixel orientation (``DETCOORD =
 'sky'``).  An ePSF is the PSF convolved with the pixel response, so the
 expected value of a native pixel whose centre lies (dx, dy) from the star is

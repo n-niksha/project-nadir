@@ -1,0 +1,309 @@
+{
+  "experiment": "single source broadened anisotropically; fit assumes circular PSF",
+  "before_elliptical_alternative": {
+    "schema_version": 1,
+    "maturity": "experimental",
+    "source_id": "selected",
+    "ra": null,
+    "dec": null,
+    "state": "multiple_source_model_favored",
+    "best_fit_source_count": 2,
+    "separation_px": 1.0757101815570336,
+    "flux_ratio": 0.6097233299343342,
+    "uncertainty": null,
+    "observations_supporting": 1,
+    "observation_ids": [
+      "elliptical-single"
+    ],
+    "flags": [],
+    "catalog_matches": [],
+    "reasons_to_doubt": [
+      "Conditional on PSF, registration and independent Gaussian pixel noise.",
+      "Modeled components are not independently confirmed objects.",
+      "No independent catalog association supplied to this fit.",
+      "One exposure only; no held-out observation confirmation.",
+      "Separation/flux-ratio intervals require additional alternative-model simulations; unavailable."
+    ],
+    "models": {
+      "one": {
+        "positions": [
+          [
+            5.108513244612606,
+            4.786170513615856
+          ]
+        ],
+        "width": 0.0,
+        "chi2": 486.66024147739165,
+        "bic": 515.4349847509721,
+        "n_parameters": 6,
+        "n_pixels": 121,
+        "reduced_chi2": 4.231828186759928,
+        "success": true,
+        "boundary": false,
+        "frames": [
+          {
+            "flux": [
+              443.50103663917827
+            ],
+            "background": [
+              3.316336455219831,
+              -0.03114541085669907,
+              0.0018443891456240448
+            ],
+            "residual_rms": 2.0054888348617905,
+            "n_pixels": 121
+          }
+        ]
+      },
+      "two": {
+        "positions": [
+          [
+            4.724533035999929,
+            4.789941254740065
+          ],
+          [
+            5.800194396422161,
+            4.7796927231350175
+          ]
+        ],
+        "width": 0.0,
+        "chi2": 130.2743899111715,
+        "bic": 173.4365048215422,
+        "n_parameters": 9,
+        "n_pixels": 121,
+        "reduced_chi2": 1.16316419563546,
+        "success": true,
+        "boundary": false,
+        "frames": [
+          {
+            "flux": [
+              304.808236246665,
+              185.8486927957278
+            ],
+            "background": [
+              2.926618339494634,
+              -0.044885518728397855,
+              0.010222743323618758
+            ],
+            "residual_rms": 1.0376164274458795,
+            "n_pixels": 121
+          }
+        ]
+      },
+      "broadened_one": {
+        "positions": [
+          [
+            5.106865810368034,
+            4.787120818939368
+          ]
+        ],
+        "width": 0.38400381235971426,
+        "chi2": 315.72470886363084,
+        "bic": 349.295242682808,
+        "n_parameters": 7,
+        "n_pixels": 121,
+        "reduced_chi2": 2.7695149900318494,
+        "success": true,
+        "boundary": false,
+        "frames": [
+          {
+            "flux": [
+              492.92014225862647
+            ],
+            "background": [
+              2.907914103091797,
+              -0.03490644011484033,
+              0.010190881127624998
+            ],
+            "residual_rms": 1.6153312708467764,
+            "n_pixels": 121
+          }
+        ]
+      }
+    },
+    "evidence": {
+      "delta_chi2": 356.38585156622014,
+      "delta_bic": 341.99847992942995,
+      "extended_minus_two_bic": 175.8587378612658,
+      "bootstrap_p": 0.025,
+      "bootstrap_n": 39,
+      "bootstrap_seed": 0,
+      "bootstrap_resolution": 0.025,
+      "support_rule": "per-exposure chi2 reduction > 10; descriptive, not independently calibrated",
+      "selected_count_rule": "lower descriptive BIC among H1 and H2, subject to state and alternative-model caveats",
+      "p_interpretation": "plug-in null tail frequency, not probability of a blend"
+    },
+    "elapsed_s": 5.926731875049882
+  },
+  "after_elliptical_alternative": {
+    "schema_version": 1,
+    "maturity": "experimental",
+    "source_id": "selected",
+    "ra": null,
+    "dec": null,
+    "state": "ambiguous",
+    "best_fit_source_count": 2,
+    "separation_px": 1.0757101815570336,
+    "flux_ratio": 0.6097233299343342,
+    "uncertainty": null,
+    "observations_supporting": 1,
+    "observation_ids": [
+      "elliptical-single"
+    ],
+    "flags": [],
+    "catalog_matches": [],
+    "reasons_to_doubt": [
+      "Conditional on PSF, registration and independent Gaussian pixel noise.",
+      "Modeled components are not independently confirmed objects.",
+      "No independent catalog association supplied to this fit.",
+      "An elliptical single-source/PSF-mismatch alternative competes with H2.",
+      "One exposure only; no held-out observation confirmation.",
+      "Separation/flux-ratio intervals require additional alternative-model simulations; unavailable."
+    ],
+    "models": {
+      "one": {
+        "positions": [
+          [
+            5.108513244612606,
+            4.786170513615856
+          ]
+        ],
+        "width": 0.0,
+        "chi2": 486.66024147739165,
+        "bic": 515.4349847509721,
+        "n_parameters": 6,
+        "n_pixels": 121,
+        "reduced_chi2": 4.231828186759928,
+        "success": true,
+        "boundary": false,
+        "frames": [
+          {
+            "flux": [
+              443.50103663917827
+            ],
+            "background": [
+              3.316336455219831,
+              -0.03114541085669907,
+              0.0018443891456240448
+            ],
+            "residual_rms": 2.0054888348617905,
+            "n_pixels": 121
+          }
+        ]
+      },
+      "two": {
+        "positions": [
+          [
+            4.724533035999929,
+            4.789941254740065
+          ],
+          [
+            5.800194396422161,
+            4.7796927231350175
+          ]
+        ],
+        "width": 0.0,
+        "chi2": 130.2743899111715,
+        "bic": 173.4365048215422,
+        "n_parameters": 9,
+        "n_pixels": 121,
+        "reduced_chi2": 1.16316419563546,
+        "success": true,
+        "boundary": false,
+        "frames": [
+          {
+            "flux": [
+              304.808236246665,
+              185.8486927957278
+            ],
+            "background": [
+              2.926618339494634,
+              -0.044885518728397855,
+              0.010222743323618758
+            ],
+            "residual_rms": 1.0376164274458795,
+            "n_pixels": 121
+          }
+        ]
+      },
+      "broadened_one": {
+        "positions": [
+          [
+            5.106865810368034,
+            4.787120818939368
+          ]
+        ],
+        "width": 0.38400381235971426,
+        "chi2": 315.72470886363084,
+        "bic": 349.295242682808,
+        "n_parameters": 7,
+        "n_pixels": 121,
+        "reduced_chi2": 2.7695149900318494,
+        "success": true,
+        "boundary": false,
+        "frames": [
+          {
+            "flux": [
+              492.92014225862647
+            ],
+            "background": [
+              2.907914103091797,
+              -0.03490644011484033,
+              0.010190881127624998
+            ],
+            "residual_rms": 1.6153312708467764,
+            "n_pixels": 121
+          }
+        ]
+      },
+      "elliptical_one": {
+        "positions": [
+          [
+            5.107834629231822,
+            4.786328636405978
+          ]
+        ],
+        "width": [
+          0.014803820589858015,
+          0.5755555040655783,
+          -1.5775744478023117
+        ],
+        "chi2": 120.55626087208626,
+        "bic": 163.71837578245692,
+        "n_parameters": 9,
+        "n_pixels": 121,
+        "reduced_chi2": 1.076395186357913,
+        "success": true,
+        "boundary": false,
+        "frames": [
+          {
+            "flux": [
+              496.1786695885942
+            ],
+            "background": [
+              2.880984240781887,
+              -0.035591484045288425,
+              0.011088628276986113
+            ],
+            "residual_rms": 0.9981646830458647,
+            "n_pixels": 121
+          }
+        ]
+      }
+    },
+    "evidence": {
+      "delta_chi2": 356.38585156622014,
+      "delta_bic": 341.99847992942995,
+      "extended_minus_two_bic": 175.8587378612658,
+      "bootstrap_p": 0.025,
+      "bootstrap_n": 39,
+      "bootstrap_seed": 0,
+      "bootstrap_resolution": 0.025,
+      "support_rule": "per-exposure chi2 reduction > 10; descriptive, not independently calibrated",
+      "selected_count_rule": "lower descriptive BIC among H1 and H2, subject to state and alternative-model caveats",
+      "p_interpretation": "plug-in null tail frequency, not probability of a blend",
+      "elliptical_minus_two_bic": -9.718129039085284
+    },
+    "elapsed_s": 5.458810957963578
+  }
+}

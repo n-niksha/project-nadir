@@ -41,7 +41,11 @@ CUTOUT_CACHE_VERSION = 2  # v2: trimmed EPSF tiles retained
 
 
 class DataAccessError(RuntimeError):
-    """Raised when the archive cannot be queried or returns unusable data."""
+    """Data availability failure with backward-compatible human-readable text."""
+
+    def __init__(self, message, code="external_service_unavailable", retryable=True):
+        super().__init__(message)
+        self.code, self.retryable = code, retryable
 
 
 @dataclass
@@ -69,12 +73,13 @@ class ArchiveRecord:
         return Path(self.uri).name.removesuffix(".fits")
 
 
-def _tap_sync(adql: str, timeout: float = 180.0) -> list[dict]:
+def _tap_sync(adql: str, timeout: float = 30.0) -> list[dict]:
     """Run a synchronous TAP query and return rows as dicts."""
     import pyvo
 
     try:
-        service = pyvo.dal.TAPService(config.IRSA_TAP)
+        from .http import TimeoutSession
+        service = pyvo.dal.TAPService(config.IRSA_TAP, session=TimeoutSession(timeout))
         table = service.search(adql, maxrec=20000).to_table()
     except Exception as exc:  # pyvo raises many types; normalise them
         raise DataAccessError(f"IRSA TAP query failed: {exc}") from exc

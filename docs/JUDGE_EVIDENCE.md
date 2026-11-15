@@ -1,0 +1,7 @@
+# Judge evidence
+
+The strongest defensible demonstration is Barnard's Star with its saturation limitation. Twelve selected D2 epochs are tracked and reference-registered; the source is labelled `systematics_limited`, and saturated flux is refused. Its snapshot is `docs/validation/barnard_evidence.json`; observation IDs and provenance are in `offline_results.json` and `targets_manifest.json`. The recorded FITS paths point to the validation machine's cache. Reacquire and verify listed response hashes before reproducing. Use RA 269.44627°, Dec 4.76820°, size 0.2°, D2; a nearby cached query has a different dataset fingerprint.
+
+A separate quantitative result is synthetic: for a four-exposure, 1.5-pixel, 1:2 blend, separation RMSE changed from 0.144 to 0.093 pixels across 24 trials, with Δχ² > 10 on all 24 held-out frames. At 0.75 pixels the model did not reliably select two sources. Label this a known-PSF injection experiment; it is not a real companion or optical super-resolution result.
+
+Suggested sequence: show observation IDs and registration, saturation flags and the systematics-limited tier, rejected spectrum points, then export the evidence snapshot and point to its hashes and provenance. IRSA returned **12 HTTP 503 responses** during the bounded target run. Stage the available cache before judging and describe those 12 cutouts as unavailable external observations. No confirmed discovery is claimed.
