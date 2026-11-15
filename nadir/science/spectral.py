@@ -46,6 +46,12 @@ def forced_photometry(obs: Observation, ra: float, dec: float, half: int = 4) ->
         out["reason"] = "pixel solid angle (OMEGA_MEDIAN) missing"
         return out
     ix, iy = int(round(x)), int(round(y))
+    # The extraction is centered on rounded pixels, not the floating position.
+    # Require the entire window: NumPy silently clips slices at the image edge,
+    # while the model grid would still include those unobserved pixels.
+    if ix - half < 0 or iy - half < 0 or ix + half >= nx or iy + half >= ny:
+        out["reason"] = "too close to the cutout edge"
+        return out
     sl = (slice(iy - half, iy + half + 1), slice(ix - half, ix + half + 1))
     img, var, bad = obs.image[sl], obs.variance[sl], obs.bad_mask[sl]
     core_bad = bad[half - 1:half + 2, half - 1:half + 2].any()
