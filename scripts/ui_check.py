@@ -91,7 +91,7 @@ def main():
         step("15b_explore_channel", page)
         page.click("[data-view=time]")
         # a non-demo preset with an unsaturated mover: van Maanen's star
-        page.click(".preset[data-id=vanmaanen]")
+        page.click("#target-btn"); page.click("#target-pop .preset[data-id=vanmaanen]")
         page.wait_for_selector("#loader", state="visible", timeout=10000)
         step("16_loading", page, wait=0.4)
         page.wait_for_selector("#loader", state="hidden", timeout=600000)

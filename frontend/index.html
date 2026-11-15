@@ -3,168 +3,276 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Project NADIR — Explore the unseen</title>
-<meta name="description" content="Watch the infrared sky move: real NASA SPHEREx observations, aligned across time.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='5' fill='%23ffb547'/%3E%3Ccircle cx='16' cy='16' r='12' fill='none' stroke='%237aa2ff' stroke-width='2'/%3E%3C/svg%3E">
+<title>Project NADIR — An Atlas of the Unseen</title>
+<meta name="description" content="Watch the infrared sky move: real NASA SPHEREx observations, aligned across time, with transparent evidence for every measurement.">
+<meta name="theme-color" content="#03050a">
+<link rel="icon" type="image/svg+xml" href="/static/img/favicon.svg">
+<link rel="preload" href="/static/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/static/css/tokens.css">
 <link rel="stylesheet" href="/static/css/nadir.css">
+<link rel="stylesheet" href="/static/css/journey.css">
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-mark" viewBox="0 0 64 64"><path d="M25.94 51.15 A22 22 0 1 1 38.06 51.15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/><ellipse cx="32" cy="30" rx="22" ry="6.2" fill="none" stroke="currentColor" stroke-opacity=".42" stroke-width="1.4"/><path d="M32 8v33" stroke="currentColor" stroke-opacity=".42" stroke-width="1.4" stroke-linecap="round"/><circle cx="32" cy="52" r="7" fill="var(--sun)" fill-opacity=".18"/><circle cx="32" cy="52" r="3.8" fill="var(--sun)"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" fill="currentColor"/></symbol>
+  <symbol id="i-prev" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-next" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-fit" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M16 16l4.5 4.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 4l9 5-9 5-9-5z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M3 14l9 5 9-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="12" cy="12" r="2" fill="currentColor"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></symbol>
+</svg>
+
 <div id="intro" class="intro" role="dialog" aria-label="Introduction" hidden>
   <div class="intro-inner">
-    <div class="intro-mark" aria-hidden="true"><span></span></div>
+    <svg class="intro-mark" aria-hidden="true"><use href="#i-mark"/></svg>
     <h1 class="intro-title">NADIR</h1>
-    <p class="intro-line">The universe is not still.<br>We are only learning how to see it move.</p>
-    <button id="intro-skip" class="btn ghost">Enter the observatory <kbd>Esc</kbd></button>
+    <p class="intro-kicker">An atlas of the unseen</p>
+    <p class="intro-line">The universe is never still.</p>
+    <button id="intro-skip" class="btn ghost sm">Enter <kbd>Esc</kbd></button>
   </div>
 </div>
 
 <header class="topbar">
-  <button class="btn sidebar-toggle" id="sidebar-toggle" aria-expanded="false" aria-controls="left">Targets &amp; layers</button>
-  <a class="brand" href="/" aria-label="Project NADIR home">
-    <span class="brand-mark" aria-hidden="true"></span>
+  <a class="brand" href="/" aria-label="NADIR home">
+    <svg class="brand-mark" aria-hidden="true"><use href="#i-mark"/></svg>
     <span class="brand-name">NADIR</span>
-    <span class="brand-sub">SPHEREx time-domain observatory</span>
+    <span class="brand-sub">An atlas of the unseen</span>
   </a>
   <nav class="modes" aria-label="Views">
-    <button data-view="time" class="mode active" aria-pressed="true">Time Machine</button>
-    <button data-view="explore" class="mode" aria-pressed="false">Explore sky</button>
+    <button data-view="time" class="mode active" aria-pressed="true">Observatory</button>
+    <button data-view="explore" class="mode" aria-pressed="false">Sky atlas</button>
     <button data-view="discover" class="mode" aria-pressed="false">Discover</button>
     <button data-view="learn" class="mode" aria-pressed="false">Learn</button>
     <button data-view="help" class="mode" aria-pressed="false">Data &amp; help</button>
   </nav>
   <form id="quick-search" class="quick-search" role="search">
+    <svg class="qs-icon" aria-hidden="true"><use href="#i-search"/></svg>
     <label class="sr-only" for="q">Object name or coordinates</label>
-    <input id="q" placeholder="Object name or RA Dec…" autocomplete="off">
-    <button class="btn primary" type="submit">Go</button>
+    <input id="q" placeholder="Search a star, or RA Dec" autocomplete="off" spellcheck="false">
+    <kbd class="qs-kbd" aria-hidden="true">/</kbd>
   </form>
+  <button class="btn accent sm tour-btn" id="start-tour">Guided demo</button>
 </header>
 
 <div class="app" id="app">
-  <aside class="left" id="left" aria-label="Controls">
-    <section class="panel welcome" id="welcome">
-      <h2>Your window into the infrared sky</h2>
-      <p>Watch real observations change. Click a star to see what the evidence supports.</p>
-      <button class="btn" id="start-tour">Guide me</button>
-      <button class="learn-link" id="welcome-dismiss">Dismiss</button>
-    </section>
-    <section class="panel">
-      <h2>Target</h2>
-      <div class="presets" id="presets" role="list"></div>
-      <form id="coord-form" class="coords">
-        <label>RA <span class="unit">deg</span><input id="ra" inputmode="decimal" required></label>
-        <label>Dec <span class="unit">deg</span><input id="dec" inputmode="decimal" required></label>
-        <label>Field <span class="unit">deg</span>
-          <select id="size"><option value="0.1">0.1°</option><option value="0.2" selected>0.2°</option><option value="0.3">0.3°</option><option value="0.5">0.5°</option></select>
-        </label>
-        <label>Detector
-          <select id="band">
-            <option value="D1">D1 · 0.75–1.09 µm</option><option value="D2" selected>D2 · 1.10–1.62 µm</option>
-            <option value="D3">D3 · 1.63–2.41 µm</option><option value="D4">D4 · 2.42–3.82 µm</option>
-            <option value="D5">D5 · 3.83–4.41 µm</option><option value="D6">D6 · 4.42–5.00 µm</option>
-          </select>
-        </label>
-        <button class="btn primary wide" type="submit">Observe this field</button>
-      </form>
-      <p class="coord-readout" id="target-readout"></p>
-      <p class="hint">Search a name or decimal ICRS degrees: <span class="num">269.44627, 4.76820</span>. RA 0–360°, Dec −90–90°. Names require SIMBAD access.</p>
-    </section>
-
-    <section class="panel">
-      <h2>Overlays</h2>
-      <div class="seg visual-presets" aria-label="Visualization preset">
-        <button data-visual="clean" aria-pressed="false">Clean</button>
-        <button data-visual="discovery" aria-pressed="true">Discovery</button>
-        <button data-visual="research" aria-pressed="false">Research</button>
-      </div>
-      <div class="toggles" id="overlay-toggles">
-        <label><input type="checkbox" data-ov="sources" checked> NADIR sources</label>
-        <label><input type="checkbox" data-ov="tracks" checked> Motion tracks</label>
-        <label><input type="checkbox" data-ov="grid" checked> RA/Dec grid</label>
-        <label><input type="checkbox" data-ov="gaia"> Gaia DR3 <span class="tag cat">catalog</span></label>
-        <label><input type="checkbox" data-ov="simbad"> SIMBAD names <span class="tag cat">catalog</span></label>
-        <label><input type="checkbox" data-ov="twomass"> 2MASS (~1999) <span class="tag cat">catalog</span></label>
-        <label><input type="checkbox" data-ov="allwise"> AllWISE (~2010) <span class="tag cat">catalog</span></label>
-      </div>
-      <p class="hint" id="catalog-status"></p>
-    </section>
-
-    <section class="panel">
-      <h2>Show sources</h2>
-      <div class="chips" id="tier-filter" role="group" aria-label="Evidence filter"></div>
-      <div class="chips" id="class-filter" role="group" aria-label="Catalog class filter"></div>
-    </section>
-
-    <section class="panel provenance" id="provenance-panel" aria-live="polite"></section>
-  </aside>
-
   <main class="stage" id="stage">
     <div class="viewport" id="viewport">
       <canvas id="sky" tabindex="0" aria-label="Sky image. Drag to pan, scroll or +/- to zoom, click a source to inspect it."></canvas>
-      <div class="hud hud-tl" id="hud-frame"></div>
-      <div class="hud hud-tr" id="hud-legend"></div>
-      <div class="hud hud-bl" id="hud-cursor"></div>
-      <div class="hud hud-br zoom-ctl">
-        <button class="icon" id="zoom-in" aria-label="Zoom in">+</button>
-        <button class="icon" id="zoom-out" aria-label="Zoom out">−</button>
-        <button class="icon" id="zoom-fit" aria-label="Fit field">⤢</button>
+
+      <div class="hud hud-tl">
+        <div class="pop-anchor">
+          <button class="target-btn" id="target-btn" aria-expanded="false" aria-controls="target-pop">
+            <span class="target-kicker">SPHEREx field</span>
+            <span class="target-name" id="target-name">Loading…</span>
+            <span class="target-meta" id="target-meta"></span>
+            <svg class="chev" aria-hidden="true"><use href="#i-chev"/></svg>
+          </button>
+          <div class="popover target-pop" id="target-pop" hidden role="dialog" aria-label="Choose a target">
+            <h3 class="pop-title">Verified targets</h3>
+            <p class="pop-sub">Real SPHEREx observations, cached locally so they open instantly.</p>
+            <div class="presets" id="presets" role="list"></div>
+            <details class="pop-adv">
+              <summary>Coordinates, detector &amp; field size</summary>
+              <form id="coord-form" class="coords">
+                <label>RA <span class="unit">deg</span><input id="ra" inputmode="decimal" required></label>
+                <label>Dec <span class="unit">deg</span><input id="dec" inputmode="decimal" required></label>
+                <label>Field
+                  <select id="size"><option value="0.1">0.1°</option><option value="0.2" selected>0.2°</option><option value="0.3">0.3°</option><option value="0.5">0.5°</option></select>
+                </label>
+                <label>Detector
+                  <select id="band">
+                    <option value="D1">D1 · 0.75–1.09 µm</option><option value="D2" selected>D2 · 1.10–1.62 µm</option>
+                    <option value="D3">D3 · 1.63–2.41 µm</option><option value="D4">D4 · 2.42–3.82 µm</option>
+                    <option value="D5">D5 · 3.83–4.41 µm</option><option value="D6">D6 · 4.42–5.00 µm</option>
+                  </select>
+                </label>
+                <button class="btn primary wide" type="submit">Observe this field</button>
+              </form>
+              <p class="coord-readout" id="target-readout"></p>
+              <p class="hint">Decimal ICRS degrees, e.g. <span class="num">269.44627, 4.76820</span>. Uncached fields download from NASA/IPAC IRSA (1–2 min). Names use SIMBAD.</p>
+            </details>
+          </div>
+        </div>
+        <div class="frame-cap" id="hud-frame" aria-live="polite"></div>
       </div>
+
+      <div class="hud hud-tr">
+        <div class="seg visual-presets" role="group" aria-label="Visualization preset">
+          <button data-visual="clean" aria-pressed="false" title="The sky alone">Clean</button>
+          <button data-visual="discovery" aria-pressed="true" title="Moving and notable sources">Discovery</button>
+          <button data-visual="research" aria-pressed="false" title="Every source, catalogs and labels">Research</button>
+        </div>
+        <div class="pop-anchor">
+          <button class="btn sm icon-label" id="layers-btn" aria-expanded="false" aria-controls="layers-pop"><svg aria-hidden="true"><use href="#i-layers"/></svg><span>Layers</span></button>
+          <div class="popover layers-pop" id="layers-pop" hidden role="dialog" aria-label="Layers and rendering">
+            <h3 class="pop-title">Image rendering</h3>
+            <div class="seg wide" role="group" aria-label="Rendering mode" id="render-mode">
+              <button data-render="presentation" aria-pressed="true">Presentation</button>
+              <button data-render="science" aria-pressed="false">Scientific pixels</button>
+            </div>
+            <p class="hint" id="render-hint"></p>
+            <h3 class="pop-title">Overlays</h3>
+            <div class="toggles" id="overlay-toggles">
+              <label><input type="checkbox" data-ov="sources" checked><i class="sw sw-moving"></i> Moving &amp; notable sources</label>
+              <label><input type="checkbox" data-ov="refs"><i class="sw sw-ref"></i> Reference stars</label>
+              <label><input type="checkbox" data-ov="tracks" checked><i class="sw sw-track"></i> Motion vectors &amp; history</label>
+              <label><input type="checkbox" data-ov="grid" checked><i class="sw sw-grid"></i> RA/Dec grid</label>
+              <label><input type="checkbox" data-ov="simbad"><i class="sw sw-simbad"></i> SIMBAD names <span class="tag cat">catalog</span></label>
+              <label><input type="checkbox" data-ov="gaia"><i class="sw sw-gaia"></i> Gaia DR3 <span class="tag cat">catalog</span></label>
+              <label><input type="checkbox" data-ov="twomass"><i class="sw sw-2mass"></i> 2MASS (~1999) <span class="tag cat">catalog</span></label>
+              <label><input type="checkbox" data-ov="allwise"><i class="sw sw-wise"></i> AllWISE (~2010) <span class="tag cat">catalog</span></label>
+            </div>
+            <p class="hint" id="catalog-status"></p>
+            <details class="pop-adv">
+              <summary>Filter by evidence &amp; class</summary>
+              <div class="chips" id="tier-filter" role="group" aria-label="Evidence filter"></div>
+              <div class="chips" id="class-filter" role="group" aria-label="Catalog class filter"></div>
+            </details>
+          </div>
+        </div>
+      </div>
+
+      <div class="hud hud-bl">
+        <div class="legend" id="hud-legend"></div>
+        <div class="pop-anchor up">
+          <button class="data-badge" id="data-badge" aria-expanded="false" aria-controls="provenance-panel"><i class="live-dot"></i><span id="data-badge-text">Connecting to NADIR…</span></button>
+          <div class="popover provenance" id="provenance-panel" hidden role="dialog" aria-label="Data in view"></div>
+        </div>
+        <div class="cursor-read" id="hud-cursor"></div>
+      </div>
+      <div class="hud hud-br zoom-ctl">
+        <button class="icon-btn glass" id="zoom-in" aria-label="Zoom in"><svg><use href="#i-plus"/></svg></button>
+        <button class="icon-btn glass" id="zoom-out" aria-label="Zoom out"><svg><use href="#i-minus"/></svg></button>
+        <button class="icon-btn glass" id="zoom-fit" aria-label="Fit field"><svg><use href="#i-fit"/></svg></button>
+      </div>
+
+      <section class="welcome" id="welcome" hidden aria-label="Welcome">
+        <p class="welcome-kicker">Real NASA SPHEREx infrared data</p>
+        <h2 class="welcome-title">The universe is never still.</h2>
+        <p class="welcome-text" id="welcome-text">These are actual SPHEREx images of one patch of sky, taken months apart and aligned on the stars. Press play and watch one star move.</p>
+        <div class="welcome-actions">
+          <button class="btn accent" id="welcome-play"><svg aria-hidden="true"><use href="#i-play"/></svg>Watch it move</button>
+          <button class="btn ghost" id="welcome-tour">60-second tour</button>
+          <button class="link-btn" id="welcome-dismiss">Dismiss</button>
+        </div>
+      </section>
+
+      <section class="lessons" id="lessons" hidden aria-label="Explore it yourself"></section>
       <div class="loader" id="loader" hidden role="status" aria-live="polite"></div>
       <div class="tour" id="tour" hidden></div>
     </div>
+
     <div class="explore" id="explore" hidden>
       <div id="aladin" class="aladin"></div>
+      <aside class="atlas-panel" id="atlas-panel" aria-label="Sky atlas targets"></aside>
       <div class="explore-bar">
-        <label class="lambda">Wavelength <input type="range" id="slice" min="0" max="101" value="23" aria-label="SPHEREx wavelength channel"><output id="slice-out"></output></label>
+        <label class="lambda"><span>Wavelength</span><input type="range" id="slice" min="0" max="101" value="23" aria-label="SPHEREx wavelength channel"><output id="slice-out"></output></label>
+        <div class="seg" role="group" aria-label="Atlas imagery" id="atlas-survey">
+          <button data-survey="spherex" aria-pressed="true">SPHEREx DR1</button>
+          <button data-survey="2mass" aria-pressed="false">2MASS context</button>
+        </div>
         <span class="hint" id="explore-hint">SPHEREx DR1 all-sky cube (IRSA HiPS), 102 wavelengths. Click the sky to choose a target.</span>
         <button class="btn primary" id="explore-go" disabled>Observe here</button>
       </div>
     </div>
     <div class="sheet" id="sheet" hidden></div>
 
-    <footer class="timeline" id="timeline" aria-label="Observation timeline">
-      <div class="tl-controls">
-        <div class="seg" role="group" aria-label="Comparison mode">
+    <section class="dock" id="timeline" aria-label="Time Machine">
+      <div class="dock-main">
+        <div class="transport">
+          <button class="icon-btn" id="step-prev" aria-label="Previous observation"><svg><use href="#i-prev"/></svg></button>
+          <button class="play-btn" id="play" aria-label="Play observations"><svg><use href="#i-play"/></svg></button>
+          <button class="icon-btn" id="step-next" aria-label="Next observation"><svg><use href="#i-next"/></svg></button>
+        </div>
+        <div class="now" id="epoch-readout" aria-live="polite"></div>
+        <div class="dock-tools">
+          <label class="pill-select" title="Motion keeps wavelengths within 2% so brightness changes are not colour changes"><span class="sr-only">Playback wavelengths</span>
+            <select id="playback-mode"><option value="motion">Motion · matched λ</option><option value="spectral">All wavelengths</option></select>
+          </label>
+          <label class="speed"><span>Speed</span><input type="range" id="speed" min="1" max="12" value="4" aria-label="Frames per second"><output id="speed-out">4/s</output></label>
+          <button class="icon-btn" id="dock-expand" aria-expanded="false" aria-controls="dock-detail" aria-label="Show every exposure"><svg><use href="#i-chev"/></svg></button>
+        </div>
+      </div>
+      <div class="tl-track" id="tl-track"></div>
+      <div class="dock-compare">
+        <div class="seg cmp-seg" role="group" aria-label="View mode">
+          <button data-cmp="play">Timelapse</button>
           <button data-cmp="a" class="active">A</button>
           <button data-cmp="b">B</button>
           <button data-cmp="blink">Blink</button>
           <button data-cmp="overlay">Overlay</button>
           <button data-cmp="diff">B − A</button>
-          <button data-cmp="play">Animate</button>
         </div>
-        <button class="icon" id="step-prev" aria-label="Previous observation">‹</button>
-        <button class="icon play" id="play" aria-label="Play or pause observations">▶</button>
-        <button class="icon" id="step-next" aria-label="Next observation">›</button>
-        <label class="speed">Speed <input type="range" id="speed" min="1" max="12" value="4" aria-label="Frames per second"><output id="speed-out">4/s</output></label>
-        <label class="speed" id="opacity-ctl" hidden>B opacity <input type="range" id="opacity" min="0" max="100" value="50"></label>
-        <label class="matched">Playback <select id="playback-mode"><option value="motion">Motion · matched λ</option><option value="spectral">Spectral exploration · all λ</option></select></label>
+        <label class="speed" id="opacity-ctl" hidden><span>B opacity</span><input type="range" id="opacity" min="0" max="100" value="50"></label>
         <span class="tl-info" id="tl-info"></span>
+        <div class="ab-actions"><button class="btn sm" id="frame-a" title="Shift-click a tick also sets A">Set as A</button><button class="btn sm" id="frame-b" title="Alt-click a tick also sets B">Set as B</button></div>
       </div>
-      <p class="playback-note" id="playback-note">Actual epochs only; one image per step. Gaps are shown on the time axis.</p>
-      <div class="epoch-actions"><span id="epoch-readout"></span><button class="btn" id="frame-a">Set current as A</button><button class="btn" id="frame-b">Set current as B</button></div>
-      <div class="tl-track" id="tl-track" role="listbox" aria-label="Epochs"></div>
-    </footer>
+      <div class="dock-detail" id="dock-detail" hidden>
+        <p class="playback-note" id="playback-note">Actual epochs only; one image per step. Gaps are shown on the time axis.</p>
+        <div class="visit-strip" id="visit-strip"></div>
+      </div>
+    </section>
   </main>
 
   <aside class="inspector" id="inspector" aria-label="Object investigation" hidden>
     <header class="insp-head">
-      <div>
+      <div class="insp-id">
         <div class="insp-kicker" id="insp-kicker">Object</div>
         <h2 id="insp-title">—</h2>
+        <div class="insp-class" id="insp-class"></div>
       </div>
-      <button class="icon" id="insp-close" aria-label="Close investigation panel">×</button>
+      <button class="icon-btn" id="insp-close" aria-label="Close investigation panel"><svg><use href="#i-close"/></svg></button>
     </header>
-    <nav class="tabs" role="tablist">
+    <div class="investigation-summary" id="investigation-summary"></div>
+    <details class="explanation" id="explanation"><summary><span class="ex-icon" aria-hidden="true">?</span>Explain this observation</summary><div class="seg" role="group" aria-label="Explanation depth"><button data-explain="explore" aria-pressed="true">In plain language</button><button data-explain="research" aria-pressed="false">For researchers</button></div><div id="explanation-body"></div></details>
+    <nav class="tabs" role="tablist" aria-label="Investigation sections">
       <button role="tab" data-tab="overview" class="active" aria-selected="true">Overview</button>
       <button role="tab" data-tab="motion" aria-selected="false">Motion</button>
       <button role="tab" data-tab="spectrum" aria-selected="false">Spectrum</button>
       <button role="tab" data-tab="obs" aria-selected="false">Observations</button>
       <button role="tab" data-tab="notes" aria-selected="false">Notes</button>
     </nav>
-    <div class="investigation-summary" id="investigation-summary"></div>
-    <details class="explanation" id="explanation"><summary>Explain this observation</summary><div class="seg"><button data-explain="explore" aria-pressed="true">Explore</button><button data-explain="research" aria-pressed="false">Research</button></div><div id="explanation-body"></div></details>
     <div class="insp-body" id="insp-body" role="tabpanel"></div>
   </aside>
 </div>
+<section class="journey" id="journey" hidden aria-label="NADIR Journey: guided show">
+  <div class="jr-vignette" aria-hidden="true"></div>
+  <header class="jr-top">
+    <div class="jr-title">
+      <p class="jr-eyebrow"><svg class="jr-mark" aria-hidden="true"><use href="#i-mark"/></svg>NADIR Journeys <span class="jr-dot" aria-hidden="true">·</span> <span id="jr-chapter"></span></p>
+      <h2 id="jr-name"></h2>
+      <p class="jr-scene"><span id="jr-scene"></span><span class="jr-sub" id="jr-sub"></span></p>
+    </div>
+    <p class="jr-stamp" id="jr-stamp" hidden></p>
+    <button class="btn ghost sm jr-exit" id="jr-exit">Exit journey <kbd>Esc</kbd></button>
+  </header>
+  <div class="jr-flourish" id="jr-flourish" aria-hidden="true"></div>
+  <aside class="jr-panel" id="jr-panel" aria-label="Evidence for this scene" hidden></aside>
+  <footer class="jr-bottom">
+    <p class="jr-caption" id="jr-caption" aria-live="polite"></p>
+    <div class="jr-end" id="jr-end" hidden>
+      <button class="btn accent" data-jr-action="explore">Explore it yourself</button>
+      <button class="btn" data-jr-action="evidence">View the scientific evidence</button>
+      <button class="btn ghost" data-jr-action="return">Return to the observatory</button>
+    </div>
+    <div class="jr-controls" role="toolbar" aria-label="Journey controls">
+      <button class="icon-btn glass" id="jr-prev" aria-label="Previous scene"><svg><use href="#i-prev"/></svg></button>
+      <button class="jr-play" id="jr-play" aria-label="Pause journey"><svg><use href="#i-pause"/></svg></button>
+      <button class="icon-btn glass" id="jr-next" aria-label="Next scene"><svg><use href="#i-next"/></svg></button>
+      <ol class="jr-progress" id="jr-progress" aria-label="Scenes"></ol>
+      <button class="btn ghost sm" id="jr-evidence" aria-expanded="false">Evidence</button>
+      <button class="btn ghost sm" id="jr-voice" aria-pressed="false" title="Read captions aloud with your browser's speech synthesis (V)">Voice off</button>
+      <button class="btn ghost sm" id="jr-replay">Replay</button>
+    </div>
+  </footer>
+</section>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 <script type="module" src="/static/js/main.js"></script>
 </body>

@@ -1,4 +1,4 @@
-// The Time Machine viewport: registered SPHEREx frames on a TAN (north-up,
+// The Observatory viewport: registered SPHEREx frames on a TAN (north-up,
 // east-left) grid, with pan/zoom, an RA/Dec graticule and source overlays.
 //
 // Coordinate systems are kept distinct:
@@ -6,10 +6,20 @@
 //   image space (u, v)   u = x + 0.5, v = ny - (y + 0.5)  (PNG rows run north->south)
 //   screen (sx, sy)      sx = ox + k u, sy = oy + k v
 //   sky (ra, dec)        via the gnomonic projection below
+//
+// Rendering modes (display only — measurements never see these pixels):
+//   presentation  flagged single pixels are filled from their valid neighbours,
+//                 large no-data areas become transparent, a gentle midnight→warm
+//                 tone curve is applied, and the image is resampled smoothly.
+//   science       the server's sampled pixels exactly, nearest-neighbour, with
+//                 flagged pixels in navy and saturated cores in white.
 import { S, TIERS, emit } from "./state.js";
-import { fmt, sexa } from "./fmt.js";
+import { fmt, sexa, displayName } from "./fmt.js";
+import { C, alpha, FONT } from "./tokens.js";
 
 const D2R = Math.PI / 180;
+const NOTABLE = new Set(["significant", "systematics_limited", "candidate", "rejected"]);
+const REDUCED = typeof matchMedia !== "undefined" && matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 export class Tan {
   constructor(g) { this.ra0 = g.crval[0]; this.dec0 = g.crval[1]; this.crpix = g.crpix; this.cdelt = g.cdelt; this.nx = g.nx; this.ny = g.ny; }
@@ -29,18 +39,110 @@ export class Tan {
   }
 }
 
+// Presentation tone curve: deep midnight blacks rising to a warm off-white.
+// Monotonic in every channel, so relative brightness order is preserved.
+const LUT = (() => {
+  const t = new Uint8ClampedArray(256 * 3);
+  for (let v = 0; v < 256; v++) {
+    const x = v / 255;
+    t[v * 3] = 5 + 250 * Math.pow(x, 1.1);
+    t[v * 3 + 1] = 8 + 239 * Math.pow(x, 1.02);
+    t[v * 3 + 2] = 17 + 214 * Math.pow(x, 0.9);
+  }
+  return t;
+})();
+
+/** Mitchell–Netravali (B = C = 1/3) cubic kernel: smooth, minimal ringing around stars. */
+function mitchell(x) {
+  x = Math.abs(x);
+  if (x < 1) return (7 * x * x * x - 12 * x * x + 16 / 3) / 6;
+  if (x < 2) return (-7 / 3 * x * x * x + 12 * x * x - 20 * x + 32 / 3) / 6;
+  return 0;
+}
+
+/**
+ * Display-only presentation of a server frame (palette PNG: navy = no data,
+ * warm white = saturated).  Returns RGBA at `scale`× the native size:
+ *  1. isolated flagged pixels are filled from ≥3 valid neighbours (≤3 passes);
+ *  2. the grey values are resampled with a bicubic kernel, alpha-weighted so
+ *     large no-data areas stay transparent instead of bleeding;
+ *  3. a monotonic tone curve maps grey to midnight → warm white.
+ * Nothing here is used for measurement; it cannot add resolution.
+ */
+export function presentFrame(data, w, h, scale = 3) {
+  const n = w * h, val = new Float32Array(n), ok = new Uint8Array(n);
+  for (let i = 0; i < n; i++) {
+    const r = data[i * 4], g = data[i * 4 + 1], b = data[i * 4 + 2];
+    const noData = Math.abs(r - 16) <= 3 && Math.abs(g - 20) <= 3 && Math.abs(b - 44) <= 3;
+    ok[i] = noData ? 0 : 1; val[i] = r;
+  }
+  for (let pass = 0; pass < 3; pass++) {
+    const fill = [];
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+      const i = y * w + x; if (ok[i]) continue;
+      let s = 0, c = 0;
+      for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+        const xx = x + dx, yy = y + dy; if ((!dx && !dy) || xx < 0 || yy < 0 || xx >= w || yy >= h) continue;
+        const j = yy * w + xx; if (ok[j]) { s += val[j]; c++; }
+      }
+      if (c >= 3) fill.push(i, s / c);
+    }
+    if (!fill.length) break;
+    for (let k = 0; k < fill.length; k += 2) { val[fill[k]] = fill[k + 1]; ok[fill[k]] = 1; }
+  }
+  for (let i = 0; i < n; i++) if (!ok[i]) val[i] = 0;
+  // separable bicubic: horizontal pass then vertical, on (value·alpha, alpha)
+  const W = w * scale, H = h * scale, taps = (len, L) => {
+    const idx = new Int32Array(len * 4), wt = new Float32Array(len * 4);
+    for (let o = 0; o < len; o++) {
+      const src = (o + 0.5) / scale - 0.5, base = Math.floor(src);
+      let sum = 0;
+      for (let t = 0; t < 4; t++) { const j = base - 1 + t; idx[o * 4 + t] = Math.max(0, Math.min(L - 1, j)); wt[o * 4 + t] = mitchell(src - j); sum += wt[o * 4 + t]; }
+      for (let t = 0; t < 4; t++) wt[o * 4 + t] /= sum;
+    }
+    return [idx, wt];
+  };
+  const [xi, xw] = taps(W, w), [yi, yw] = taps(H, h);
+  const hv = new Float32Array(W * h), ha = new Float32Array(W * h);
+  for (let y = 0; y < h; y++) {
+    const row = y * w;
+    for (let x = 0; x < W; x++) {
+      let v = 0, a = 0;
+      for (let t = 0; t < 4; t++) { const j = row + xi[x * 4 + t], q = xw[x * 4 + t]; a += q * ok[j]; v += q * val[j]; }
+      hv[y * W + x] = v; ha[y * W + x] = a;
+    }
+  }
+  const out = new Uint8ClampedArray(W * H * 4);
+  for (let y = 0; y < H; y++) {
+    for (let x = 0; x < W; x++) {
+      let v = 0, a = 0;
+      for (let t = 0; t < 4; t++) { const j = yi[y * 4 + t] * W + x, q = yw[y * 4 + t]; a += q * ha[j]; v += q * hv[j]; }
+      const o = (y * W + x) * 4;
+      if (a < 0.5) { out[o + 3] = 0; continue; }
+      const g = Math.max(0, Math.min(255, Math.round(v / a)));
+      out[o] = LUT[g * 3]; out[o + 1] = LUT[g * 3 + 1]; out[o + 2] = LUT[g * 3 + 2]; out[o + 3] = Math.min(255, Math.round(a * 255));
+    }
+  }
+  return { data: out, width: W, height: H };
+}
+
 export class SkyView {
   constructor(canvas) {
-    this.c = canvas; this.ctx = canvas.getContext("2d");
-    this.images = new Map(); this.diff = null; this.k = 1; this.ox = 0; this.oy = 0;
-    this.hover = null; this.flash = null;
+    // CPU-backed: frames must be pixel-identical across redraws (blink A === A),
+    // which GPU-composited resampling does not guarantee once pixels are read back.
+    this.c = canvas; this.ctx = canvas.getContext("2d", { willReadFrequently: true });
+    this.images = new Map(); this.proc = new Map(); this.diff = null; this.k = 1; this.ox = 0; this.oy = 0;
+    this.hover = null; this.flashAt = 0;
+    this.journey = null; // NADIR Journeys annotation layer (see drawJourney)
+    this._fly = null; this._animUntil = 0;
     this._bind();
     new ResizeObserver(() => this.resize()).observe(canvas);
   }
   setField(f) {
-    this.f = f; this.tan = new Tan(f.grid); this.images.clear(); this.diff = null; this.userMoved = false;
+    this.f = f; this.tan = new Tan(f.grid); this.images.clear(); this.proc.clear(); this.diff = null; this.userMoved = false; this.hover = null;
     this.byId = new Map(f.sources.map((s) => [s.id, s]));
     this.resize(); this.fit();
+    if (!REDUCED) { this.c.classList.remove("resolving"); void this.c.offsetWidth; this.c.classList.add("resolving"); }
   }
   resize() {
     const r = this.c.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
@@ -52,7 +154,7 @@ export class SkyView {
     if (!this.f) return;
     this.userMoved = false;
     const W = this.c.width / this.dpr, H = this.c.height / this.dpr, g = this.f.grid;
-    this.k = Math.min(W / g.nx, H / g.ny) * 0.96; this.ox = (W - g.nx * this.k) / 2; this.oy = (H - g.ny * this.k) / 2;
+    this.k = Math.min(W / g.nx, H / g.ny) * 0.94; this.ox = (W - g.nx * this.k) / 2; this.oy = (H - g.ny * this.k) / 2;
     this.draw();
   }
   zoomAt(factor, sx, sy) {
@@ -85,7 +187,7 @@ export class SkyView {
   async preload(indices) {
     const field = this.f;
     const queue = [...indices];
-    await Promise.all(Array.from({length: 3}, async () => {
+    await Promise.all(Array.from({ length: 3 }, async () => {
       while (queue.length && this.f === field) {
         try { await this.loadFrame(queue.shift()); } catch (_) {}
       }
@@ -101,6 +203,22 @@ export class SkyView {
     return ready;
   }
   _img(i) { const e = this.images.get(i); return e && e.img.complete && e.img.naturalWidth ? e.img : null; }
+  /** the drawable for frame i in the current rendering mode */
+  _frame(i) {
+    const img = this._img(i); if (!img) return null;
+    if (S.render === "science") return img;
+    let p = this.proc.get(i);
+    if (!p) {
+      const src = document.createElement("canvas"); src.width = img.naturalWidth; src.height = img.naturalHeight;
+      const sx = src.getContext("2d", { willReadFrequently: true }); sx.drawImage(img, 0, 0);
+      const out = presentFrame(sx.getImageData(0, 0, src.width, src.height).data, src.width, src.height, src.width > 600 ? 2 : 3);
+      const cv = document.createElement("canvas"); cv.width = out.width; cv.height = out.height;
+      cv.getContext("2d").putImageData(new ImageData(out.data, out.width, out.height), 0, 0);
+      p = cv; this.proc.set(i, p);
+      if (this.proc.size > 24) this.proc.delete(this.proc.keys().next().value);
+    }
+    return p;
+  }
 
   // which frame(s) to draw for the current comparison mode
   current() {
@@ -117,84 +235,112 @@ export class SkyView {
     const ctx = this.ctx, dpr = this.dpr || 1;
     if (!ctx) return;
     ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.fillStyle = "#020308"; ctx.fillRect(0, 0, this.c.width, this.c.height);
+    ctx.clearRect(0, 0, this.c.width, this.c.height);
     if (!this.f) return;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const g = this.f.grid, W = g.nx * this.k, H = g.ny * this.k;
-    ctx.imageSmoothingEnabled = this.k < 3;
+    const g = this.f.grid, W = g.nx * this.k, H = g.ny * this.k, sci = S.render === "science";
+    ctx.imageSmoothingEnabled = !sci || this.k < 1;
+    ctx.imageSmoothingQuality = "high";
+    // footprint
+    ctx.fillStyle = sci ? "#0a0f1e" : C("ink-0"); ctx.fillRect(this.ox, this.oy, W, H);
     const cur = this.current();
     if (cur.diff) { if (this.diff?.img.complete && this.diff.img.naturalWidth) ctx.drawImage(this.diff.img, this.ox, this.oy, W, H); }
     else {
-      const base = this._img(cur.base);
+      const base = this._frame(cur.base);
       if (base) ctx.drawImage(base, this.ox, this.oy, W, H);
-      else { ctx.fillStyle = "#7a849c"; ctx.font = "12px system-ui"; ctx.fillText("loading frame…", this.ox + 12, this.oy + 20); }
-      if (cur.top != null) { const top = this._img(cur.top); if (top) { ctx.globalAlpha = cur.alpha; ctx.drawImage(top, this.ox, this.oy, W, H); ctx.globalAlpha = 1; } }
+      else { ctx.fillStyle = C("text-3"); ctx.font = `13px ${FONT.sans}`; ctx.fillText("Loading observation…", this.ox + 14, this.oy + 24); }
+      if (cur.top != null) { const top = this._frame(cur.top); if (top) { ctx.globalAlpha = cur.alpha; ctx.drawImage(top, this.ox, this.oy, W, H); ctx.globalAlpha = 1; } }
     }
-    ctx.strokeStyle = "rgba(122,162,255,.25)"; ctx.lineWidth = 1; ctx.strokeRect(this.ox, this.oy, W, H);
+    if (sci && this.k >= 14) this.drawPixelGrid();
+    ctx.strokeStyle = alpha(C("sky"), .22); ctx.lineWidth = 1; ctx.strokeRect(this.ox + .5, this.oy + .5, W - 1, H - 1);
+    this.labelBoxes = [];
     if (S.overlays.grid) this.drawGraticule();
     this.drawCatalogs();
-    if (S.overlays.sources) this.drawSources();
-    this.drawSelected();
+    this.drawSources();
+    this.drawHover();
+    if (this.journey) this.drawJourney(); else this.drawSelected();
     this.drawScaleBar();
+  }
+
+  drawPixelGrid() {
+    const ctx = this.ctx, g = this.f.grid, W = this.c.width / this.dpr, H = this.c.height / this.dpr;
+    ctx.save(); ctx.strokeStyle = "rgba(255,255,255,.06)"; ctx.lineWidth = 1; ctx.beginPath();
+    const x0 = Math.max(0, Math.floor(-this.ox / this.k)), x1 = Math.min(g.nx, Math.ceil((W - this.ox) / this.k));
+    const y0 = Math.max(0, Math.floor(-this.oy / this.k)), y1 = Math.min(g.ny, Math.ceil((H - this.oy) / this.k));
+    for (let u = x0; u <= x1; u++) { const x = Math.round(this.ox + u * this.k) + .5; ctx.moveTo(x, this.oy + y0 * this.k); ctx.lineTo(x, this.oy + y1 * this.k); }
+    for (let v = y0; v <= y1; v++) { const y = Math.round(this.oy + v * this.k) + .5; ctx.moveTo(this.ox + x0 * this.k, y); ctx.lineTo(this.ox + x1 * this.k, y); }
+    ctx.stroke(); ctx.restore();
   }
 
   drawGraticule() {
     const ctx = this.ctx, t = this.tan, g = this.f.grid;
-    const fovArcmin = g.nx * g.pixel_scale_arcsec / 60 / Math.max(1, this.k / ((this.c.width / this.dpr) / g.nx));
+    const visW = (this.c.width / this.dpr) / this.k * g.pixel_scale_arcsec / 60; // arcmin across the view
     const steps = [0.25, 0.5, 1, 2, 5, 10, 15, 30, 60];
-    const stepDec = steps.find((s) => fovArcmin / s <= 7) || 60; // arcmin
-    const cosd = Math.cos(t.dec0 * D2R), stepRa = stepDec / Math.max(cosd, 0.05); // arcmin of RA
+    const stepDec = steps.find((s) => Math.min(visW, g.nx * g.pixel_scale_arcsec / 60) / s <= 6) || 60; // arcmin
+    const cosd = Math.cos(t.dec0 * D2R), stepRa = stepDec / Math.max(cosd, 0.05);
     const corners = [[0, 0], [g.nx, 0], [0, g.ny], [g.nx, g.ny], [g.nx / 2, 0], [g.nx / 2, g.ny], [0, g.ny / 2], [g.nx, g.ny / 2]].map(([x, y]) => t.pixToSky(x, y));
     let decs = corners.map((c) => c[1]), ras = corners.map((c) => c[0]);
     if (Math.max(...ras) - Math.min(...ras) > 180) ras = ras.map((r) => (r > 180 ? r - 360 : r));
     const d0 = Math.min(...decs), d1 = Math.max(...decs), r0 = Math.min(...ras), r1 = Math.max(...ras);
-    ctx.save(); ctx.lineWidth = 1; ctx.strokeStyle = "rgba(122,162,255,.22)"; ctx.fillStyle = "rgba(170,179,200,.75)"; ctx.font = "10.5px ui-monospace, Menlo, monospace";
-    const sd = stepDec / 60, sr = stepRa / 60;
+    const Wv = this.c.width / this.dpr, Hv = this.c.height / this.dpr;
+    const left = Math.max(this.ox, 0), bottom = Math.min(this.oy + g.ny * this.k, Hv);
+    ctx.save(); ctx.lineWidth = 1; ctx.strokeStyle = alpha(C("sky"), .13); ctx.font = `11px ${FONT.mono}`;
+    const sd = stepDec / 60, sr = stepRa / 60, labels = [];
     for (let dec = Math.ceil(d0 / sd) * sd; dec <= d1; dec += sd) {
-      ctx.beginPath(); let first = true, lab = null;
-      for (let i = 0; i <= 40; i++) { const ra = r0 + (r1 - r0) * i / 40; const [x, y] = t.skyToPix(ra, dec); const [sx, sy] = this.gridToScreen(x, y); first ? ctx.moveTo(sx, sy) : ctx.lineTo(sx, sy); first = false; if (x >= 0 && x <= g.nx && !lab) lab = [sx, sy]; }
+      ctx.beginPath(); let first = true;
+      for (let i = 0; i <= 40; i++) { const ra = r0 + (r1 - r0) * i / 40; const [x, y] = t.skyToPix(ra, dec); const [sx, sy] = this.gridToScreen(x, y); first ? ctx.moveTo(sx, sy) : ctx.lineTo(sx, sy); first = false; }
       ctx.stroke();
-      const [lx, ly] = this.gridToScreen(0, t.skyToPix(t.ra0, dec)[1]);
-      if (ly > this.oy + 8 && ly < this.oy + g.ny * this.k - 4) ctx.fillText(decLabel(dec, sd), Math.max(lx + 4, 4), ly - 3);
+      const [, ly] = this.gridToScreen(0, t.skyToPix(t.ra0, dec)[1]);
+      if (ly > this.oy + 14 && ly < bottom - 14 && ly > 90) labels.push([decLabel(dec, sd), left + 6, ly - 4]);
     }
     for (let ra = Math.ceil(r0 / sr) * sr; ra <= r1; ra += sr) {
       ctx.beginPath(); let first = true;
       for (let i = 0; i <= 40; i++) { const dec = d0 + (d1 - d0) * i / 40; const [x, y] = t.skyToPix(ra, dec); const [sx, sy] = this.gridToScreen(x, y); first ? ctx.moveTo(sx, sy) : ctx.lineTo(sx, sy); first = false; }
       ctx.stroke();
-      const [x] = t.skyToPix(ra, t.dec0); const [sx, sy] = this.gridToScreen(x, 0);
-      if (sx > this.ox + 20 && sx < this.ox + g.nx * this.k - 20) ctx.fillText(raLabel(ra, sr), sx + 3, Math.min(sy - 4, this.c.height / this.dpr - 6));
+      const [x] = t.skyToPix(ra, t.dec0); const [sx] = this.gridToScreen(x, 0);
+      if (sx > left + 60 && sx < Math.min(this.ox + g.nx * this.k, Wv) - 50) labels.push([raLabel(ra, sr), sx + 4, bottom - 8]);
     }
+    for (const [text, x, y] of labels) haloText(ctx, text, x, y, alpha(C("text-2"), .75));
     ctx.restore();
   }
 
   sourceVisible(s) {
-    if (!S.tiers.has(s.tier)) return false;
+    if (!S.tiers.has(s.tier) && !(s.tier === "insufficient" && S.tiers.has("stationary"))) return false;
     const groups = s.catalog?.simbad?.groups || (s.catalog?.gaia ? [gaiaGroup(s.catalog.gaia)] : ["unknown"]);
     return groups.some((gp) => S.classes.has(gp));
   }
+  shown(s) { return this.sourceVisible(s) && (NOTABLE.has(s.tier) ? S.overlays.sources : S.overlays.refs); }
+  ringRadius(s) { return NOTABLE.has(s.tier) ? Math.min(20, Math.max(9, 1.7 * this.k)) : Math.min(7, Math.max(2.5, 0.9 * this.k)); }
 
   drawSources() {
     const ctx = this.ctx, f = this.f, ps = f.grid.pixel_scale_arcsec;
     ctx.save();
+    // reference stars first (quiet), notable sources on top
     for (const s of f.sources) {
-      if (!this.sourceVisible(s)) continue;
-      const [sx, sy] = this.gridToScreen(s.x, s.y), T = TIERS[s.tier] || TIERS.insufficient;
-      const big = s.tier !== "stationary" && s.tier !== "insufficient";
-      const r = big ? Math.min(15, Math.max(7, 1.5 * this.k)) : Math.min(7, Math.max(3, this.k));
-      ctx.strokeStyle = T.color; ctx.globalAlpha = big ? 1 : 0.55; ctx.lineWidth = big ? 1.8 : 1;
-      ctx.setLineDash(s.tier === "systematics_limited" ? [5, 3] : s.tier === "candidate" ? [2, 3] : []);
-      ctx.beginPath();
-      if (s.tier === "rejected") { ctx.moveTo(sx - r * .7, sy - r * .7); ctx.lineTo(sx + r * .7, sy + r * .7); ctx.moveTo(sx + r * .7, sy - r * .7); ctx.lineTo(sx - r * .7, sy + r * .7); }
-      else ctx.arc(sx, sy, r, 0, 2 * Math.PI);
-      ctx.stroke();
-      if (s.variability?.flag) { ctx.setLineDash([]); ctx.strokeStyle = "#5fd8ff"; ctx.beginPath(); ctx.arc(sx, sy, r + 3, -0.6, 0.6); ctx.stroke(); }
-      // motion vector: true angular scale, the motion over one year
-      if (S.overlays.tracks && s.fit && (s.tier === "significant" || s.tier === "systematics_limited" || s.tier === "candidate")) {
+      if (NOTABLE.has(s.tier) || !this.shown(s) || s.id === S.selected) continue;
+      const [sx, sy] = this.gridToScreen(s.x, s.y), r = this.ringRadius(s);
+      ctx.strokeStyle = alpha(TIERS[s.tier]?.color || C("text-3"), s.tier === "insufficient" ? .3 : .5); ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.arc(sx, sy, r, 0, 2 * Math.PI); ctx.stroke();
+    }
+    for (const s of f.sources) {
+      if (!NOTABLE.has(s.tier) || !this.shown(s)) continue;
+      const [sx, sy] = this.gridToScreen(s.x, s.y), T = TIERS[s.tier], r = this.ringRadius(s);
+      const dash = s.tier === "systematics_limited" ? [6, 4] : s.tier === "candidate" ? [2, 4] : [];
+      if (s.tier === "rejected") {
+        const a = r * .5;
+        halo(ctx, T.color, 1.8, () => { ctx.moveTo(sx - a, sy - a); ctx.lineTo(sx + a, sy + a); ctx.moveTo(sx + a, sy - a); ctx.lineTo(sx - a, sy + a); });
+      } else if (s.id !== S.selected) halo(ctx, T.color, 1.8, () => ctx.arc(sx, sy, r, 0, 2 * Math.PI), dash);
+      if (s.variability?.flag) halo(ctx, C("cyan"), 1.6, () => ctx.arc(sx, sy, r + 4, -0.7, 0.7));
+      // motion vector: true angular scale, one year of measured motion
+      if (S.overlays.tracks && s.fit && s.tier !== "rejected") {
         const dx = -s.fit.pm_east / ps, dy = s.fit.pm_north / ps;
         const [ex, ey] = this.gridToScreen(s.x + dx, s.y + dy);
-        ctx.setLineDash([]); ctx.globalAlpha = .9; ctx.strokeStyle = T.color; ctx.lineWidth = 1.5;
-        arrow(ctx, sx, sy, ex, ey);
+        if (Math.hypot(ex - sx, ey - sy) > r + 2) {
+          const a = Math.atan2(ey - sy, ex - sx);
+          arrow(ctx, sx + Math.cos(a) * r, sy + Math.sin(a) * r, ex, ey, T.color);
+        }
       }
+      if (this.k >= 2.2 && s.tier !== "rejected" && s.id !== S.selected) this.label(displayName(s), sx + r + 6, sy + 4, alpha(C("text-1"), .9), 12);
     }
     ctx.restore();
   }
@@ -202,92 +348,255 @@ export class SkyView {
   drawCatalogs() {
     const L = S.catalogs?.layers; if (!L) return;
     const ctx = this.ctx; ctx.save(); ctx.lineWidth = 1;
-    this.labelBoxes = [];
-    ctx.font = "10px system-ui";
-    const ps = this.f.grid.pixel_scale_arcsec;
+    const ps = this.f.grid.pixel_scale_arcsec, research = S.visualPreset === "research";
     if (S.overlays.gaia && L.gaia) {
-      ctx.strokeStyle = "rgba(122,162,255,.85)";
+      const col = alpha(C("cat-gaia"), .8);
       for (const g of L.gaia.items) {
         if (!S.classes.has(g.cls === "uncertain" || g.cls === "unclassified" ? "unknown" : g.cls) && !(g.variable && S.classes.has("variable"))) continue;
-        const [sx, sy] = this.gridToScreen(g.x, g.y), r = 3.5;
-        ctx.beginPath(); ctx.moveTo(sx, sy - r); ctx.lineTo(sx + r, sy); ctx.lineTo(sx, sy + r); ctx.lineTo(sx - r, sy); ctx.closePath(); ctx.stroke();
-        if (S.visualPreset === "research" && this.k > 6) this.catalogLabel(ctx, `Gaia ${g.id}`, sx+5, sy-4);
-        if (g.pmra && Math.hypot(g.pmra, g.pmdec) > 100) { const [ex, ey] = this.gridToScreen(g.x - g.pmra / 1e3 / ps, g.y + g.pmdec / 1e3 / ps); ctx.setLineDash([3, 2]); arrow(ctx, sx, sy, ex, ey); ctx.setLineDash([]); }
+        const [sx, sy] = this.gridToScreen(g.x, g.y), r = Math.max(3, Math.min(6, this.k * .9));
+        ctx.strokeStyle = col; ctx.beginPath(); ctx.moveTo(sx, sy - r); ctx.lineTo(sx + r, sy); ctx.lineTo(sx, sy + r); ctx.lineTo(sx - r, sy); ctx.closePath(); ctx.stroke();
+        if (research && this.k > 7) this.label(`Gaia ${g.id}`, sx + r + 4, sy - 4, col, 11);
+        if (g.pmra && Math.hypot(g.pmra, g.pmdec) > 100) { const [ex, ey] = this.gridToScreen(g.x - g.pmra / 1e3 / ps, g.y + g.pmdec / 1e3 / ps); ctx.setLineDash([3, 2]); arrow(ctx, sx, sy, ex, ey, col, false); ctx.setLineDash([]); }
       }
     }
-    for (const [key, col] of [["twomass", "rgba(255,138,101,.8)"], ["allwise", "rgba(169,139,255,.8)"]]) {
+    for (const [key, tok, name] of [["twomass", "cat-2mass", "2MASS"], ["allwise", "cat-wise", "WISE"]]) {
       if (!S.overlays[key] || !L[key]) continue;
+      const col = alpha(C(tok), .75), a = Math.max(3, Math.min(5, this.k * .7));
       ctx.strokeStyle = col;
-      for (const g of L[key].items) { const [sx, sy] = this.gridToScreen(g.x, g.y); ctx.beginPath(); ctx.moveTo(sx - 4, sy); ctx.lineTo(sx + 4, sy); ctx.moveTo(sx, sy - 4); ctx.lineTo(sx, sy + 4); ctx.stroke(); if (S.visualPreset === "research" && this.k > 8) this.catalogLabel(ctx, `${key === 'twomass' ? '2MASS' : 'WISE'} ${g.id}`, sx+5, sy+12); }
+      for (const g of L[key].items) {
+        const [sx, sy] = this.gridToScreen(g.x, g.y); ctx.beginPath(); ctx.moveTo(sx - a, sy); ctx.lineTo(sx + a, sy); ctx.moveTo(sx, sy - a); ctx.lineTo(sx, sy + a); ctx.stroke();
+        if (research && this.k > 9) this.label(`${name} ${g.id}`, sx + 6, sy + 13, col, 11);
+      }
     }
     if (S.overlays.simbad && L.simbad) {
-      ctx.fillStyle = "rgba(228,232,242,.85)"; ctx.font = "11px system-ui"; ctx.strokeStyle = "rgba(228,232,242,.6)";
       for (const g of L.simbad.items) {
         if (!g.groups.some((gp) => S.classes.has(gp))) continue;
         const [sx, sy] = this.gridToScreen(g.x, g.y);
-        ctx.beginPath(); ctx.arc(sx, sy, 2, 0, 7); ctx.stroke();
-        if (this.k > 4 || /Barnard/.test(g.id)) this.catalogLabel(ctx, g.id.replace(/^NAME /, ""), sx + 5, sy - 4);
+        ctx.fillStyle = alpha(C("cat-simbad"), .8); ctx.beginPath(); ctx.arc(sx, sy, 1.6, 0, 7); ctx.fill();
+        const named = /^NAME /.test(g.id);
+        if (this.k > 4 || (named && this.k > 1)) this.label(g.id.replace(/^NAME /, ""), sx + 6, sy - 6, alpha(C("cat-simbad"), named ? .95 : .7), named ? 12.5 : 11);
       }
     }
     ctx.restore();
   }
 
-  catalogLabel(ctx, text, x, y) {
+  /** text label with collision avoidance against labels drawn this frame */
+  label(text, x, y, color, size = 11.5) {
+    const ctx = this.ctx; ctx.save(); ctx.font = `500 ${size}px ${FONT.sans}`;
     const width = ctx.measureText(text).width;
-    if (x < 0 || y < 12 || x+width > this.c.width/this.dpr || y > this.c.height/this.dpr) return;
-    if (this.labelBoxes.some(box => x < box.x+box.width+5 && x+width+5 > box.x && Math.abs(y-box.y)<15)) return;
-    this.labelBoxes.push({x,y,width}); ctx.fillStyle = "#b8c7e1"; ctx.fillText(text,x,y);
+    const W = this.c.width / this.dpr, H = this.c.height / this.dpr;
+    if (x < 0 || y < 14 || x + width > W - 4 || y > H - 4) { ctx.restore(); return false; }
+    if (this.labelBoxes.some((b) => x < b.x + b.w + 6 && x + width + 6 > b.x && Math.abs(y - b.y) < size + 3)) { ctx.restore(); return false; }
+    this.labelBoxes.push({ x, y, w: width });
+    haloText(ctx, text, x, y, color); ctx.restore(); return true;
   }
+
+  drawHover() {
+    const s = this.hover != null ? this.byId?.get(this.hover) : null;
+    if (!s || s.id === S.selected) return;
+    const ctx = this.ctx, [sx, sy] = this.gridToScreen(s.x, s.y), r = Math.max(this.ringRadius(s) + 3, 10);
+    ctx.save(); halo(ctx, alpha(C("text-1"), .9), 1.4, () => ctx.arc(sx, sy, r, 0, 2 * Math.PI), [3, 3]);
+    const T = TIERS[s.tier];
+    this.label(displayName(s), sx + r + 6, sy - 2, C("text-1"), 12.5);
+    this.label(T?.label || "", sx + r + 6, sy + 13, alpha(T?.color || C("text-2"), .95), 11);
+    ctx.restore();
+  }
+
+  /** One guarded rAF loop serves every animation (selection flash, camera flights, journey reveals). */
+  animateUntil(until) {
+    this._animUntil = Math.max(this._animUntil || 0, until);
+    if (this._animating) return;
+    this._animating = true;
+    const step = () => {
+      const now = performance.now();
+      this._stepFly(now);
+      this.draw();
+      if (now >= this._animUntil && !this._fly) this._animating = false; else requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+  flash() {
+    if (REDUCED) return;
+    this.flashAt = performance.now();
+    this.animateUntil(this.flashAt + 620);
+  }
+
+  /** Smooth camera move: grid point (x, y) ends at screen fraction (ax, ay) with zoom k.
+   *  Log-zoom and eased; instant under reduced motion; cancelled by any user pan/zoom. */
+  flyTo(x, y, k, ms = 1200, ax = 0.5, ay = 0.5) {
+    if (!this.f) return;
+    const W = this.c.width / this.dpr, H = this.c.height / this.dpr;
+    k = Math.max(0.5, Math.min(60, k));
+    const [u, v] = this.gridToImg(x, y);
+    this.userMoved = true;
+    if (REDUCED || ms <= 0 || !W) { this._fly = null; this.k = k; this.ox = W * ax - u * k; this.oy = H * ay - v * k; this.draw(); return; }
+    this._fly = { k0: this.k, u0: (W * ax - this.ox) / this.k, v0: (H * ay - this.oy) / this.k, k1: k, u1: u, v1: v, ax, ay, t0: performance.now(), ms };
+    this.animateUntil(performance.now() + ms);
+  }
+  _stepFly(now) {
+    const f = this._fly; if (!f) return;
+    const W = this.c.width / this.dpr, H = this.c.height / this.dpr;
+    const p = Math.min(1, (now - f.t0) / f.ms), e = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+    const k = Math.exp(Math.log(f.k0) + (Math.log(f.k1) - Math.log(f.k0)) * e), u = f.u0 + (f.u1 - f.u0) * e, v = f.v0 + (f.v1 - f.v0) * e;
+    this.k = k; this.ox = W * f.ax - u * k; this.oy = H * f.ay - v * k;
+    if (p >= 1) this._fly = null;
+  }
+  /** zoom at which `arcsec` spans a screen box of `px` pixels */
+  kForSpan(arcsec, px) { return px / (arcsec / this.f.grid.pixel_scale_arcsec); }
 
   drawSelected() {
     const d = S.detail; if (!d || !this.f) return;
     const ctx = this.ctx, ps = this.f.grid.pixel_scale_arcsec;
     const [sx, sy] = this.gridToScreen(d.x, d.y);
-    ctx.save(); ctx.strokeStyle = "#ffd28a"; ctx.lineWidth = 1.5;
-    const r = Math.max(14, 3.5 * this.k);
-    ctx.beginPath(); for (const a of [0, 90, 180, 270]) { const t = a * D2R; ctx.moveTo(sx + Math.cos(t) * r, sy + Math.sin(t) * r); ctx.lineTo(sx + Math.cos(t) * (r + 7), sy + Math.sin(t) * (r + 7)); } ctx.stroke();
+    ctx.save();
     // per-epoch measured positions at true scale (visible when zoomed in)
     if (S.overlays.tracks && d.points && this.k > 4) {
       for (const p of d.points) {
         const [px, py] = this.gridToScreen(d.x - p.east_arcsec / ps, d.y + p.north_arcsec / ps);
-        ctx.fillStyle = p.is_reference_epoch ? "#ffffff" : "rgba(255,210,138,.85)";
+        ctx.fillStyle = p.is_reference_epoch ? "#ffffff" : alpha(C("sun-2"), .85);
         ctx.beginPath(); ctx.arc(px, py, 1.8, 0, 7); ctx.fill();
       }
     }
     // catalog history (2MASS / AllWISE / Gaia) when inside the field
     if (d.history && S.overlays.tracks) {
-      ctx.font = "10.5px system-ui"; ctx.fillStyle = "#aab3c8"; ctx.strokeStyle = "rgba(170,179,200,.6)"; ctx.setLineDash([2, 3]);
+      ctx.setLineDash([2, 4]); ctx.strokeStyle = alpha(C("sky"), .7); ctx.lineWidth = 1.2;
       let prev = null;
       for (const h of d.history) {
         const [hx, hy] = this.gridToScreen(d.x - h.east_arcsec / ps, d.y + h.north_arcsec / ps);
         if (prev) { ctx.beginPath(); ctx.moveTo(prev[0], prev[1]); ctx.lineTo(hx, hy); ctx.stroke(); }
-        ctx.beginPath(); ctx.arc(hx, hy, 3, 0, 7); ctx.stroke(); ctx.fillText(`${h.catalog} ${h.year.toFixed(0)}`, hx + 5, hy + 3); prev = [hx, hy];
+        ctx.setLineDash([]); ctx.fillStyle = C("sky"); ctx.beginPath(); ctx.arc(hx, hy, 2.6, 0, 7); ctx.fill(); ctx.setLineDash([2, 4]);
+        this.label(`${h.catalog} ${h.year.toFixed(0)}`, hx + 7, hy + 4, alpha(C("sky"), .95), 11.5);
+        prev = [hx, hy];
       }
       if (prev) { ctx.beginPath(); ctx.moveTo(prev[0], prev[1]); ctx.lineTo(sx, sy); ctx.stroke(); }
+      ctx.setLineDash([]);
+    }
+    // reticle: four brackets, with a brief "lock-on" when newly selected
+    const tf = Math.min(1, (performance.now() - this.flashAt) / 600), ease = 1 - Math.pow(1 - tf, 3);
+    const r = Math.max(15, 3.6 * Math.min(this.k, 8)) * (REDUCED ? 1 : 1 + (1 - ease) * 1.6);
+    const len = Math.max(6, r * .45), col = C("sun");
+    if (!REDUCED && tf < 1) { ctx.globalAlpha = (1 - ease) * .5; ctx.strokeStyle = col; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(sx, sy, r * 1.25, 0, 7); ctx.stroke(); ctx.globalAlpha = 1; }
+    halo(ctx, col, 2, () => {
+      for (const [dx, dy] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) {
+        ctx.moveTo(sx + dx * r, sy + dy * (r - len)); ctx.lineTo(sx + dx * r, sy + dy * r); ctx.lineTo(sx + dx * (r - len), sy + dy * r);
+      }
+    });
+    this.label(displayName(d), sx + r + 8, sy - r + 12, C("sun-2"), 13);
+    ctx.restore();
+  }
+
+  /** NADIR Journeys layer: reference rings, rejected look-alikes, measured trail,
+   *  fitted arrow, catalog history and focus reticles.  Each element may carry
+   *  {hidden} or a reveal {t0, ms}; nothing here is drawn from invented data. */
+  drawJourney() {
+    const J = this.journey, ctx = this.ctx, now = performance.now();
+    const prog = (o) => !o || o.hidden ? 0 : o.t0 == null ? 1 : Math.max(0, Math.min(1, (now - o.t0) / Math.max(1, o.ms || 1)));
+    ctx.save();
+    const ring = (s, color, r, dash = []) => { const [sx, sy] = this.gridToScreen(s.x, s.y); halo(ctx, color, 1.5, () => ctx.arc(sx, sy, r, 0, 2 * Math.PI), dash); return [sx, sy]; };
+    let p = prog(J.refs);
+    if (p > 0) {
+      ctx.globalAlpha = p; let labelled = false;
+      for (const id of J.refs.ids) {
+        const s = this.byId?.get(id); if (!s) continue;
+        const [sx, sy] = ring(s, alpha(C("teal"), .95), Math.max(9, Math.min(18, 1.6 * this.k)));
+        if (!labelled) labelled = this.label("reference star", sx + Math.max(9, Math.min(18, 1.6 * this.k)) + 6, sy + 4, alpha(C("teal"), .95), 12);
+      }
+      ctx.globalAlpha = 1;
+    }
+    p = prog(J.rejected);
+    if (p > 0) {
+      ctx.globalAlpha = p;
+      for (const id of J.rejected.ids) {
+        const s = this.byId?.get(id); if (!s) continue;
+        const [sx, sy] = this.gridToScreen(s.x, s.y), a = 6;
+        halo(ctx, C("coral"), 2, () => { ctx.moveTo(sx - a, sy - a); ctx.lineTo(sx + a, sy + a); ctx.moveTo(sx + a, sy - a); ctx.lineTo(sx - a, sy + a); });
+        ring(s, alpha(C("coral"), .8), 16, [3, 3]);
+        this.label("rejected", sx + 22, sy + 4, C("coral"), 12);
+      }
+      ctx.globalAlpha = 1;
+    }
+    p = prog(J.history);
+    if (p > 0) {
+      const pts = [...J.history.pts, { ...J.history.to, label: null }], n = pts.length - 1, upto = p * n;
+      ctx.setLineDash([3, 5]); ctx.strokeStyle = alpha(C("sky"), .85); ctx.lineWidth = 1.4;
+      for (let i = 0; i < n && i < upto; i++) {
+        const [x0, y0] = this.gridToScreen(pts[i].x, pts[i].y), [x1, y1] = this.gridToScreen(pts[i + 1].x, pts[i + 1].y), f = Math.min(1, upto - i);
+        ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x0 + (x1 - x0) * f, y0 + (y1 - y0) * f); ctx.stroke();
+      }
+      ctx.setLineDash([]);
+      pts.slice(0, -1).forEach((q, i) => {
+        if (i > upto) return;
+        const [hx, hy] = this.gridToScreen(q.x, q.y);
+        ctx.fillStyle = C("sky"); ctx.beginPath(); ctx.arc(hx, hy, 3.4, 0, 7); ctx.fill();
+        this.label(`${q.label} · catalog`, hx + 9, hy + 4, C("sky"), 12.5);
+      });
+    }
+    p = prog(J.trail);
+    if (p > 0) {
+      const pts = J.trail.pts, n = pts.length, upto = p * Math.max(1, n - 1), many = n > 6;
+      ctx.strokeStyle = alpha(C("sun-2"), .9); ctx.lineWidth = 1.6;
+      if (!many) for (let i = 0; i < n - 1 && i < upto; i++) {
+        const [x0, y0] = this.gridToScreen(pts[i].x, pts[i].y), [x1, y1] = this.gridToScreen(pts[i + 1].x, pts[i + 1].y), f = Math.min(1, upto - i);
+        halo(ctx, alpha(C("sun-2"), .9), 1.4, () => { ctx.moveTo(x0, y0); ctx.lineTo(x0 + (x1 - x0) * f, y0 + (y1 - y0) * f); });
+      }
+      pts.forEach((q, i) => {
+        if (i > upto + 1e-6) return;
+        const [qx, qy] = this.gridToScreen(q.x, q.y), er = q.r * this.k;
+        if (er > 2.5) { ctx.strokeStyle = alpha(C("sun"), .55); ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(qx, qy, er, 0, 7); ctx.stroke(); }
+        ctx.fillStyle = C("sun"); ctx.strokeStyle = "rgba(2,3,8,.8)"; ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.arc(qx, qy, many ? 2 : 4, 0, 7); ctx.stroke(); ctx.fill();
+        if (q.label && this.k >= 8) this.label(q.label, qx + Math.max(er, 6) + 10, qy + 4, C("sun-2"), 12);
+      });
+    }
+    p = prog(J.fitArrow);
+    if (p > 0) {
+      const a = J.fitArrow, [x0, y0] = this.gridToScreen(a.x0, a.y0), [x1, y1] = this.gridToScreen(a.x0 + (a.x1 - a.x0) * p, a.y0 + (a.y1 - a.y0) * p);
+      arrow(ctx, x0, y0, x1, y1, C("sun"));
+      if (p >= 1 && a.label && this.k >= 8) { ctx.font = `500 12.5px ${FONT.sans}`; this.label(a.label, x0 - ctx.measureText(a.label).width - 16, (y0 + y1) / 2 + 4, C("sun-2"), 12.5); }
+    }
+    for (const fo of J.focus || []) {
+      if (fo.hidden) continue;
+      const s = this.byId?.get(fo.id); if (!s) continue;
+      const [sx, sy] = this.gridToScreen(s.x, s.y), col = C(fo.color === "violet" ? "violet" : "sun");
+      const r = Math.max(15, 3.6 * Math.min(this.k, 8)), len = Math.max(6, r * .45);
+      ctx.globalAlpha = fo.quiet ? .55 : 1;
+      halo(ctx, col, 2, () => {
+        for (const [dx, dy] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) { ctx.moveTo(sx + dx * r, sy + dy * (r - len)); ctx.lineTo(sx + dx * r, sy + dy * r); ctx.lineTo(sx + dx * (r - len), sy + dy * r); }
+      });
+      ctx.globalAlpha = 1;
+      if (!fo.quiet && fo.label) {
+        const col = fo.color === "violet" ? C("violet") : C("sun-2");
+        ctx.font = `500 14px ${FONT.sans}`;
+        // right of the brackets, else left, else below (narrow screens)
+        this.label(fo.label, sx + r + 8, sy - r + 12, col, 14) || this.label(fo.label, sx - r - 8 - ctx.measureText(fo.label).width, sy - r + 12, col, 14)
+          || this.label(fo.label, Math.max(6, sx - ctx.measureText(fo.label).width / 2), sy + r + 20, col, 14);
+      }
     }
     ctx.restore();
   }
 
   drawScaleBar() {
     const ctx = this.ctx, H = this.c.height / this.dpr, W = this.c.width / this.dpr;
-    const aps = this.arcsecPerScreenPx(), target = 110 * aps;
+    const aps = this.arcsecPerScreenPx(), target = 100 * aps;
     const nice = [1, 2, 5, 10, 15, 30, 60, 120, 300, 600].find((v) => v >= target * 0.6) || 600;
-    const len = nice / aps, x = W - 24 - len, y = H - 52;
-    ctx.save(); ctx.strokeStyle = "#e4e8f2"; ctx.fillStyle = "#e4e8f2"; ctx.lineWidth = 1.5; ctx.font = "11px ui-monospace, Menlo, monospace";
-    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x + len, y); ctx.moveTo(x, y - 4); ctx.lineTo(x, y + 4); ctx.moveTo(x + len, y - 4); ctx.lineTo(x + len, y + 4); ctx.stroke();
-    ctx.fillText(nice >= 60 ? `${nice / 60}′` : `${nice}″`, x + len / 2 - 8, y - 7);
+    const len = nice / aps, x = W - 24 - len, y = H - 72;
+    ctx.save(); ctx.lineWidth = 1.5; ctx.lineCap = "round";
+    halo(ctx, alpha(C("text-1"), .85), 1.5, () => { ctx.moveTo(x, y); ctx.lineTo(x + len, y); ctx.moveTo(x, y - 4); ctx.lineTo(x, y + 4); ctx.moveTo(x + len, y - 4); ctx.lineTo(x + len, y + 4); });
+    ctx.font = `11.5px ${FONT.mono}`; ctx.textAlign = "center";
+    haloText(ctx, nice >= 60 ? `${nice / 60}′` : `${nice}″`, x + len / 2, y - 8, C("text-1"));
     // compass: north up, east left (sky convention)
-    const cx = 34, cy = H - 70; ctx.strokeStyle = "rgba(228,232,242,.8)";
-    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(cx, cy - 24); ctx.moveTo(cx, cy); ctx.lineTo(cx - 24, cy); ctx.stroke();
-    ctx.fillText("N", cx - 4, cy - 28); ctx.fillText("E", cx - 36, cy + 4);
+    const cx = x - 34, cy = y + 2;
+    halo(ctx, alpha(C("text-1"), .8), 1.4, () => { ctx.moveTo(cx, cy); ctx.lineTo(cx, cy - 22); ctx.moveTo(cx, cy); ctx.lineTo(cx - 22, cy); });
+    ctx.font = `600 11px ${FONT.sans}`;
+    haloText(ctx, "N", cx, cy - 27, C("text-1")); haloText(ctx, "E", cx - 30, cy + 4, C("text-1"));
     ctx.restore();
   }
 
   pick(sx, sy) {
-    let best = null, bd = 14;
+    let best = null, bd = 16;
     for (const s of this.f.sources) {
-      if (S.visualPreset !== "clean" && (!S.overlays.sources || !this.sourceVisible(s))) continue;
-      const [px, py] = this.gridToScreen(s.x, s.y), d = Math.hypot(px - sx, py - sy);
+      if (!this.sourceVisible(s)) continue;
+      const [px, py] = this.gridToScreen(s.x, s.y), d = Math.hypot(px - sx, py - sy) - (NOTABLE.has(s.tier) ? 4 : 0);
       if (d < bd) { bd = d; best = s; }
     }
     return best;
@@ -295,27 +604,30 @@ export class SkyView {
 
   _bind() {
     const c = this.c; let drag = null, moved = false;
-    c.addEventListener("pointerdown", (e) => { drag = { x: e.clientX, y: e.clientY, ox: this.ox, oy: this.oy }; moved = false; c.setPointerCapture(e.pointerId); });
+    c.addEventListener("pointerdown", (e) => { this._fly = null; drag = { x: e.clientX, y: e.clientY, ox: this.ox, oy: this.oy }; moved = false; c.setPointerCapture(e.pointerId); });
     c.addEventListener("pointermove", (e) => {
       const r = c.getBoundingClientRect(), sx = e.clientX - r.left, sy = e.clientY - r.top;
       if (drag) {
         const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
         if (Math.abs(dx) + Math.abs(dy) > 3) { moved = true; this.userMoved = true; c.classList.add("dragging"); }
-        this.ox = drag.ox + dx; this.oy = drag.oy + dy; this.draw();
+        this.ox = drag.ox + dx; this.oy = drag.oy + dy;
       }
       if (this.f) {
         const [x, y] = this.screenToGrid(sx, sy), [ra, dec] = this.tan.pixToSky(x, y);
-        const hit = this.pick(sx, sy);
+        const hit = drag && moved ? null : this.pick(sx, sy);
+        const hid = hit?.id ?? null;
+        if (hid !== this.hover || drag) { this.hover = hid; this.draw(); }
         emit("cursor", { ra, dec, inside: x >= 0 && y >= 0 && x < this.f.grid.nx && y < this.f.grid.ny, hit });
         c.style.cursor = hit ? "pointer" : (drag ? "grabbing" : "grab");
       }
     });
+    c.addEventListener("pointerleave", () => { if (this.hover != null) { this.hover = null; this.draw(); } });
     c.addEventListener("pointerup", (e) => {
       c.classList.remove("dragging");
       if (drag && !moved && this.f) { const r = c.getBoundingClientRect(); const hit = this.pick(e.clientX - r.left, e.clientY - r.top); if (hit) emit("select", hit.id); }
       drag = null;
     });
-    c.addEventListener("wheel", (e) => { e.preventDefault(); const r = c.getBoundingClientRect(); this.zoomAt(Math.exp(-e.deltaY * 0.0015), e.clientX - r.left, e.clientY - r.top); }, { passive: false });
+    c.addEventListener("wheel", (e) => { e.preventDefault(); this._fly = null; const r = c.getBoundingClientRect(); this.zoomAt(Math.exp(-e.deltaY * 0.0015), e.clientX - r.left, e.clientY - r.top); }, { passive: false });
     c.addEventListener("dblclick", () => this.fit());
     c.addEventListener("keydown", (e) => {
       const step = 40;
@@ -332,11 +644,26 @@ export class SkyView {
   }
 }
 
-function arrow(ctx, x0, y0, x1, y1) {
-  const a = Math.atan2(y1 - y0, x1 - x0), h = 6;
-  ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke();
-  if (Math.hypot(x1 - x0, y1 - y0) < 4) return;
-  ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x1 - h * Math.cos(a - .45), y1 - h * Math.sin(a - .45)); ctx.moveTo(x1, y1); ctx.lineTo(x1 - h * Math.cos(a + .45), y1 - h * Math.sin(a + .45)); ctx.stroke();
+/** stroke a path with a dark under-stroke so markers read on any background */
+function halo(ctx, color, width, path, dash = []) {
+  ctx.save(); ctx.setLineDash(dash); ctx.lineCap = "round"; ctx.lineJoin = "round";
+  ctx.beginPath(); path(); ctx.strokeStyle = "rgba(2,3,8,.7)"; ctx.lineWidth = width + 2.4; ctx.stroke();
+  ctx.beginPath(); path(); ctx.strokeStyle = color; ctx.lineWidth = width; ctx.stroke();
+  ctx.restore();
+}
+function haloText(ctx, text, x, y, color) {
+  ctx.save(); ctx.lineJoin = "round"; ctx.strokeStyle = "rgba(2,3,8,.85)"; ctx.lineWidth = 3.5; ctx.strokeText(text, x, y);
+  ctx.fillStyle = color; ctx.fillText(text, x, y); ctx.restore();
+}
+function arrow(ctx, x0, y0, x1, y1, color, withHalo = true) {
+  const a = Math.atan2(y1 - y0, x1 - x0), h = 7;
+  const path = () => {
+    ctx.moveTo(x0, y0); ctx.lineTo(x1, y1);
+    if (Math.hypot(x1 - x0, y1 - y0) < 4) return;
+    ctx.moveTo(x1 - h * Math.cos(a - .42), y1 - h * Math.sin(a - .42)); ctx.lineTo(x1, y1); ctx.lineTo(x1 - h * Math.cos(a + .42), y1 - h * Math.sin(a + .42));
+  };
+  if (withHalo) halo(ctx, color, 1.7, path);
+  else { ctx.save(); ctx.strokeStyle = color; ctx.beginPath(); path(); ctx.stroke(); ctx.restore(); }
 }
 function decLabel(dec, step) { const s = dec < 0 ? "−" : "+", d = Math.abs(dec) + 1e-9, dd = Math.floor(d), mm = (d - dd) * 60; return step < 1 / 60 ? `${s}${dd}°${mm.toFixed(1)}′` : `${s}${dd}°${Math.round(mm).toString().padStart(2, "0")}′`; }
 function raLabel(ra, step) { ra = (ra + 360) % 360; const h = ra / 15, hh = Math.floor(h + 1e-9), mm = (h - hh) * 60, m = Math.floor(mm + 1e-6), ss = (mm - m) * 60; return step * 4 < 1 ? `${hh}h${m}m${ss.toFixed(0)}s` : `${hh}h${String(Math.round(mm)).padStart(2, "0")}m`; }

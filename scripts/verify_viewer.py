@@ -64,7 +64,7 @@ def main():
         target = next(source for source in summary["sources"] if source["id"] == state["selected"])
         bounds = canvas.bounding_box()
         grid = summary["grid"]
-        scale = min(bounds["width"] / grid["nx"], bounds["height"] / grid["ny"]) * 0.96
+        scale = min(bounds["width"] / grid["nx"], bounds["height"] / grid["ny"]) * 0.94
         screen_x = (bounds["width"] - grid["nx"] * scale) / 2 + (target["x"] + 0.5) * scale
         screen_y = (bounds["height"] - grid["ny"] * scale) / 2 + (grid["ny"] - target["y"] - 0.5) * scale
         canvas.click(position={"x": screen_x, "y": screen_y})

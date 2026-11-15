@@ -44,3 +44,22 @@ test('TAN transform round-trips near RA wrap, north is up and east is left', () 
   assert.ok(projection.skyToPix(0.001,60)[0]<49.5);
   assert.ok(projection.skyToPix(359.99,60.01)[1]>49.5);
 });
+
+test('presentation rendering fills isolated flagged pixels, keeps large no-data transparent, preserves brightness order', async () => {
+  const { presentFrame } = await import('../frontend/js/sky.js');
+  const w = 8, h = 8, data = new Uint8ClampedArray(w * h * 4);
+  for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
+    const i = (y * w + x) * 4, v = x < 4 ? 40 : 200;          // dim left half, bright right half
+    data[i] = v; data[i + 1] = v; data[i + 2] = Math.min(255, v * 1.02 + 2); data[i + 3] = 255;
+  }
+  const navy = (x, y) => { const i = (y * w + x) * 4; data[i] = 16; data[i + 1] = 20; data[i + 2] = 44; };
+  navy(1, 1);                                                   // isolated flagged pixel
+  for (let y = 5; y < 8; y++) for (let x = 0; x < 3; x++) navy(x, y); // a 3×3 no-data block in a corner
+  const out = presentFrame(data, w, h, 1);
+  const px = (x, y) => [...out.data.slice((y * w + x) * 4, (y * w + x) * 4 + 4)];
+  assert.equal(px(1, 1)[3], 255, 'isolated flag is filled for display');
+  assert.ok(Math.abs(px(1, 1)[0] - px(2, 2)[0]) < 12, 'filled from its neighbours');
+  assert.equal(px(0, 7)[3], 0, 'large no-data region stays transparent');
+  assert.ok(px(6, 3)[0] > px(1, 3)[0] && px(6, 3)[2] > px(1, 3)[2], 'brighter input stays brighter');
+  assert.equal(presentFrame(data.slice(), w, h, 3).width, 24, 'upsampled by the requested factor');
+});
