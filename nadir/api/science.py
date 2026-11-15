@@ -99,3 +99,20 @@ def decomposition(fid: str,req: DecompositionRequest):
         return result
     job=manager.submit('decomposition',key,['fit'],run)
     return {'job':job.snapshot(),'maturity':'experimental'}
+
+
+@router.get('/fields/{fid}/sources/{sid}/evidence')
+def evidence(fid: str, sid: int, format: Literal['json', 'markdown'] = 'json'):
+    from fastapi import Response
+    from ..evidence import investigation_report, markdown_report, canonical_json
+    f = get_field(fid)
+    try:
+        with f.lock:
+            report = investigation_report(f, sid)
+    except KeyError:
+        raise HTTPException(404, 'No such source in this field build')
+    if format == 'markdown':
+        return Response(markdown_report(report), media_type='text/markdown',
+                        headers={'Content-Disposition': f'attachment; filename="nadir-{fid}-{sid}.md"'})
+    return Response(canonical_json(report), media_type='application/json',
+                    headers={'ETag': '"'+report['report_sha256']+'"'})

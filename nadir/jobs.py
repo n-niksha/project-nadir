@@ -35,6 +35,7 @@ class Job:
         self.message = ""
         self.detail: dict = {}
         self.error: str | None = None
+        self.failure = None
         self.result = None
         self.created = self.updated = time.time()
         self.stage_times: dict = {}
@@ -77,7 +78,7 @@ class Job:
             idx = self.stages.index(self.stage) if self.stage in self.stages else 0
             return {"id": self.id, "kind": self.kind, "status": self.status, "stage": self.stage,
                     "stage_index": idx, "stages": self.stages, "done": self.done, "total": self.total,
-                    "message": self.message, "detail": dict(self.detail), "error": self.error,
+                    "message": self.message, "detail": dict(self.detail), "error": self.error, "failure": self.failure,
                     "result": self.result if self.status == "done" else None,
                     "elapsed_s": round(time.time() - self.created, 2), "stage_times": dict(self.stage_times)}
 
@@ -117,6 +118,9 @@ class JobManager:
         except Exception as exc:  # reported to the client, never swallowed
             log.error("Job %s (%s) failed: %s\n%s", job.id, job.kind, exc, traceback.format_exc())
             job.status, job.error = "error", str(exc) or exc.__class__.__name__
+            job.failure = {"code": getattr(exc, "code", "processing_failure"),
+                           "retryable": getattr(exc, "retryable", False),
+                           "stage": job.stage, "message": job.error}
         job.updated = time.time()
 
     def get(self, job_id: str) -> Job | None:

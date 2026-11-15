@@ -1,0 +1,3840 @@
+[
+  {
+    "key": "barnard",
+    "name": "Barnard's Star",
+    "band": "D2",
+    "size": 0.2,
+    "files": [
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2025W34_2B/l2b-v27-2026-229/2/level2_2025W34_2B_0090_4D2_spx_l2b-v27-2026-229.fits",
+          "band": "D2",
+          "mjd_start": 60908.981929,
+          "mjd_end": 60908.983261,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W34_2B_0090_4/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2025W34_2B_0090_4",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "../project-nadir/data/cache/cutouts/5163718bafc4deb8c6f0e354.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W34_2B/l2b-v27-2026-229/2/level2_2025W34_2B_0090_4D2_spx_l2b-v27-2026-229.fits?center=269.446270,4.768200d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 269.44627,
+            "dec_deg": 4.7682,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T03:52:39+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "04cca338f7a59034de2edce9783e6a918ce5e38db450c171cb9e4107a5ac6da5",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2025W34_2B/l2b-v27-2026-229/2/level2_2025W34_2B_0090_4D2_spx_l2b-v27-2026-229.fits",
+            "band": "D2",
+            "mjd_start": 60908.981929,
+            "mjd_end": 60908.983261,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W34_2B_0090_4/D2",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2025W34_2B_0090_4",
+            "wl_min_um": 1.1033000000000002,
+            "wl_max_um": 1.6499000000000001
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2025W35_1A/l2b-v27-2026-230/2/level2_2025W35_1A_0146_1D2_spx_l2b-v27-2026-230.fits",
+          "band": "D2",
+          "mjd_start": 60912.714147,
+          "mjd_end": 60912.715479,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W35_1A_0146_1/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2025W35_1A_0146_1",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "../project-nadir/data/cache/cutouts/ce7a8947ad21751d4acf9d7b.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W35_1A/l2b-v27-2026-230/2/level2_2025W35_1A_0146_1D2_spx_l2b-v27-2026-230.fits?center=269.446270,4.768200d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 269.44627,
+            "dec_deg": 4.7682,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T03:52:34+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "5cb464b90e83561201f161de4f513f6ad1ffbc20ff812671169e1e0f2d657b6d",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2025W35_1A/l2b-v27-2026-230/2/level2_2025W35_1A_0146_1D2_spx_l2b-v27-2026-230.fits",
+            "band": "D2",
+            "mjd_start": 60912.714147,
+            "mjd_end": 60912.715479,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W35_1A_0146_1/D2",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2025W35_1A_0146_1",
+            "wl_min_um": 1.1033000000000002,
+            "wl_max_um": 1.6499000000000001
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2025W35_1A/l2b-v27-2026-230/2/level2_2025W35_1A_0444_2D2_spx_l2b-v27-2026-230.fits",
+          "band": "D2",
+          "mjd_start": 60914.277763,
+          "mjd_end": 60914.279096,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W35_1A_0444_2/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2025W35_1A_0444_2",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "../project-nadir/data/cache/cutouts/a7814d00c786108fd933e089.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W35_1A/l2b-v27-2026-230/2/level2_2025W35_1A_0444_2D2_spx_l2b-v27-2026-230.fits?center=269.446270,4.768200d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 269.44627,
+            "dec_deg": 4.7682,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T03:25:10+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "6b50ea63675d9eb2ac43c935a97ebe1faefd7d1bb710c9507d3033ae50b48833",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE"
+          ],
+          "note": "EPSF HDU dropped before caching to save space; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2025W35_1A/l2b-v27-2026-230/2/level2_2025W35_1A_0444_2D2_spx_l2b-v27-2026-230.fits",
+            "band": "D2",
+            "mjd_start": 60914.277763,
+            "mjd_end": 60914.279096,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W35_1A_0444_2/D2",
+            "pipeline_version": "7.0.5",
+            "archive_checksum": "md5:3e931a94d07356224445c5bce9133b6f"
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2025W35_2A/l2b-v27-2026-231/2/level2_2025W35_2A_0221_4D2_spx_l2b-v27-2026-231.fits",
+          "band": "D2",
+          "mjd_start": 60916.660556,
+          "mjd_end": 60916.661889,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W35_2A_0221_4/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2025W35_2A_0221_4",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "../project-nadir/data/cache/cutouts/08cf8ec17fcaeec844e2313a.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W35_2A/l2b-v27-2026-231/2/level2_2025W35_2A_0221_4D2_spx_l2b-v27-2026-231.fits?center=269.446270,4.768200d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 269.44627,
+            "dec_deg": 4.7682,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T03:52:48+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "4f5feee21c5dd08f3623622f6f5c26d1ace8e787d5b22fb958600f68c73deee1",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2025W35_2A/l2b-v27-2026-231/2/level2_2025W35_2A_0221_4D2_spx_l2b-v27-2026-231.fits",
+            "band": "D2",
+            "mjd_start": 60916.660556,
+            "mjd_end": 60916.661889,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W35_2A_0221_4/D2",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2025W35_2A_0221_4",
+            "wl_min_um": 1.1033000000000002,
+            "wl_max_um": 1.6499000000000001
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2026W11_2A/l2b-v27-2026-234/2/level2_2026W11_2A_0501_4D2_spx_l2b-v27-2026-234.fits",
+          "band": "D2",
+          "mjd_start": 61114.03648,
+          "mjd_end": 61114.037813,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2026W11_2A_0501_4/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W11_2A_0501_4",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "../project-nadir/data/cache/cutouts/499c90c0cae62c5c8a9457c4.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2026W11_2A/l2b-v27-2026-234/2/level2_2026W11_2A_0501_4D2_spx_l2b-v27-2026-234.fits?center=269.446270,4.768200d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 269.44627,
+            "dec_deg": 4.7682,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T03:52:42+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "92a24def3ee660f6ecfc97625b09b0212733498854f85962f34d9b60b1dc8132",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2026W11_2A/l2b-v27-2026-234/2/level2_2026W11_2A_0501_4D2_spx_l2b-v27-2026-234.fits",
+            "band": "D2",
+            "mjd_start": 61114.03648,
+            "mjd_end": 61114.037813,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2026W11_2A_0501_4/D2",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2026W11_2A_0501_4",
+            "wl_min_um": 1.1033000000000002,
+            "wl_max_um": 1.6499000000000001
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2026W11_2A/l2b-v27-2026-234/2/level2_2026W11_2A_0550_2D2_spx_l2b-v27-2026-234.fits",
+          "band": "D2",
+          "mjd_start": 61114.305583,
+          "mjd_end": 61114.306916,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2026W11_2A_0550_2/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W11_2A_0550_2",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "../project-nadir/data/cache/cutouts/2c743f53594fd8f72eb6cedd.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2026W11_2A/l2b-v27-2026-234/2/level2_2026W11_2A_0550_2D2_spx_l2b-v27-2026-234.fits?center=269.446270,4.768200d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 269.44627,
+            "dec_deg": 4.7682,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T03:25:20+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "41683d459c105918b1aa195311f3be455980b8b86b73947546799091215bb762",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE"
+          ],
+          "note": "EPSF HDU dropped before caching to save space; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2026W11_2A/l2b-v27-2026-234/2/level2_2026W11_2A_0550_2D2_spx_l2b-v27-2026-234.fits",
+            "band": "D2",
+            "mjd_start": 61114.305583,
+            "mjd_end": 61114.306916,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2026W11_2A_0550_2/D2",
+            "pipeline_version": "7.0.5",
+            "archive_checksum": "md5:aef1810147693e0b4bf4e1b4d79477e0"
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2026W12_2A/l2b-v27-2026-235/2/level2_2026W12_2A_0371_2D2_spx_l2b-v27-2026-235.fits",
+          "band": "D2",
+          "mjd_start": 61120.55058,
+          "mjd_end": 61120.551912,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2026W12_2A_0371_2/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W12_2A_0371_2",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "../project-nadir/data/cache/cutouts/cad6a10837fabe5fe0239fb6.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2026W12_2A/l2b-v27-2026-235/2/level2_2026W12_2A_0371_2D2_spx_l2b-v27-2026-235.fits?center=269.446270,4.768200d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 269.44627,
+            "dec_deg": 4.7682,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T03:52:52+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "794d291197d420e15dc24b84ec343fd9aaa73dcb604b9c57ddb17fe0196df350",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2026W12_2A/l2b-v27-2026-235/2/level2_2026W12_2A_0371_2D2_spx_l2b-v27-2026-235.fits",
+            "band": "D2",
+            "mjd_start": 61120.55058,
+            "mjd_end": 61120.551912,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2026W12_2A_0371_2/D2",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2026W12_2A_0371_2",
+            "wl_min_um": 1.1033000000000002,
+            "wl_max_um": 1.6499000000000001
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/qr3/level2/2026W34_1A/l2b-v27-2026-243/2/level2_2026W34_1A_0363_3D2_spx_l2b-v27-2026-243.fits",
+          "band": "D2",
+          "mjd_start": 61270.8701,
+          "mjd_end": 61270.871432,
+          "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W34_1A_0363_3/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W34_1A_0363_3",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "../project-nadir/data/cache/cutouts/cb44769b6c6358cc4af6c7dd.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W34_1A/l2b-v27-2026-243/2/level2_2026W34_1A_0363_3D2_spx_l2b-v27-2026-243.fits?center=269.446270,4.768200d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "qr3",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 269.44627,
+            "dec_deg": 4.7682,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T03:52:56+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "9ccdd3c0107dbcf344a5bbb1485fc8410223a6086e5a9d5821443b2a01c769c6",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/qr3/level2/2026W34_1A/l2b-v27-2026-243/2/level2_2026W34_1A_0363_3D2_spx_l2b-v27-2026-243.fits",
+            "band": "D2",
+            "mjd_start": 61270.8701,
+            "mjd_end": 61270.871432,
+            "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W34_1A_0363_3/D2",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2026W34_1A_0363_3",
+            "wl_min_um": 1.1033000000000002,
+            "wl_max_um": 1.6499000000000001
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/2/level2_2026W34_2A_0178_4D2_spx_l2b-v27-2026-243.fits",
+          "band": "D2",
+          "mjd_start": 61273.383164,
+          "mjd_end": 61273.384496,
+          "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W34_2A_0178_4/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W34_2A_0178_4",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "../project-nadir/data/cache/cutouts/60608bdbc13cc2b0c8fb259a.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/2/level2_2026W34_2A_0178_4D2_spx_l2b-v27-2026-243.fits?center=269.446270,4.768200d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "qr3",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 269.44627,
+            "dec_deg": 4.7682,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T03:53:01+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "8a9b4b0b34d3268f9b4da1902c74124d00bbbd4a5a38e5f05617f6409901be1e",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/2/level2_2026W34_2A_0178_4D2_spx_l2b-v27-2026-243.fits",
+            "band": "D2",
+            "mjd_start": 61273.383164,
+            "mjd_end": 61273.384496,
+            "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W34_2A_0178_4/D2",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2026W34_2A_0178_4",
+            "wl_min_um": 1.1033000000000002,
+            "wl_max_um": 1.6499000000000001
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/2/level2_2026W34_2A_0233_2D2_spx_l2b-v27-2026-243.fits",
+          "band": "D2",
+          "mjd_start": 61273.65081,
+          "mjd_end": 61273.652143,
+          "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W34_2A_0233_2/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W34_2A_0233_2",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "../project-nadir/data/cache/cutouts/5c0e4f6a11d715594968f149.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/2/level2_2026W34_2A_0233_2D2_spx_l2b-v27-2026-243.fits?center=269.446270,4.768200d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "qr3",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 269.44627,
+            "dec_deg": 4.7682,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T03:25:33+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "e8036ab35ce1d54c4da0db898cfb7775893a74648a749b0b0148d6b4832b9625",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE"
+          ],
+          "note": "EPSF HDU dropped before caching to save space; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/2/level2_2026W34_2A_0233_2D2_spx_l2b-v27-2026-243.fits",
+            "band": "D2",
+            "mjd_start": 61273.65081,
+            "mjd_end": 61273.652143,
+            "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W34_2A_0233_2/D2",
+            "pipeline_version": "7.0.5",
+            "archive_checksum": "md5:dad63b9e7500a4429cac2cc49ee576fe"
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/2/level2_2026W34_2A_0249_3D2_spx_l2b-v27-2026-243.fits",
+          "band": "D2",
+          "mjd_start": 61273.72267,
+          "mjd_end": 61273.724002,
+          "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W34_2A_0249_3/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W34_2A_0249_3",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "../project-nadir/data/cache/cutouts/98e1b8a179136eeb5f127840.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/2/level2_2026W34_2A_0249_3D2_spx_l2b-v27-2026-243.fits?center=269.446270,4.768200d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "qr3",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 269.44627,
+            "dec_deg": 4.7682,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T04:02:42+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "f747d08768c6abf4134049456e97576c2a52af55115bce810a6274a83d2d478e",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/2/level2_2026W34_2A_0249_3D2_spx_l2b-v27-2026-243.fits",
+            "band": "D2",
+            "mjd_start": 61273.72267,
+            "mjd_end": 61273.724002,
+            "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W34_2A_0249_3/D2",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2026W34_2A_0249_3",
+            "wl_min_um": 1.1033000000000002,
+            "wl_max_um": 1.6499000000000001
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/qr3/level2/2026W39_1A/l2b-v27-2026-268/2/level2_2026W39_1A_0371_1D2_spx_l2b-v27-2026-268.fits",
+          "band": "D2",
+          "mjd_start": 61305.628021,
+          "mjd_end": 61305.629353,
+          "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W39_1A_0371_1/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W39_1A_0371_1",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "../project-nadir/data/cache/cutouts/dcbf30e7c06a629c98aa9489.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W39_1A/l2b-v27-2026-268/2/level2_2026W39_1A_0371_1D2_spx_l2b-v27-2026-268.fits?center=269.446270,4.768200d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "qr3",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 269.44627,
+            "dec_deg": 4.7682,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T03:53:12+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "f557629f4af7ff24daa362b0eaa8e617a6f65df0e6b619a3f313869fe0aba812",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/qr3/level2/2026W39_1A/l2b-v27-2026-268/2/level2_2026W39_1A_0371_1D2_spx_l2b-v27-2026-268.fits",
+            "band": "D2",
+            "mjd_start": 61305.628021,
+            "mjd_end": 61305.629353,
+            "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W39_1A_0371_1/D2",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2026W39_1A_0371_1",
+            "wl_min_um": 1.1033000000000002,
+            "wl_max_um": 1.6499000000000001
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2025W35_1A/l2b-v27-2026-230/1/level2_2025W35_1A_0432_4D1_spx_l2b-v27-2026-230.fits",
+          "band": "D1",
+          "mjd_start": 60914.21253,
+          "mjd_end": 60914.213863,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W35_1A_0432_4/D1",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2025W35_1A_0432_4",
+          "wl_min_um": 0.7455,
+          "wl_max_um": 1.1167
+        },
+        "path": "../project-nadir/data/cache/cutouts/8317c05bbd2f3f6a824434ca.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W35_1A/l2b-v27-2026-230/1/level2_2025W35_1A_0432_4D1_spx_l2b-v27-2026-230.fits?center=269.446270,4.768200d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 269.44627,
+            "dec_deg": 4.7682,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T03:57:50+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "a816b9b0026b87b7a615e25969b5e30250273565e4af014a1e101aef30d4a236",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2025W35_1A/l2b-v27-2026-230/1/level2_2025W35_1A_0432_4D1_spx_l2b-v27-2026-230.fits",
+            "band": "D1",
+            "mjd_start": 60914.21253,
+            "mjd_end": 60914.213863,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W35_1A_0432_4/D1",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2025W35_1A_0432_4",
+            "wl_min_um": 0.7455,
+            "wl_max_um": 1.1167
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/qr3/level2/2026W36_1A/l2b-v27-2026-252/1/level2_2026W36_1A_0510_1D1_spx_l2b-v27-2026-252.fits",
+          "band": "D1",
+          "mjd_start": 61285.257036,
+          "mjd_end": 61285.258368,
+          "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W36_1A_0510_1/D1",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W36_1A_0510_1",
+          "wl_min_um": 0.7455,
+          "wl_max_um": 1.1167
+        },
+        "path": "../project-nadir/data/cache/cutouts/08f7095c3f2c0e1d6e7acf88.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W36_1A/l2b-v27-2026-252/1/level2_2026W36_1A_0510_1D1_spx_l2b-v27-2026-252.fits?center=269.446270,4.768200d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "qr3",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 269.44627,
+            "dec_deg": 4.7682,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T03:57:58+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "77ae9dcd59fb3db9a1001324d3b97cd28855522b4324e4395d9f76608af2d0ee",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/qr3/level2/2026W36_1A/l2b-v27-2026-252/1/level2_2026W36_1A_0510_1D1_spx_l2b-v27-2026-252.fits",
+            "band": "D1",
+            "mjd_start": 61285.257036,
+            "mjd_end": 61285.258368,
+            "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W36_1A_0510_1/D1",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2026W36_1A_0510_1",
+            "wl_min_um": 0.7455,
+            "wl_max_um": 1.1167
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/3/level2_2026W34_2A_0081_1D3_spx_l2b-v27-2026-243.fits",
+          "band": "D3",
+          "mjd_start": 61272.906175,
+          "mjd_end": 61272.907508,
+          "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W34_2A_0081_1/D3",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W34_2A_0081_1",
+          "wl_min_um": 1.6301,
+          "wl_max_um": 2.4346
+        },
+        "path": "../project-nadir/data/cache/cutouts/5c818da57e3b7a63cf79bc6e.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/3/level2_2026W34_2A_0081_1D3_spx_l2b-v27-2026-243.fits?center=269.446270,4.768200d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "qr3",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 269.44627,
+            "dec_deg": 4.7682,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T03:58:07+00:00",
+          "response_bytes": 4256640,
+          "response_sha256": "c0ca0cda759f3de09132c23d24557b9f7847ea91cb3d9ca5480e54c3992dcabf",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/3/level2_2026W34_2A_0081_1D3_spx_l2b-v27-2026-243.fits",
+            "band": "D3",
+            "mjd_start": 61272.906175,
+            "mjd_end": 61272.907508,
+            "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W34_2A_0081_1/D3",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2026W34_2A_0081_1",
+            "wl_min_um": 1.6301,
+            "wl_max_um": 2.4346
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/qr3/level2/2026W36_1A/l2b-v27-2026-252/4/level2_2026W36_1A_0510_1D4_spx_l2b-v27-2026-252.fits",
+          "band": "D4",
+          "mjd_start": 61285.257036,
+          "mjd_end": 61285.258368,
+          "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W36_1A_0510_1/D4",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W36_1A_0510_1",
+          "wl_min_um": 2.4027,
+          "wl_max_um": 3.8473000000000006
+        },
+        "path": "../project-nadir/data/cache/cutouts/e0e7ef24cee75c356962397a.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W36_1A/l2b-v27-2026-252/4/level2_2026W36_1A_0510_1D4_spx_l2b-v27-2026-252.fits?center=269.446270,4.768200d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "qr3",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 269.44627,
+            "dec_deg": 4.7682,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T03:58:17+00:00",
+          "response_bytes": 4170240,
+          "response_sha256": "144d38cbcf076c036230d46452b6ad916e37bc5ad3c28d77b4b6f594af06eff8",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/qr3/level2/2026W36_1A/l2b-v27-2026-252/4/level2_2026W36_1A_0510_1D4_spx_l2b-v27-2026-252.fits",
+            "band": "D4",
+            "mjd_start": 61285.257036,
+            "mjd_end": 61285.258368,
+            "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W36_1A_0510_1/D4",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2026W36_1A_0510_1",
+            "wl_min_um": 2.4027,
+            "wl_max_um": 3.8473000000000006
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/qr3/level2/2026W39_1A/l2b-v27-2026-268/5/level2_2026W39_1A_0371_1D5_spx_l2b-v27-2026-268.fits",
+          "band": "D5",
+          "mjd_start": 61305.628021,
+          "mjd_end": 61305.629353,
+          "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W39_1A_0371_1/D5",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W39_1A_0371_1",
+          "wl_min_um": 3.8112999999999997,
+          "wl_max_um": 4.43
+        },
+        "path": "../project-nadir/data/cache/cutouts/166b8becba3ad2ba1191cba7.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W39_1A/l2b-v27-2026-268/5/level2_2026W39_1A_0371_1D5_spx_l2b-v27-2026-268.fits?center=269.446270,4.768200d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "qr3",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 269.44627,
+            "dec_deg": 4.7682,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T03:58:26+00:00",
+          "response_bytes": 4170240,
+          "response_sha256": "56cb2f95a46f62c108ffed69fa36992dc57e1a9abc4160d60b988964669a1a10",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/qr3/level2/2026W39_1A/l2b-v27-2026-268/5/level2_2026W39_1A_0371_1D5_spx_l2b-v27-2026-268.fits",
+            "band": "D5",
+            "mjd_start": 61305.628021,
+            "mjd_end": 61305.629353,
+            "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W39_1A_0371_1/D5",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2026W39_1A_0371_1",
+            "wl_min_um": 3.8112999999999997,
+            "wl_max_um": 4.43
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/6/level2_2026W34_2A_0081_1D6_spx_l2b-v27-2026-243.fits",
+          "band": "D6",
+          "mjd_start": 61272.906175,
+          "mjd_end": 61272.907508,
+          "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W34_2A_0081_1/D6",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W34_2A_0081_1",
+          "wl_min_um": 4.4115,
+          "wl_max_um": 5.009600000000001
+        },
+        "path": "../project-nadir/data/cache/cutouts/0796089e3b9338091a2cb024.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/6/level2_2026W34_2A_0081_1D6_spx_l2b-v27-2026-243.fits?center=269.446270,4.768200d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "qr3",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 269.44627,
+            "dec_deg": 4.7682,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T03:58:30+00:00",
+          "response_bytes": 4170240,
+          "response_sha256": "88a863e8f33209af8614127158b574abaf5001fce1fde5cebc90a4b019189a24",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/qr3/level2/2026W34_2A/l2b-v27-2026-243/6/level2_2026W34_2A_0081_1D6_spx_l2b-v27-2026-243.fits",
+            "band": "D6",
+            "mjd_start": 61272.906175,
+            "mjd_end": 61272.907508,
+            "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W34_2A_0081_1/D6",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2026W34_2A_0081_1",
+            "wl_min_um": 4.4115,
+            "wl_max_um": 5.009600000000001
+          }
+        },
+        "already_cached": true
+      }
+    ],
+    "failures": [],
+    "timings": {
+      "resolve_s": 6.124959327280521e-06,
+      "discovery_s": 0.0014867499703541398,
+      "cutouts_s": 2.0749983377754688e-05
+    },
+    "ra": 269.44627,
+    "dec": 4.7682,
+    "position_epoch": 2026.0,
+    "position_source": "existing verified preset",
+    "discovery": {
+      "provenance": {
+        "adql": "SIA spherex dr1+qr3 269.446270 4.768200",
+        "service": "https://irsa.ipac.caltech.edu/SIA",
+        "retrieved_utc": "2026-11-14T03:52:27+00:00",
+        "cached": true,
+        "stale": false
+      },
+      "counts": {
+        "D1": 60,
+        "D2": 61,
+        "D3": 59,
+        "D4": 59,
+        "D5": 61,
+        "D6": 58
+      },
+      "mjd_range": [
+        60902.864715,
+        61305.628021
+      ]
+    }
+  },
+  {
+    "key": "epsilon_indi_b",
+    "name": "eps Ind B",
+    "band": "D2",
+    "size": 0.2,
+    "files": [
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2025W17_4B/l2b-v27-2026-196/2/level2_2025W17_4B_0017_1D2_spx_l2b-v27-2026-196.fits",
+          "band": "D2",
+          "mjd_start": 60789.855522,
+          "mjd_end": 60789.856854,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W17_4B_0017_1/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2025W17_4B_0017_1",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "/Users/Nikhil/ENGINEERING/hackathons/nasa spaceappchall/project-nadir-codex/data/cache/cutouts/9fda22c5eaea0e545ff45358.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W17_4B/l2b-v27-2026-196/2/level2_2025W17_4B_0017_1D2_spx_l2b-v27-2026-196.fits?center=331.096644,-56.800660d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 331.09664385226796,
+            "dec_deg": -56.80066020400499,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-15T00:40:10+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "d28bda9bbdc74701800fb6a7829748417315b749518b7884d63328e1064b4285",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2025W17_4B/l2b-v27-2026-196/2/level2_2025W17_4B_0017_1D2_spx_l2b-v27-2026-196.fits",
+            "band": "D2",
+            "mjd_start": 60789.855522,
+            "mjd_end": 60789.856854,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W17_4B_0017_1/D2",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2025W17_4B_0017_1",
+            "wl_min_um": 1.1033000000000002,
+            "wl_max_um": 1.6499000000000001
+          }
+        },
+        "already_cached": false
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2025W18_2B/l2b-v27-2026-197/2/level2_2025W18_2B_0489_3D2_spx_l2b-v27-2026-197.fits",
+          "band": "D2",
+          "mjd_start": 60799.70569,
+          "mjd_end": 60799.707023,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W18_2B_0489_3/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2025W18_2B_0489_3",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "/Users/Nikhil/ENGINEERING/hackathons/nasa spaceappchall/project-nadir-codex/data/cache/cutouts/aa73cea6fd6cf5ee5f23234a.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W18_2B/l2b-v27-2026-197/2/level2_2025W18_2B_0489_3D2_spx_l2b-v27-2026-197.fits?center=331.096644,-56.800660d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 331.09664385226796,
+            "dec_deg": -56.80066020400499,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-15T00:40:12+00:00",
+          "response_bytes": 4138560,
+          "response_sha256": "de7d859884579042c4be2170661afdc6ac41959fd103f165fa29e0ff61b03a40",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2025W18_2B/l2b-v27-2026-197/2/level2_2025W18_2B_0489_3D2_spx_l2b-v27-2026-197.fits",
+            "band": "D2",
+            "mjd_start": 60799.70569,
+            "mjd_end": 60799.707023,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W18_2B_0489_3/D2",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2025W18_2B_0489_3",
+            "wl_min_um": 1.1033000000000002,
+            "wl_max_um": 1.6499000000000001
+          }
+        },
+        "already_cached": false
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2025W40_1A/l2b-v27-2026-239/2/level2_2025W40_1A_0661_4D2_spx_l2b-v27-2026-239.fits",
+          "band": "D2",
+          "mjd_start": 60950.022683,
+          "mjd_end": 60950.024015,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W40_1A_0661_4/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2025W40_1A_0661_4",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "/Users/Nikhil/ENGINEERING/hackathons/nasa spaceappchall/project-nadir-codex/data/cache/cutouts/13239cf71087ebefc6e5e0ce.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W40_1A/l2b-v27-2026-239/2/level2_2025W40_1A_0661_4D2_spx_l2b-v27-2026-239.fits?center=331.096644,-56.800660d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 331.09664385226796,
+            "dec_deg": -56.80066020400499,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-15T00:40:16+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "ad3dca9a44c3fd88a02206319acacba7ef2a841a97dfad824499bf37405fde35",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2025W40_1A/l2b-v27-2026-239/2/level2_2025W40_1A_0661_4D2_spx_l2b-v27-2026-239.fits",
+            "band": "D2",
+            "mjd_start": 60950.022683,
+            "mjd_end": 60950.024015,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W40_1A_0661_4/D2",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2025W40_1A_0661_4",
+            "wl_min_um": 1.1033000000000002,
+            "wl_max_um": 1.6499000000000001
+          }
+        },
+        "already_cached": false
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2025W17_4B/l2b-v27-2026-196/1/level2_2025W17_4B_0077_3D1_spx_l2b-v27-2026-196.fits",
+          "band": "D1",
+          "mjd_start": 60790.262463,
+          "mjd_end": 60790.263795,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W17_4B_0077_3/D1",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2025W17_4B_0077_3",
+          "wl_min_um": 0.7455,
+          "wl_max_um": 1.1167
+        },
+        "path": "/Users/Nikhil/ENGINEERING/hackathons/nasa spaceappchall/project-nadir-codex/data/cache/cutouts/ea68a3cdb1248c24151166e3.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W17_4B/l2b-v27-2026-196/1/level2_2025W17_4B_0077_3D1_spx_l2b-v27-2026-196.fits?center=331.096644,-56.800660d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 331.09664385226796,
+            "dec_deg": -56.80066020400499,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-15T00:40:20+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "aac04d90709966371a21af52fdebeed376d79e109b80a6d4173aa5e3934177d9",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2025W17_4B/l2b-v27-2026-196/1/level2_2025W17_4B_0077_3D1_spx_l2b-v27-2026-196.fits",
+            "band": "D1",
+            "mjd_start": 60790.262463,
+            "mjd_end": 60790.263795,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W17_4B_0077_3/D1",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2025W17_4B_0077_3",
+            "wl_min_um": 0.7455,
+            "wl_max_um": 1.1167
+          }
+        },
+        "already_cached": false
+      }
+    ],
+    "failures": [
+      {
+        "stage": "cutout",
+        "uri": "ibe/data/spherex/dr1/level2/2025W42_2A/l2b-v27-2026-243/2/level2_2025W42_2A_0033_2D2_spx_l2b-v27-2026-243.fits",
+        "code": "cutout_unavailable",
+        "message": "Cutout download failed for https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W42_2A/l2b-v27-2026-243/2/level2_2025W42_2A_0033_2D2_spx_l2b-v27-2026-243.fits?center=331.096644,-56.800660d&size=0.2000: HTTP 503, non-FITS response: 'Server busy, retry later.'"
+      },
+      {
+        "stage": "cutout",
+        "uri": "ibe/data/spherex/qr3/level2/2026W40_1A/l2b-v27-2026-276/2/level2_2026W40_1A_0435_3D2_spx_l2b-v27-2026-276.fits",
+        "code": "cutout_unavailable",
+        "message": "Cutout download failed for https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W40_1A/l2b-v27-2026-276/2/level2_2026W40_1A_0435_3D2_spx_l2b-v27-2026-276.fits?center=331.096644,-56.800660d&size=0.2000: HTTP 503, non-FITS response: 'Server busy, retry later.'"
+      },
+      {
+        "stage": "cutout",
+        "uri": "ibe/data/spherex/qr3/level2/2026W40_2A/l2b-v27-2026-285/2/level2_2026W40_2A_0216_2D2_spx_l2b-v27-2026-285.fits",
+        "code": "cutout_unavailable",
+        "message": "Cutout download failed for https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W40_2A/l2b-v27-2026-285/2/level2_2026W40_2A_0216_2D2_spx_l2b-v27-2026-285.fits?center=331.096644,-56.800660d&size=0.2000: HTTP 503, non-FITS response: 'Server busy, retry later.'"
+      },
+      {
+        "stage": "cutout",
+        "uri": "ibe/data/spherex/qr3/level2/2026W40_1A/l2b-v27-2026-276/6/level2_2026W40_1A_0070_2D6_spx_l2b-v27-2026-276.fits",
+        "code": "cutout_unavailable",
+        "message": "Cutout download failed for https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W40_1A/l2b-v27-2026-276/6/level2_2026W40_1A_0070_2D6_spx_l2b-v27-2026-276.fits?center=331.096644,-56.800660d&size=0.2000: HTTP 503, non-FITS response: 'Server busy, retry later.'"
+      }
+    ],
+    "timings": {
+      "resolve_s": 0.9229156250366941,
+      "discovery_s": 3.1525856249500066,
+      "cutouts_s": 13.477950499975123
+    },
+    "ra": 331.09664385226796,
+    "dec": -56.80066020400499,
+    "position_epoch": 2026.0,
+    "identity": {
+      "name": "* eps Ind B",
+      "ra_j2000": 331.04414658852124,
+      "dec_j2000": -56.782844195116105,
+      "pmra_masyr": 3981.977,
+      "pmdec_masyr": -2466.832,
+      "parallax_mas": 270.658,
+      "ra": 331.09664385226796,
+      "dec": -56.80066020400499,
+      "epoch": 2026.0
+    },
+    "position_source": "SIMBAD TAP; linear proper motion to 2026.0",
+    "discovery": {
+      "provenance": {
+        "adql": "SIA spherex dr1+qr3 331.096644 -56.800660",
+        "service": "https://irsa.ipac.caltech.edu/SIA",
+        "retrieved_utc": "2026-11-15T00:40:06+00:00",
+        "cached": false,
+        "stale": false
+      },
+      "counts": {
+        "D1": 46,
+        "D2": 93,
+        "D3": 96,
+        "D4": 46,
+        "D5": 84,
+        "D6": 93
+      },
+      "mjd_range": [
+        60789.855522,
+        61315.478076
+      ]
+    }
+  },
+  {
+    "key": "wise0855",
+    "name": "WISE J085510.83-071442.5",
+    "band": "D6",
+    "size": 0.2,
+    "files": [
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2025W19_1B/l2b-v27-2026-197/6/level2_2025W19_1B_0116_1D6_spx_l2b-v27-2026-197.fits",
+          "band": "D6",
+          "mjd_start": 60800.700028,
+          "mjd_end": 60800.701361,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W19_1B_0116_1/D6",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2025W19_1B_0116_1",
+          "wl_min_um": 4.4115,
+          "wl_max_um": 5.009600000000001
+        },
+        "path": "/Users/Nikhil/ENGINEERING/hackathons/nasa spaceappchall/project-nadir-codex/data/cache/cutouts/3ae4989cb28edc6019af1b5c.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W19_1B/l2b-v27-2026-197/6/level2_2025W19_1B_0116_1D6_spx_l2b-v27-2026-197.fits?center=133.759765,-7.242186d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 133.75976461144327,
+            "dec_deg": -7.242186000000001,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-15T00:40:26+00:00",
+          "response_bytes": 4170240,
+          "response_sha256": "fad1d3078cac5733da39a75d31db5475abc62a07ba07ef3b1c633235584cb551",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2025W19_1B/l2b-v27-2026-197/6/level2_2025W19_1B_0116_1D6_spx_l2b-v27-2026-197.fits",
+            "band": "D6",
+            "mjd_start": 60800.700028,
+            "mjd_end": 60800.701361,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W19_1B_0116_1/D6",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2025W19_1B_0116_1",
+            "wl_min_um": 4.4115,
+            "wl_max_um": 5.009600000000001
+          }
+        },
+        "already_cached": false
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2025W46_1A/l2b-v27-2026-206/6/level2_2025W46_1A_0090_2D6_spx_l2b-v27-2026-206.fits",
+          "band": "D6",
+          "mjd_start": 60989.366268,
+          "mjd_end": 60989.367601,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W46_1A_0090_2/D6",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2025W46_1A_0090_2",
+          "wl_min_um": 4.4115,
+          "wl_max_um": 5.009600000000001
+        },
+        "path": "/Users/Nikhil/ENGINEERING/hackathons/nasa spaceappchall/project-nadir-codex/data/cache/cutouts/a52299119d23963ed3d62f85.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W46_1A/l2b-v27-2026-206/6/level2_2025W46_1A_0090_2D6_spx_l2b-v27-2026-206.fits?center=133.759765,-7.242186d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 133.75976461144327,
+            "dec_deg": -7.242186000000001,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-15T00:40:29+00:00",
+          "response_bytes": 4170240,
+          "response_sha256": "cd698444b6bf80320132ca6d8ae126d9254d5dd14eb98d16c4471c5e79b62ebd",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2025W46_1A/l2b-v27-2026-206/6/level2_2025W46_1A_0090_2D6_spx_l2b-v27-2026-206.fits",
+            "band": "D6",
+            "mjd_start": 60989.366268,
+            "mjd_end": 60989.367601,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W46_1A_0090_2/D6",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2025W46_1A_0090_2",
+            "wl_min_um": 4.4115,
+            "wl_max_um": 5.009600000000001
+          }
+        },
+        "already_cached": false
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2026W17_2A/l2b-v27-2026-243/6/level2_2026W17_2A_0609_1D6_spx_l2b-v27-2026-243.fits",
+          "band": "D6",
+          "mjd_start": 61156.152716,
+          "mjd_end": 61156.154048,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2026W17_2A_0609_1/D6",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W17_2A_0609_1",
+          "wl_min_um": 4.4115,
+          "wl_max_um": 5.009600000000001
+        },
+        "path": "/Users/Nikhil/ENGINEERING/hackathons/nasa spaceappchall/project-nadir-codex/data/cache/cutouts/28b543884a33aece0e5d52fc.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2026W17_2A/l2b-v27-2026-243/6/level2_2026W17_2A_0609_1D6_spx_l2b-v27-2026-243.fits?center=133.759765,-7.242186d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 133.75976461144327,
+            "dec_deg": -7.242186000000001,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-15T00:40:33+00:00",
+          "response_bytes": 4170240,
+          "response_sha256": "4d6d631bb581e9f4f3c03cd1a359fc086d6a8ba990197ed619b3d5cef2d671cb",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2026W17_2A/l2b-v27-2026-243/6/level2_2026W17_2A_0609_1D6_spx_l2b-v27-2026-243.fits",
+            "band": "D6",
+            "mjd_start": 61156.152716,
+            "mjd_end": 61156.154048,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2026W17_2A_0609_1/D6",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2026W17_2A_0609_1",
+            "wl_min_um": 4.4115,
+            "wl_max_um": 5.009600000000001
+          }
+        },
+        "already_cached": false
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2025W19_1B/l2b-v27-2026-197/1/level2_2025W19_1B_0241_1D1_spx_l2b-v27-2026-197.fits",
+          "band": "D1",
+          "mjd_start": 60801.514177,
+          "mjd_end": 60801.515509,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W19_1B_0241_1/D1",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2025W19_1B_0241_1",
+          "wl_min_um": 0.7455,
+          "wl_max_um": 1.1167
+        },
+        "path": "/Users/Nikhil/ENGINEERING/hackathons/nasa spaceappchall/project-nadir-codex/data/cache/cutouts/f5265d73faf1ce7e0f90fe7e.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W19_1B/l2b-v27-2026-197/1/level2_2025W19_1B_0241_1D1_spx_l2b-v27-2026-197.fits?center=133.759765,-7.242186d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 133.75976461144327,
+            "dec_deg": -7.242186000000001,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-15T00:40:39+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "9691bf7168fa67d7e39a27e75c5f2e1438960978e7ef5239b336e540f7541820",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2025W19_1B/l2b-v27-2026-197/1/level2_2025W19_1B_0241_1D1_spx_l2b-v27-2026-197.fits",
+            "band": "D1",
+            "mjd_start": 60801.514177,
+            "mjd_end": 60801.515509,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W19_1B_0241_1/D1",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2025W19_1B_0241_1",
+            "wl_min_um": 0.7455,
+            "wl_max_um": 1.1167
+          }
+        },
+        "already_cached": false
+      }
+    ],
+    "failures": [
+      {
+        "stage": "cutout",
+        "uri": "ibe/data/spherex/dr1/level2/2025W46_2A/l2b_retry-v27-2026-207/6/level2_2025W46_2A_0226_2D6_spx_l2b_retry-v27-2026-207.fits",
+        "code": "cutout_unavailable",
+        "message": "Cutout download failed for https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W46_2A/l2b_retry-v27-2026-207/6/level2_2025W46_2A_0226_2D6_spx_l2b_retry-v27-2026-207.fits?center=133.759765,-7.242186d&size=0.2000: HTTP 503, non-FITS response: 'Server busy, retry later.'"
+      },
+      {
+        "stage": "cutout",
+        "uri": "ibe/data/spherex/dr1/level2/2026W17_1B/l2b-v27-2026-242/6/level2_2026W17_1B_0227_4D6_spx_l2b-v27-2026-242.fits",
+        "code": "cutout_unavailable",
+        "message": "Cutout download failed for https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2026W17_1B/l2b-v27-2026-242/6/level2_2026W17_1B_0227_4D6_spx_l2b-v27-2026-242.fits?center=133.759765,-7.242186d&size=0.2000: HTTP 503, non-FITS response: 'Server busy, retry later.'"
+      },
+      {
+        "stage": "cutout",
+        "uri": "ibe/data/spherex/dr1/level2/2026W20_1A/l2b-v27-2026-246/6/level2_2026W20_1A_0033_1D6_spx_l2b-v27-2026-246.fits",
+        "code": "cutout_unavailable",
+        "message": "Cutout download failed for https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2026W20_1A/l2b-v27-2026-246/6/level2_2026W20_1A_0033_1D6_spx_l2b-v27-2026-246.fits?center=133.759765,-7.242186d&size=0.2000: HTTP 503, non-FITS response: 'Server busy, retry later.'"
+      },
+      {
+        "stage": "cutout",
+        "uri": "ibe/data/spherex/dr1/level2/2026W20_1A/l2b-v27-2026-246/5/level2_2026W20_1A_1166_1D5_spx_l2b-v27-2026-246.fits",
+        "code": "cutout_unavailable",
+        "message": "Cutout download failed for https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2026W20_1A/l2b-v27-2026-246/5/level2_2026W20_1A_1166_1D5_spx_l2b-v27-2026-246.fits?center=133.759765,-7.242186d&size=0.2000: HTTP 503, non-FITS response: 'Server busy, retry later.'"
+      }
+    ],
+    "timings": {
+      "resolve_s": 0.6052554589696229,
+      "discovery_s": 2.4977181249996647,
+      "cutouts_s": 16.359915458015166
+    },
+    "ra": 133.75976461144327,
+    "dec": -7.242186000000001,
+    "position_epoch": 2026.0,
+    "identity": {
+      "name": "WISEA J085510.74-071442.5",
+      "ra_j2000": 133.81890825,
+      "dec_j2000": -7.247048000000001,
+      "pmra_masyr": -8123.7,
+      "pmdec_masyr": 673.2,
+      "parallax_mas": 439.0,
+      "ra": 133.75976461144327,
+      "dec": -7.242186000000001,
+      "epoch": 2026.0
+    },
+    "position_source": "SIMBAD TAP; linear proper motion to 2026.0",
+    "discovery": {
+      "provenance": {
+        "adql": "SIA spherex dr1+qr3 133.759765 -7.242186",
+        "service": "https://irsa.ipac.caltech.edu/SIA",
+        "retrieved_utc": "2026-11-15T00:40:23+00:00",
+        "cached": false,
+        "stale": false
+      },
+      "counts": {
+        "D1": 36,
+        "D2": 48,
+        "D3": 45,
+        "D4": 36,
+        "D5": 48,
+        "D6": 45
+      },
+      "mjd_range": [
+        60800.700028,
+        61174.287218
+      ]
+    }
+  },
+  {
+    "key": "rw_aur",
+    "name": "RW Aur",
+    "band": "D2",
+    "size": 0.2,
+    "files": [
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2025W37_1A/l2b-v27-2026-235/2/level2_2025W37_1A_0366_4D2_spx_l2b-v27-2026-235.fits",
+          "band": "D2",
+          "mjd_start": 60927.842998,
+          "mjd_end": 60927.84433,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W37_1A_0366_4/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2025W37_1A_0366_4",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "/Users/Nikhil/ENGINEERING/hackathons/nasa spaceappchall/project-nadir-codex/data/cache/cutouts/c62c82cf42a89574eeb43901.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W37_1A/l2b-v27-2026-235/2/level2_2025W37_1A_0366_4D2_spx_l2b-v27-2026-235.fits?center=76.956587,30.401291d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 76.95658657557826,
+            "dec_deg": 30.401291346111112,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-15T00:40:47+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "e8831c890e4b2569ed23bc3055fbee5835296f399e14c18ed94986f07dd0c10d",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2025W37_1A/l2b-v27-2026-235/2/level2_2025W37_1A_0366_4D2_spx_l2b-v27-2026-235.fits",
+            "band": "D2",
+            "mjd_start": 60927.842998,
+            "mjd_end": 60927.84433,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W37_1A_0366_4/D2",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2025W37_1A_0366_4",
+            "wl_min_um": 1.1033000000000002,
+            "wl_max_um": 1.6499000000000001
+          }
+        },
+        "already_cached": false
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2026W09_2A/l2b-v27-2026-229/2/level2_2026W09_2A_0503_4D2_spx_l2b-v27-2026-229.fits",
+          "band": "D2",
+          "mjd_start": 61100.209853,
+          "mjd_end": 61100.211185,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2026W09_2A_0503_4/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W09_2A_0503_4",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "/Users/Nikhil/ENGINEERING/hackathons/nasa spaceappchall/project-nadir-codex/data/cache/cutouts/6db81b739bb4c3cbb2c12236.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2026W09_2A/l2b-v27-2026-229/2/level2_2026W09_2A_0503_4D2_spx_l2b-v27-2026-229.fits?center=76.956587,30.401291d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 76.95658657557826,
+            "dec_deg": 30.401291346111112,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-15T00:40:50+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "e1119acf34e877ed48712cb5d4993ad132d150f4e91ac799a36ea935e65b7bd1",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2026W09_2A/l2b-v27-2026-229/2/level2_2026W09_2A_0503_4D2_spx_l2b-v27-2026-229.fits",
+            "band": "D2",
+            "mjd_start": 61100.209853,
+            "mjd_end": 61100.211185,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2026W09_2A_0503_4/D2",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2026W09_2A_0503_4",
+            "wl_min_um": 1.1033000000000002,
+            "wl_max_um": 1.6499000000000001
+          }
+        },
+        "already_cached": false
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2026W10_2B/l2b-v27-2026-231/2/level2_2026W10_2B_0340_1D2_spx_l2b-v27-2026-231.fits",
+          "band": "D2",
+          "mjd_start": 61106.316088,
+          "mjd_end": 61106.31742,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2026W10_2B_0340_1/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W10_2B_0340_1",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "/Users/Nikhil/ENGINEERING/hackathons/nasa spaceappchall/project-nadir-codex/data/cache/cutouts/ce30dd584e53295bdf5fcf66.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2026W10_2B/l2b-v27-2026-231/2/level2_2026W10_2B_0340_1D2_spx_l2b-v27-2026-231.fits?center=76.956587,30.401291d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 76.95658657557826,
+            "dec_deg": 30.401291346111112,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-15T00:40:56+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "22b86d52f9bc67b94924c99318fdeaf18925eacc1a699fafc3f068c940b87aa5",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2026W10_2B/l2b-v27-2026-231/2/level2_2026W10_2B_0340_1D2_spx_l2b-v27-2026-231.fits",
+            "band": "D2",
+            "mjd_start": 61106.316088,
+            "mjd_end": 61106.31742,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2026W10_2B_0340_1/D2",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2026W10_2B_0340_1",
+            "wl_min_um": 1.1033000000000002,
+            "wl_max_um": 1.6499000000000001
+          }
+        },
+        "already_cached": false
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/qr3/level2/2026W38_1A/l2b-v27-2026-261/2/level2_2026W38_1A_0254_3D2_spx_l2b-v27-2026-261.fits",
+          "band": "D2",
+          "mjd_start": 61298.33665,
+          "mjd_end": 61298.337983,
+          "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W38_1A_0254_3/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W38_1A_0254_3",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "/Users/Nikhil/ENGINEERING/hackathons/nasa spaceappchall/project-nadir-codex/data/cache/cutouts/a0ec3507c81db91a248ce6dd.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W38_1A/l2b-v27-2026-261/2/level2_2026W38_1A_0254_3D2_spx_l2b-v27-2026-261.fits?center=76.956587,30.401291d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "qr3",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 76.95658657557826,
+            "dec_deg": 30.401291346111112,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-15T00:41:05+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "776d32a775bdef91be86f65b19d0eb07f7b7276f2ca8a539f13fe7d1a8c04be6",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/qr3/level2/2026W38_1A/l2b-v27-2026-261/2/level2_2026W38_1A_0254_3D2_spx_l2b-v27-2026-261.fits",
+            "band": "D2",
+            "mjd_start": 61298.33665,
+            "mjd_end": 61298.337983,
+            "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W38_1A_0254_3/D2",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2026W38_1A_0254_3",
+            "wl_min_um": 1.1033000000000002,
+            "wl_max_um": 1.6499000000000001
+          }
+        },
+        "already_cached": false
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2025W36_1A/l2b-v27-2026-232/1/level2_2025W36_1A_0095_1D1_spx_l2b-v27-2026-232.fits",
+          "band": "D1",
+          "mjd_start": 60919.419647,
+          "mjd_end": 60919.420979,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W36_1A_0095_1/D1",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2025W36_1A_0095_1",
+          "wl_min_um": 0.7455,
+          "wl_max_um": 1.1167
+        },
+        "path": "/Users/Nikhil/ENGINEERING/hackathons/nasa spaceappchall/project-nadir-codex/data/cache/cutouts/7c65d60a359fa24d4735d19b.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W36_1A/l2b-v27-2026-232/1/level2_2025W36_1A_0095_1D1_spx_l2b-v27-2026-232.fits?center=76.956587,30.401291d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 76.95658657557826,
+            "dec_deg": 30.401291346111112,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-15T00:41:12+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "adc050f7950294bc3a448d04c08b73bd23cc7db059cc86cd14ec3030a4d68cf2",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2025W36_1A/l2b-v27-2026-232/1/level2_2025W36_1A_0095_1D1_spx_l2b-v27-2026-232.fits",
+            "band": "D1",
+            "mjd_start": 60919.419647,
+            "mjd_end": 60919.420979,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W36_1A_0095_1/D1",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2025W36_1A_0095_1",
+            "wl_min_um": 0.7455,
+            "wl_max_um": 1.1167
+          }
+        },
+        "already_cached": false
+      }
+    ],
+    "failures": [
+      {
+        "stage": "cutout",
+        "uri": "ibe/data/spherex/dr1/level2/2025W37_1A/l2b-v27-2026-235/2/level2_2025W37_1A_0068_1D2_spx_l2b-v27-2026-235.fits",
+        "code": "cutout_unavailable",
+        "message": "Cutout download failed for https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W37_1A/l2b-v27-2026-235/2/level2_2025W37_1A_0068_1D2_spx_l2b-v27-2026-235.fits?center=76.956587,30.401291d&size=0.2000: HTTP 503, non-FITS response: 'Server busy, retry later.'"
+      },
+      {
+        "stage": "cutout",
+        "uri": "ibe/data/spherex/qr3/level2/2026W37_2A/l2b-v27-2026-259/2/level2_2026W37_2A_0516_2D2_spx_l2b-v27-2026-259.fits",
+        "code": "cutout_unavailable",
+        "message": "Cutout download failed for https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W37_2A/l2b-v27-2026-259/2/level2_2026W37_2A_0516_2D2_spx_l2b-v27-2026-259.fits?center=76.956587,30.401291d&size=0.2000: HTTP 503, non-FITS response: 'Server busy, retry later.'"
+      },
+      {
+        "stage": "cutout",
+        "uri": "ibe/data/spherex/qr3/level2/2026W38_1A/l2b-v27-2026-261/6/level2_2026W38_1A_0565_1D6_spx_l2b-v27-2026-261.fits",
+        "code": "cutout_unavailable",
+        "message": "Cutout download failed for https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W38_1A/l2b-v27-2026-261/6/level2_2026W38_1A_0565_1D6_spx_l2b-v27-2026-261.fits?center=76.956587,30.401291d&size=0.2000: HTTP 503, non-FITS response: 'Server busy, retry later.'"
+      }
+    ],
+    "timings": {
+      "resolve_s": 0.4566395840374753,
+      "discovery_s": 1.7016735420329496,
+      "cutouts_s": 30.553743958938867
+    },
+    "ra": 76.95658657557826,
+    "dec": 30.401291346111112,
+    "position_epoch": 2026.0,
+    "identity": {
+      "name": "V* RW Aur",
+      "ra_j2000": 76.95652603458333,
+      "dec_j2000": 30.401438173888888,
+      "pmra_masyr": 7.23,
+      "pmdec_masyr": -20.33,
+      "parallax_mas": 15.42,
+      "ra": 76.95658657557826,
+      "dec": 30.401291346111112,
+      "epoch": 2026.0
+    },
+    "position_source": "SIMBAD TAP; linear proper motion to 2026.0",
+    "discovery": {
+      "provenance": {
+        "adql": "SIA spherex dr1+qr3 76.956587 30.401291",
+        "service": "https://irsa.ipac.caltech.edu/SIA",
+        "retrieved_utc": "2026-11-15T00:40:42+00:00",
+        "cached": false,
+        "stale": false
+      },
+      "counts": {
+        "D1": 56,
+        "D2": 55,
+        "D3": 56,
+        "D4": 56,
+        "D5": 56,
+        "D6": 56
+      },
+      "mjd_range": [
+        60919.419647,
+        61299.895897
+      ]
+    }
+  },
+  {
+    "key": "r_dra",
+    "name": "R Dra",
+    "band": "D2",
+    "size": 0.2,
+    "files": [
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2025W23_2B/l2b-v27-2026-201/2/level2_2025W23_2B_0696_1D2_spx_l2b-v27-2026-201.fits",
+          "band": "D2",
+          "mjd_start": 60834.787751,
+          "mjd_end": 60834.789083,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W23_2B_0696_1/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2025W23_2B_0696_1",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "/Users/Nikhil/ENGINEERING/hackathons/nasa spaceappchall/project-nadir-codex/data/cache/cutouts/245a69b508d8c1afc4ca90d7.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W23_2B/l2b-v27-2026-201/2/level2_2025W23_2B_0696_1D2_spx_l2b-v27-2026-201.fits?center=248.167233,66.755024d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 248.16723307280128,
+            "dec_deg": 66.75502382666444,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-15T00:41:20+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "8fcc1ee4ac954f804ee03c4325684f9080746dfaaa5fc0e689707af3e0a0ae88",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2025W23_2B/l2b-v27-2026-201/2/level2_2025W23_2B_0696_1D2_spx_l2b-v27-2026-201.fits",
+            "band": "D2",
+            "mjd_start": 60834.787751,
+            "mjd_end": 60834.789083,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W23_2B_0696_1/D2",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2025W23_2B_0696_1",
+            "wl_min_um": 1.1033000000000002,
+            "wl_max_um": 1.6499000000000001
+          }
+        },
+        "already_cached": false
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2025W25_2A/l2b-v27-2026-213/2/level2_2025W25_2A_0633_3D2_spx_l2b-v27-2026-213.fits",
+          "band": "D2",
+          "mjd_start": 60848.650039,
+          "mjd_end": 60848.651372,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W25_2A_0633_3/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2025W25_2A_0633_3",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "/Users/Nikhil/ENGINEERING/hackathons/nasa spaceappchall/project-nadir-codex/data/cache/cutouts/d74dd4df817c76105e2d1687.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W25_2A/l2b-v27-2026-213/2/level2_2025W25_2A_0633_3D2_spx_l2b-v27-2026-213.fits?center=248.167233,66.755024d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 248.16723307280128,
+            "dec_deg": 66.75502382666444,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-15T00:41:23+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "cbaa1c23b6640eacf48436c2536358f61f0cc1154b64ff17c5949ea8a772c6b5",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2025W25_2A/l2b-v27-2026-213/2/level2_2025W25_2A_0633_3D2_spx_l2b-v27-2026-213.fits",
+            "band": "D2",
+            "mjd_start": 60848.650039,
+            "mjd_end": 60848.651372,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W25_2A_0633_3/D2",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2025W25_2A_0633_3",
+            "wl_min_um": 1.1033000000000002,
+            "wl_max_um": 1.6499000000000001
+          }
+        },
+        "already_cached": false
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2025W47_1A/l2b-v27-2026-208/2/level2_2025W47_1A_0388_3D2_spx_l2b-v27-2026-208.fits",
+          "band": "D2",
+          "mjd_start": 60997.735722,
+          "mjd_end": 60997.737055,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W47_1A_0388_3/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2025W47_1A_0388_3",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "/Users/Nikhil/ENGINEERING/hackathons/nasa spaceappchall/project-nadir-codex/data/cache/cutouts/c1f9dc0e3bbc53a9d6e9f614.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W47_1A/l2b-v27-2026-208/2/level2_2025W47_1A_0388_3D2_spx_l2b-v27-2026-208.fits?center=248.167233,66.755024d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 248.16723307280128,
+            "dec_deg": 66.75502382666444,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-15T00:41:30+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "8516dabfb14958f3219aa6774ce1afd5af8529545cc5d760635b2d0d5d96d70f",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2025W47_1A/l2b-v27-2026-208/2/level2_2025W47_1A_0388_3D2_spx_l2b-v27-2026-208.fits",
+            "band": "D2",
+            "mjd_start": 60997.735722,
+            "mjd_end": 60997.737055,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W47_1A_0388_3/D2",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2025W47_1A_0388_3",
+            "wl_min_um": 1.1033000000000002,
+            "wl_max_um": 1.6499000000000001
+          }
+        },
+        "already_cached": false
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/qr3/level2/2026W25_2A/l2b-v27-2026-273/2/level2_2026W25_2A_0573_1D2_spx_l2b-v27-2026-273.fits",
+          "band": "D2",
+          "mjd_start": 61212.142422,
+          "mjd_end": 61212.143755,
+          "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W25_2A_0573_1/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W25_2A_0573_1",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "/Users/Nikhil/ENGINEERING/hackathons/nasa spaceappchall/project-nadir-codex/data/cache/cutouts/2fc33f5768bef741708af944.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W25_2A/l2b-v27-2026-273/2/level2_2026W25_2A_0573_1D2_spx_l2b-v27-2026-273.fits?center=248.167233,66.755024d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "qr3",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 248.16723307280128,
+            "dec_deg": 66.75502382666444,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-15T00:41:36+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "60e0d9e003e6dd5abd314ab89a54c7c8faaedd32bf070a10354c37b8296e9dfd",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/qr3/level2/2026W25_2A/l2b-v27-2026-273/2/level2_2026W25_2A_0573_1D2_spx_l2b-v27-2026-273.fits",
+            "band": "D2",
+            "mjd_start": 61212.142422,
+            "mjd_end": 61212.143755,
+            "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W25_2A_0573_1/D2",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2026W25_2A_0573_1",
+            "wl_min_um": 1.1033000000000002,
+            "wl_max_um": 1.6499000000000001
+          }
+        },
+        "already_cached": false
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/qr3/level2/2026W26_1A/l2b-v27-2026-273/2/level2_2026W26_1A_0324_3D2_spx_l2b-v27-2026-273.fits",
+          "band": "D2",
+          "mjd_start": 61214.453677,
+          "mjd_end": 61214.455009,
+          "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W26_1A_0324_3/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W26_1A_0324_3",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "/Users/Nikhil/ENGINEERING/hackathons/nasa spaceappchall/project-nadir-codex/data/cache/cutouts/672fcec697c5b9fd11c65535.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W26_1A/l2b-v27-2026-273/2/level2_2026W26_1A_0324_3D2_spx_l2b-v27-2026-273.fits?center=248.167233,66.755024d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "qr3",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 248.16723307280128,
+            "dec_deg": 66.75502382666444,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-15T00:41:40+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "8d97c44d01cb79ab14db3c4ba1e6d83e2d39f6baf1a6524110176980bb3fd791",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/qr3/level2/2026W26_1A/l2b-v27-2026-273/2/level2_2026W26_1A_0324_3D2_spx_l2b-v27-2026-273.fits",
+            "band": "D2",
+            "mjd_start": 61214.453677,
+            "mjd_end": 61214.455009,
+            "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W26_1A_0324_3/D2",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2026W26_1A_0324_3",
+            "wl_min_um": 1.1033000000000002,
+            "wl_max_um": 1.6499000000000001
+          }
+        },
+        "already_cached": false
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2025W23_2B/l2b-v27-2026-201/1/level2_2025W23_2B_0206_1D1_spx_l2b-v27-2026-201.fits",
+          "band": "D1",
+          "mjd_start": 60832.473887,
+          "mjd_end": 60832.47522,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W23_2B_0206_1/D1",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2025W23_2B_0206_1",
+          "wl_min_um": 0.7455,
+          "wl_max_um": 1.1167
+        },
+        "path": "/Users/Nikhil/ENGINEERING/hackathons/nasa spaceappchall/project-nadir-codex/data/cache/cutouts/b6a092967bcfaf69b800bc60.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W23_2B/l2b-v27-2026-201/1/level2_2025W23_2B_0206_1D1_spx_l2b-v27-2026-201.fits?center=248.167233,66.755024d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 248.16723307280128,
+            "dec_deg": 66.75502382666444,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-15T00:41:46+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "0062478d328a4ce2ced736be97c55462f963d6432e405591b5429eeb5e7cc796",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2025W23_2B/l2b-v27-2026-201/1/level2_2025W23_2B_0206_1D1_spx_l2b-v27-2026-201.fits",
+            "band": "D1",
+            "mjd_start": 60832.473887,
+            "mjd_end": 60832.47522,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W23_2B_0206_1/D1",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2025W23_2B_0206_1",
+            "wl_min_um": 0.7455,
+            "wl_max_um": 1.1167
+          }
+        },
+        "already_cached": false
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/qr3/level2/2026W24_2B/l2b-v27-2026-272/6/level2_2026W24_2B_0242_4D6_spx_l2b-v27-2026-272.fits",
+          "band": "D6",
+          "mjd_start": 61203.860905,
+          "mjd_end": 61203.862237,
+          "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W24_2B_0242_4/D6",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W24_2B_0242_4",
+          "wl_min_um": 4.4115,
+          "wl_max_um": 5.009600000000001
+        },
+        "path": "/Users/Nikhil/ENGINEERING/hackathons/nasa spaceappchall/project-nadir-codex/data/cache/cutouts/4bcccc8ecf941033261dab26.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W24_2B/l2b-v27-2026-272/6/level2_2026W24_2B_0242_4D6_spx_l2b-v27-2026-272.fits?center=248.167233,66.755024d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "qr3",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 248.16723307280128,
+            "dec_deg": 66.75502382666444,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-15T00:41:54+00:00",
+          "response_bytes": 4170240,
+          "response_sha256": "5a7ceac4e2a63edc05c73c876d96ff536724fbf41e9930f088ae35efe1ad3ea0",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/qr3/level2/2026W24_2B/l2b-v27-2026-272/6/level2_2026W24_2B_0242_4D6_spx_l2b-v27-2026-272.fits",
+            "band": "D6",
+            "mjd_start": 61203.860905,
+            "mjd_end": 61203.862237,
+            "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W24_2B_0242_4/D6",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2026W24_2B_0242_4",
+            "wl_min_um": 4.4115,
+            "wl_max_um": 5.009600000000001
+          }
+        },
+        "already_cached": false
+      }
+    ],
+    "failures": [
+      {
+        "stage": "cutout",
+        "uri": "ibe/data/spherex/dr1/level2/2025W50_1A/l2b-v27-2026-209/2/level2_2025W50_1A_0661_2D2_spx_l2b-v27-2026-209.fits",
+        "code": "cutout_unavailable",
+        "message": "Cutout download failed for https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W50_1A/l2b-v27-2026-209/2/level2_2025W50_1A_0661_2D2_spx_l2b-v27-2026-209.fits?center=248.167233,66.755024d&size=0.2000: HTTP 503, non-FITS response: 'Server busy, retry later.'"
+      }
+    ],
+    "timings": {
+      "resolve_s": 0.5082456660456955,
+      "discovery_s": 2.291044457932003,
+      "cutouts_s": 38.738171750097536
+    },
+    "ra": 248.16723307280128,
+    "dec": 66.75502382666444,
+    "position_epoch": 2026.0,
+    "identity": {
+      "name": "V* R Dra",
+      "ra_j2000": 248.16761083295,
+      "dec_j2000": 66.75497941722,
+      "pmra_masyr": -20.643,
+      "pmdec_masyr": 6.149,
+      "parallax_mas": 1.2509,
+      "ra": 248.16723307280128,
+      "dec": 66.75502382666444,
+      "epoch": 2026.0
+    },
+    "position_source": "SIMBAD TAP; linear proper motion to 2026.0",
+    "discovery": {
+      "provenance": {
+        "adql": "SIA spherex dr1+qr3 248.167233 66.755024",
+        "service": "https://irsa.ipac.caltech.edu/SIA",
+        "retrieved_utc": "2026-11-15T00:41:15+00:00",
+        "cached": false,
+        "stale": false
+      },
+      "counts": {
+        "D1": 91,
+        "D2": 89,
+        "D3": 91,
+        "D4": 88,
+        "D5": 89,
+        "D6": 91
+      },
+      "mjd_range": [
+        60811.955829,
+        61237.873234
+      ]
+    }
+  },
+  {
+    "key": "teegarden",
+    "name": "Teegarden's Star",
+    "band": "D2",
+    "size": 0.2,
+    "files": [
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2025W32_1A/l2b-v27-2026-226/2/level2_2025W32_1A_0502_1D2_spx_l2b-v27-2026-226.fits",
+          "band": "D2",
+          "mjd_start": 60893.330023,
+          "mjd_end": 60893.331356,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W32_1A_0502_1/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2025W32_1A_0502_1",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "../project-nadir/data/cache/cutouts/c3db6352a3e05594d102d72a.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W32_1A/l2b-v27-2026-226/2/level2_2025W32_1A_0502_1D2_spx_l2b-v27-2026-226.fits?center=43.279600,16.853800d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 43.2796,
+            "dec_deg": 16.8538,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T03:58:48+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "72f5db5bd2377f46a5771978e85040a70ae400da4bc76b489937caf2d239772b",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2025W32_1A/l2b-v27-2026-226/2/level2_2025W32_1A_0502_1D2_spx_l2b-v27-2026-226.fits",
+            "band": "D2",
+            "mjd_start": 60893.330023,
+            "mjd_end": 60893.331356,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W32_1A_0502_1/D2",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2025W32_1A_0502_1",
+            "wl_min_um": 1.1033000000000002,
+            "wl_max_um": 1.6499000000000001
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2025W32_1A/l2b-v27-2026-226/2/level2_2025W32_1A_0538_4D2_spx_l2b-v27-2026-226.fits",
+          "band": "D2",
+          "mjd_start": 60893.537944,
+          "mjd_end": 60893.539277,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W32_1A_0538_4/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2025W32_1A_0538_4",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "../project-nadir/data/cache/cutouts/f9ed35c3e8d00c14f731b90e.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W32_1A/l2b-v27-2026-226/2/level2_2025W32_1A_0538_4D2_spx_l2b-v27-2026-226.fits?center=43.279600,16.853800d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 43.2796,
+            "dec_deg": 16.8538,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T02:48:00+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "04f7cfe96769ac8aeda1c568005b9d216b30702c342caeacae41b0fa9689ff01",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE"
+          ],
+          "note": "EPSF HDU dropped before caching to save space; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2025W32_1A/l2b-v27-2026-226/2/level2_2025W32_1A_0538_4D2_spx_l2b-v27-2026-226.fits",
+            "band": "D2",
+            "mjd_start": 60893.537944,
+            "mjd_end": 60893.539277,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W32_1A_0538_4/D2",
+            "pipeline_version": "7.0.5",
+            "archive_checksum": "md5:f7533e627d237990bf90dc37155e8223"
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2025W32_2D/l2b-v27-2026-226/2/level2_2025W32_2D_0337_2D2_spx_l2b-v27-2026-226.fits",
+          "band": "D2",
+          "mjd_start": 60896.320271,
+          "mjd_end": 60896.321604,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W32_2D_0337_2/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2025W32_2D_0337_2",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "../project-nadir/data/cache/cutouts/3af3640cab377cb5a20fafbc.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W32_2D/l2b-v27-2026-226/2/level2_2025W32_2D_0337_2D2_spx_l2b-v27-2026-226.fits?center=43.279600,16.853800d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 43.2796,
+            "dec_deg": 16.8538,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T02:48:06+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "4490944cf5cfe22a04f8e3df6087d8e7337757da22fa89b3985d5720b735357c",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE"
+          ],
+          "note": "EPSF HDU dropped before caching to save space; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2025W32_2D/l2b-v27-2026-226/2/level2_2025W32_2D_0337_2D2_spx_l2b-v27-2026-226.fits",
+            "band": "D2",
+            "mjd_start": 60896.320271,
+            "mjd_end": 60896.321604,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W32_2D_0337_2/D2",
+            "pipeline_version": "7.0.5",
+            "archive_checksum": "md5:86b273919e36274e7be97c11ac5ba4f1"
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2025W32_2D/l2b-v27-2026-226/2/level2_2025W32_2D_0526_3D2_spx_l2b-v27-2026-226.fits",
+          "band": "D2",
+          "mjd_start": 60897.272792,
+          "mjd_end": 60897.274124,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W32_2D_0526_3/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2025W32_2D_0526_3",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "../project-nadir/data/cache/cutouts/10f574589a266b0c38f44df7.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W32_2D/l2b-v27-2026-226/2/level2_2025W32_2D_0526_3D2_spx_l2b-v27-2026-226.fits?center=43.279600,16.853800d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 43.2796,
+            "dec_deg": 16.8538,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T03:58:52+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "f8b4f024204f8e77268781e9c5b9a8af317066ee894b1413ecfa7f4e13d9f3be",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2025W32_2D/l2b-v27-2026-226/2/level2_2025W32_2D_0526_3D2_spx_l2b-v27-2026-226.fits",
+            "band": "D2",
+            "mjd_start": 60897.272792,
+            "mjd_end": 60897.274124,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W32_2D_0526_3/D2",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2025W32_2D_0526_3",
+            "wl_min_um": 1.1033000000000002,
+            "wl_max_um": 1.6499000000000001
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2026W05_2A/l2b-v27-2026-220/2/level2_2026W05_2A_0128_2D2_spx_l2b-v27-2026-220.fits",
+          "band": "D2",
+          "mjd_start": 61070.063872,
+          "mjd_end": 61070.065205,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2026W05_2A_0128_2/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W05_2A_0128_2",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "../project-nadir/data/cache/cutouts/3f6e21512ca29a619a165ea4.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2026W05_2A/l2b-v27-2026-220/2/level2_2026W05_2A_0128_2D2_spx_l2b-v27-2026-220.fits?center=43.279600,16.853800d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 43.2796,
+            "dec_deg": 16.8538,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T02:48:10+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "f52591bcecfae6bc546fa1253990ba5463cf9b36b0c3f3f97f6fe10d5e09568f",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE"
+          ],
+          "note": "EPSF HDU dropped before caching to save space; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2026W05_2A/l2b-v27-2026-220/2/level2_2026W05_2A_0128_2D2_spx_l2b-v27-2026-220.fits",
+            "band": "D2",
+            "mjd_start": 61070.063872,
+            "mjd_end": 61070.065205,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2026W05_2A_0128_2/D2",
+            "pipeline_version": "7.0.5",
+            "archive_checksum": "md5:91d150cf552d5b412cc4d42f5817dd8b"
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2026W05_2A/l2b-v27-2026-220/2/level2_2026W05_2A_0608_3D2_spx_l2b-v27-2026-220.fits",
+          "band": "D2",
+          "mjd_start": 61072.578854,
+          "mjd_end": 61072.580187,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2026W05_2A_0608_3/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W05_2A_0608_3",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "../project-nadir/data/cache/cutouts/db4ce7ffe3f162427a8d8c14.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2026W05_2A/l2b-v27-2026-220/2/level2_2026W05_2A_0608_3D2_spx_l2b-v27-2026-220.fits?center=43.279600,16.853800d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 43.2796,
+            "dec_deg": 16.8538,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T03:58:58+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "15caed328359a090bbfc231c94b0f953ffbe83bc9b88632e04140fd067326dd9",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2026W05_2A/l2b-v27-2026-220/2/level2_2026W05_2A_0608_3D2_spx_l2b-v27-2026-220.fits",
+            "band": "D2",
+            "mjd_start": 61072.578854,
+            "mjd_end": 61072.580187,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2026W05_2A_0608_3/D2",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2026W05_2A_0608_3",
+            "wl_min_um": 1.1033000000000002,
+            "wl_max_um": 1.6499000000000001
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2026W06_1A/l2b-v27-2026-221/2/level2_2026W06_1A_0050_4D2_spx_l2b-v27-2026-221.fits",
+          "band": "D2",
+          "mjd_start": 61073.190164,
+          "mjd_end": 61073.191496,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2026W06_1A_0050_4/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W06_1A_0050_4",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "../project-nadir/data/cache/cutouts/7af4f53cf0b9718d88f21f40.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2026W06_1A/l2b-v27-2026-221/2/level2_2026W06_1A_0050_4D2_spx_l2b-v27-2026-221.fits?center=43.279600,16.853800d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 43.2796,
+            "dec_deg": 16.8538,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T03:58:59+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "2b758247a6f84886a5a77bd8f86355d0e606c07146141d71b07a6723b7b801d5",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2026W06_1A/l2b-v27-2026-221/2/level2_2026W06_1A_0050_4D2_spx_l2b-v27-2026-221.fits",
+            "band": "D2",
+            "mjd_start": 61073.190164,
+            "mjd_end": 61073.191496,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2026W06_1A_0050_4/D2",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2026W06_1A_0050_4",
+            "wl_min_um": 1.1033000000000002,
+            "wl_max_um": 1.6499000000000001
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2026W06_1A/l2b-v27-2026-221/2/level2_2026W06_1A_0390_3D2_spx_l2b-v27-2026-221.fits",
+          "band": "D2",
+          "mjd_start": 61074.954577,
+          "mjd_end": 61074.95591,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2026W06_1A_0390_3/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W06_1A_0390_3",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "../project-nadir/data/cache/cutouts/1930611e4d4f81ebf058b26c.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2026W06_1A/l2b-v27-2026-221/2/level2_2026W06_1A_0390_3D2_spx_l2b-v27-2026-221.fits?center=43.279600,16.853800d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 43.2796,
+            "dec_deg": 16.8538,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T02:48:21+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "95332945664d5cb2915ada6a66bfc7cbd2dff3da6a71c3db674ff5c61bb06ed9",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE"
+          ],
+          "note": "EPSF HDU dropped before caching to save space; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2026W06_1A/l2b-v27-2026-221/2/level2_2026W06_1A_0390_3D2_spx_l2b-v27-2026-221.fits",
+            "band": "D2",
+            "mjd_start": 61074.954577,
+            "mjd_end": 61074.95591,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2026W06_1A_0390_3/D2",
+            "pipeline_version": "7.0.5",
+            "archive_checksum": "md5:01ad82ec6651a66ece518e9ff9d4aa3f"
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/qr3/level2/2026W33_1A/l2b-v27-2026-240/2/level2_2026W33_1A_0102_2D2_spx_l2b-v27-2026-240.fits",
+          "band": "D2",
+          "mjd_start": 61262.492137,
+          "mjd_end": 61262.493469,
+          "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W33_1A_0102_2/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W33_1A_0102_2",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "../project-nadir/data/cache/cutouts/5de988a393344398014a1b0c.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W33_1A/l2b-v27-2026-240/2/level2_2026W33_1A_0102_2D2_spx_l2b-v27-2026-240.fits?center=43.279600,16.853800d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "qr3",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 43.2796,
+            "dec_deg": 16.8538,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T02:48:27+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "adef0c1afe4568a67981762184bdb082904cd4ab556e9c926fdf7960f04336ea",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE"
+          ],
+          "note": "EPSF HDU dropped before caching to save space; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/qr3/level2/2026W33_1A/l2b-v27-2026-240/2/level2_2026W33_1A_0102_2D2_spx_l2b-v27-2026-240.fits",
+            "band": "D2",
+            "mjd_start": 61262.492137,
+            "mjd_end": 61262.493469,
+            "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W33_1A_0102_2/D2",
+            "pipeline_version": "7.0.5",
+            "archive_checksum": "md5:14c29aa6e979fd1977ef1cef7b68e97f"
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/qr3/level2/2026W33_1A/l2b-v27-2026-240/2/level2_2026W33_1A_0223_3D2_spx_l2b-v27-2026-240.fits",
+          "band": "D2",
+          "mjd_start": 61263.10373,
+          "mjd_end": 61263.105063,
+          "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W33_1A_0223_3/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W33_1A_0223_3",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "../project-nadir/data/cache/cutouts/16f730e88082f1698da986c5.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W33_1A/l2b-v27-2026-240/2/level2_2026W33_1A_0223_3D2_spx_l2b-v27-2026-240.fits?center=43.279600,16.853800d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "qr3",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 43.2796,
+            "dec_deg": 16.8538,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T02:48:31+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "9239176e1ad1dce9dd439c85e7ade08242b542a1b5c6e70845794374ed3b49ff",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE"
+          ],
+          "note": "EPSF HDU dropped before caching to save space; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/qr3/level2/2026W33_1A/l2b-v27-2026-240/2/level2_2026W33_1A_0223_3D2_spx_l2b-v27-2026-240.fits",
+            "band": "D2",
+            "mjd_start": 61263.10373,
+            "mjd_end": 61263.105063,
+            "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W33_1A_0223_3/D2",
+            "pipeline_version": "7.0.5",
+            "archive_checksum": "md5:8a047a64b308fc6247d3cf083896a702"
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/qr3/level2/2026W33_1A/l2b-v27-2026-240/2/level2_2026W33_1A_0247_4D2_spx_l2b-v27-2026-240.fits",
+          "band": "D2",
+          "mjd_start": 61263.242474,
+          "mjd_end": 61263.243807,
+          "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W33_1A_0247_4/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W33_1A_0247_4",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "../project-nadir/data/cache/cutouts/ec9e3ff75e61b2ab3f09900b.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W33_1A/l2b-v27-2026-240/2/level2_2026W33_1A_0247_4D2_spx_l2b-v27-2026-240.fits?center=43.279600,16.853800d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "qr3",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 43.2796,
+            "dec_deg": 16.8538,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T02:48:39+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "30ad7dbabe3ed989418eeec450f13664d5acd110a44e8c21f1d41f39065f5861",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE"
+          ],
+          "note": "EPSF HDU dropped before caching to save space; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/qr3/level2/2026W33_1A/l2b-v27-2026-240/2/level2_2026W33_1A_0247_4D2_spx_l2b-v27-2026-240.fits",
+            "band": "D2",
+            "mjd_start": 61263.242474,
+            "mjd_end": 61263.243807,
+            "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W33_1A_0247_4/D2",
+            "pipeline_version": "7.0.5",
+            "archive_checksum": "md5:06c7a231e0c21f4fda14b6494ac1721d"
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/qr3/level2/2026W33_1A/l2b-v27-2026-240/2/level2_2026W33_1A_0496_1D2_spx_l2b-v27-2026-240.fits",
+          "band": "D2",
+          "mjd_start": 61264.529758,
+          "mjd_end": 61264.53109,
+          "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W33_1A_0496_1/D2",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W33_1A_0496_1",
+          "wl_min_um": 1.1033000000000002,
+          "wl_max_um": 1.6499000000000001
+        },
+        "path": "../project-nadir/data/cache/cutouts/8da181a33b6b8d900d3b0682.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W33_1A/l2b-v27-2026-240/2/level2_2026W33_1A_0496_1D2_spx_l2b-v27-2026-240.fits?center=43.279600,16.853800d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "qr3",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 43.2796,
+            "dec_deg": 16.8538,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T02:48:39+00:00",
+          "response_bytes": 4173120,
+          "response_sha256": "1be4eb9853ee34777818a27008839eec9e79e3ce982d427d2b567c0421435b49",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE"
+          ],
+          "note": "EPSF HDU dropped before caching to save space; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/qr3/level2/2026W33_1A/l2b-v27-2026-240/2/level2_2026W33_1A_0496_1D2_spx_l2b-v27-2026-240.fits",
+            "band": "D2",
+            "mjd_start": 61264.529758,
+            "mjd_end": 61264.53109,
+            "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W33_1A_0496_1/D2",
+            "pipeline_version": "7.0.5",
+            "archive_checksum": "md5:e9c016029af79bbb71cab22fe4a61dca"
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2025W31_2A/l2b-v27-2026-225/1/level2_2025W31_2A_0328_2D1_spx_l2b-v27-2026-225.fits",
+          "band": "D1",
+          "mjd_start": 60889.254658,
+          "mjd_end": 60889.255991,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W31_2A_0328_2/D1",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2025W31_2A_0328_2",
+          "wl_min_um": 0.7455,
+          "wl_max_um": 1.1167
+        },
+        "path": "../project-nadir/data/cache/cutouts/b054e8b975adfc0ebf614bd2.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W31_2A/l2b-v27-2026-225/1/level2_2025W31_2A_0328_2D1_spx_l2b-v27-2026-225.fits?center=43.279600,16.853800d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 43.2796,
+            "dec_deg": 16.8538,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T04:01:56+00:00",
+          "response_bytes": 4092480,
+          "response_sha256": "c6190119d03909c1666c94f4d6544cef809141b93103987d9086919b5dc60e66",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2025W31_2A/l2b-v27-2026-225/1/level2_2025W31_2A_0328_2D1_spx_l2b-v27-2026-225.fits",
+            "band": "D1",
+            "mjd_start": 60889.254658,
+            "mjd_end": 60889.255991,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W31_2A_0328_2/D1",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2025W31_2A_0328_2",
+            "wl_min_um": 0.7455,
+            "wl_max_um": 1.1167
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/dr1/level2/2025W32_2D/l2b-v27-2026-226/3/level2_2025W32_2D_0271_2D3_spx_l2b-v27-2026-226.fits",
+          "band": "D3",
+          "mjd_start": 60895.981618,
+          "mjd_end": 60895.982951,
+          "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W32_2D_0271_2/D3",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2025W32_2D_0271_2",
+          "wl_min_um": 1.6301,
+          "wl_max_um": 2.4346
+        },
+        "path": "../project-nadir/data/cache/cutouts/bef733f756506a9f61dd29c9.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/dr1/level2/2025W32_2D/l2b-v27-2026-226/3/level2_2025W32_2D_0271_2D3_spx_l2b-v27-2026-226.fits?center=43.279600,16.853800d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "dr1",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 43.2796,
+            "dec_deg": 16.8538,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T04:02:11+00:00",
+          "response_bytes": 4256640,
+          "response_sha256": "1494bff503860a11c3d32e87d71c79eddae03d77e0c2906e97d13ab962682e1d",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/dr1/level2/2025W32_2D/l2b-v27-2026-226/3/level2_2025W32_2D_0271_2D3_spx_l2b-v27-2026-226.fits",
+            "band": "D3",
+            "mjd_start": 60895.981618,
+            "mjd_end": 60895.982951,
+            "publisher_did": "ivo://irsa.ipac/spherex_dr1?2025W32_2D_0271_2/D3",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2025W32_2D_0271_2",
+            "wl_min_um": 1.6301,
+            "wl_max_um": 2.4346
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/qr3/level2/2026W34_1A/l2b-v27-2026-243/3/level2_2026W34_1A_0113_2D3_spx_l2b-v27-2026-243.fits",
+          "band": "D3",
+          "mjd_start": 61269.551142,
+          "mjd_end": 61269.552474,
+          "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W34_1A_0113_2/D3",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W34_1A_0113_2",
+          "wl_min_um": 1.6301,
+          "wl_max_um": 2.4346
+        },
+        "path": "../project-nadir/data/cache/cutouts/b1c5053f421f8642f503d7f0.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W34_1A/l2b-v27-2026-243/3/level2_2026W34_1A_0113_2D3_spx_l2b-v27-2026-243.fits?center=43.279600,16.853800d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "qr3",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 43.2796,
+            "dec_deg": 16.8538,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T04:02:27+00:00",
+          "response_bytes": 4256640,
+          "response_sha256": "bcc7611cddb7f074897c2d50659b7e5d7f2fe3f7dd97cc0eb217123ff5018411",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/qr3/level2/2026W34_1A/l2b-v27-2026-243/3/level2_2026W34_1A_0113_2D3_spx_l2b-v27-2026-243.fits",
+            "band": "D3",
+            "mjd_start": 61269.551142,
+            "mjd_end": 61269.552474,
+            "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W34_1A_0113_2/D3",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2026W34_1A_0113_2",
+            "wl_min_um": 1.6301,
+            "wl_max_um": 2.4346
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/qr3/level2/2026W32_2A/l2b-v27-2026-223/4/level2_2026W32_2A_0658_2D4_spx_l2b-v27-2026-223.fits",
+          "band": "D4",
+          "mjd_start": 61261.408706,
+          "mjd_end": 61261.410039,
+          "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W32_2A_0658_2/D4",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W32_2A_0658_2",
+          "wl_min_um": 2.4027,
+          "wl_max_um": 3.8473000000000006
+        },
+        "path": "../project-nadir/data/cache/cutouts/b3b1969b11dcdbb28611ce30.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W32_2A/l2b-v27-2026-223/4/level2_2026W32_2A_0658_2D4_spx_l2b-v27-2026-223.fits?center=43.279600,16.853800d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "qr3",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 43.2796,
+            "dec_deg": 16.8538,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T04:02:55+00:00",
+          "response_bytes": 4170240,
+          "response_sha256": "396ce3fbe30db0994218a54ebe9f1d0dd6fe541d432dae536baa55ec76d68fd1",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/qr3/level2/2026W32_2A/l2b-v27-2026-223/4/level2_2026W32_2A_0658_2D4_spx_l2b-v27-2026-223.fits",
+            "band": "D4",
+            "mjd_start": 61261.408706,
+            "mjd_end": 61261.410039,
+            "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W32_2A_0658_2/D4",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2026W32_2A_0658_2",
+            "wl_min_um": 2.4027,
+            "wl_max_um": 3.8473000000000006
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/qr3/level2/2026W33_1A/l2b-v27-2026-240/5/level2_2026W33_1A_0496_1D5_spx_l2b-v27-2026-240.fits",
+          "band": "D5",
+          "mjd_start": 61264.529758,
+          "mjd_end": 61264.53109,
+          "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W33_1A_0496_1/D5",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W33_1A_0496_1",
+          "wl_min_um": 3.8112999999999997,
+          "wl_max_um": 4.43
+        },
+        "path": "../project-nadir/data/cache/cutouts/29f31efcc1c088af881a5893.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W33_1A/l2b-v27-2026-240/5/level2_2026W33_1A_0496_1D5_spx_l2b-v27-2026-240.fits?center=43.279600,16.853800d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "qr3",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 43.2796,
+            "dec_deg": 16.8538,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T04:03:12+00:00",
+          "response_bytes": 4170240,
+          "response_sha256": "668b46f759b0b32c0b82224cc91e2a24b7cbb98f4c75a701e8ab5f1e62846e02",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/qr3/level2/2026W33_1A/l2b-v27-2026-240/5/level2_2026W33_1A_0496_1D5_spx_l2b-v27-2026-240.fits",
+            "band": "D5",
+            "mjd_start": 61264.529758,
+            "mjd_end": 61264.53109,
+            "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W33_1A_0496_1/D5",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2026W33_1A_0496_1",
+            "wl_min_um": 3.8112999999999997,
+            "wl_max_um": 4.43
+          }
+        },
+        "already_cached": true
+      },
+      {
+        "record": {
+          "uri": "ibe/data/spherex/qr3/level2/2026W34_1A/l2b-v27-2026-243/6/level2_2026W34_1A_0145_1D6_spx_l2b-v27-2026-243.fits",
+          "band": "D6",
+          "mjd_start": 61269.687968,
+          "mjd_end": 61269.6893,
+          "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W34_1A_0145_1/D6",
+          "pipeline_version": "l2b-v27",
+          "archive_checksum": "",
+          "obs_id": "2026W34_1A_0145_1",
+          "wl_min_um": 4.4115,
+          "wl_max_um": 5.009600000000001
+        },
+        "path": "../project-nadir/data/cache/cutouts/28a4c80c002f97ea90843bda.fits",
+        "provenance": {
+          "source_url": "https://irsa.ipac.caltech.edu/ibe/data/spherex/qr3/level2/2026W34_1A/l2b-v27-2026-243/6/level2_2026W34_1A_0145_1D6_spx_l2b-v27-2026-243.fits?center=43.279600,16.853800d&size=0.2000",
+          "archive": "NASA/IPAC Infrared Science Archive (IRSA)",
+          "mission": "SPHEREx",
+          "release": "qr3",
+          "product": "Level 2 spectral image (cutout)",
+          "request": {
+            "ra_deg": 43.2796,
+            "dec_deg": 16.8538,
+            "size_deg": 0.2
+          },
+          "retrieved_utc": "2026-11-14T04:03:23+00:00",
+          "response_bytes": 4158720,
+          "response_sha256": "4c46bbda569086c3661d91f77a3396885e7b243c01c9a98b717f120aaf490091",
+          "hdus_received": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "EPSF",
+            "WCS-WAVE"
+          ],
+          "hdus_cached": [
+            "PRIMARY",
+            "IMAGE",
+            "FLAGS",
+            "VARIANCE",
+            "ZODI",
+            "WCS-WAVE",
+            "EPSF"
+          ],
+          "note": "EPSF table trimmed to the tiles overlapping this cutout before caching; pixel data unmodified.",
+          "nadir_version": "0.1.0",
+          "archive_record": {
+            "uri": "ibe/data/spherex/qr3/level2/2026W34_1A/l2b-v27-2026-243/6/level2_2026W34_1A_0145_1D6_spx_l2b-v27-2026-243.fits",
+            "band": "D6",
+            "mjd_start": 61269.687968,
+            "mjd_end": 61269.6893,
+            "publisher_did": "ivo://irsa.ipac/spherex_qr3?2026W34_1A_0145_1/D6",
+            "pipeline_version": "l2b-v27",
+            "archive_checksum": "",
+            "obs_id": "2026W34_1A_0145_1",
+            "wl_min_um": 4.4115,
+            "wl_max_um": 5.009600000000001
+          }
+        },
+        "already_cached": true
+      }
+    ],
+    "failures": [],
+    "timings": {
+      "resolve_s": 5.749985575675964e-06,
+      "discovery_s": 0.001541833975352347,
+      "cutouts_s": 2.1707965061068535e-05
+    },
+    "ra": 43.2796,
+    "dec": 16.8538,
+    "position_epoch": 2026.0,
+    "position_source": "existing verified preset",
+    "discovery": {
+      "provenance": {
+        "adql": "SIA spherex dr1+qr3 43.279600 16.853800",
+        "service": "https://irsa.ipac.caltech.edu/SIA",
+        "retrieved_utc": "2026-11-14T03:58:44+00:00",
+        "cached": true,
+        "stale": false
+      },
+      "counts": {
+        "D1": 56,
+        "D2": 56,
+        "D3": 54,
+        "D4": 56,
+        "D5": 55,
+        "D6": 55
+      },
+      "mjd_range": [
+        60889.254658,
+        61269.687968
+      ]
+    }
+  }
+]

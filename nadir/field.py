@@ -66,6 +66,7 @@ class Field:
         self.catalogs: dict | None = None
         self.spectral_obs: list | None = None
         self.spectral_missing = 0
+        self.spectral_failures = []
         self.spectra: dict = {}
         self.lock = threading.Lock()
         self.built_at = None
@@ -133,7 +134,7 @@ class Field:
         d["points"] = t.points
         d["variability_detail"] = t.variability
         cat = getattr(t, "catalog", None)
-        if cat and cat.get("gaia") and cat["gaia"].get("pmra") is not None:
+        if cat and cat.get("gaia") and cat["gaia"].get("pmra") is not None and cat["gaia"].get("pmdec") is not None:
             g = cat["gaia"]
             ref_mjd = self.observations[self.ref].mjd
             d["gaia_prediction"] = [
@@ -186,7 +187,7 @@ def build_field(job: Job, ra: float, dec: float, size_deg: float, band: str, ref
     T["discover_s"] = time.perf_counter() - t0
     if not records:
         raise irsa.DataAccessError(f"SPHEREx has no {band} images covering RA {ra:.4f}, Dec {dec:.4f} "
-                                   f"in DR1/QR3 (other bands: {', '.join(f'{b}={len(v)}' for b, v in grouped.items())})")
+                                   f"in DR1/QR3 (other bands: {', '.join(f'{b}={len(v)}' for b, v in grouped.items())})", code="no_observations", retryable=False)
 
     # 2. download ---------------------------------------------------------
     t0 = time.perf_counter()
@@ -206,12 +207,12 @@ def build_field(job: Job, ra: float, dec: float, size_deg: float, band: str, ref
     for k, item in enumerate(fetched):
         job.check()
         if item["error"]:
-            f.failures.append({"uri": item["record"].uri, "error": item["error"]})
+            f.failures.append({"uri": item["record"].uri, "error": item["error"], "code": "cutout_fetch_failed", "retryable": True})
             continue
         try:
             obs.append(load_observation(item["path"], (ra, dec), item["provenance"]))
         except ObservationError as exc:
-            f.failures.append({"uri": item["record"].uri, "error": str(exc)})
+            f.failures.append({"uri": item["record"].uri, "error": str(exc), "code": "invalid_observation", "retryable": False})
         job.progress(k + 1)
     obs.sort(key=lambda o: (o.mjd is None, o.mjd or 0.0))
     f.observations = obs
@@ -222,7 +223,7 @@ def build_field(job: Job, ra: float, dec: float, size_deg: float, band: str, ref
     T["read_s"] = time.perf_counter() - t0
     if sum(f.usable) < 2:
         raise irsa.DataAccessError(f"Only {sum(f.usable)} usable {band} images at this position; "
-                                   "a time comparison needs at least two.")
+                                   "a time comparison needs at least two.", code="insufficient_epochs", retryable=False)
 
     # 4. detect -------------------------------------------------------------
     t0 = time.perf_counter()
@@ -488,9 +489,10 @@ def load_catalogs(job: Job, f: Field) -> dict:
             except Exception as exc:
                 errors[name] = str(exc)
             job.progress(n + 1, message=f"{name} done")
-    _crossmatch(f, out)
-    f.spectra.clear()
-    f.catalogs = {"data": out, "errors": errors}
+    with f.lock:
+        _crossmatch(f, out)
+        f.spectra.clear()
+        f.catalogs = {"data": out, "errors": errors}
     return {"fid": f.fid, "errors": errors}
 
 
@@ -506,6 +508,7 @@ def _crossmatch(f: Field, cats: dict):
     aw = cats.get("allwise", {}).get("rows", [])
     gpos = np.array([motion.gaia_position_at(g, ref_mjd) for g in gaia]) if gaia else np.empty((0, 2))
     for t in f.tracks:
+        t.history = None
         cat = {}
         if len(gpos):
             d = _sep_arcsec(gpos[:, 0], gpos[:, 1], t.ra, t.dec)
@@ -514,7 +517,7 @@ def _crossmatch(f: Field, cats: dict):
                 k = min(near, key=lambda q: gaia[q]["gmag"] if gaia[q]["gmag"] is not None else 99)
                 g = dict(gaia[k], separation_arcsec=float(d[k]), n_within_6arcsec=int(near.size))
                 cat["gaia"] = g
-                if t.fit and g.get("pmra") is not None:
+                if t.fit and g.get("pmra") is not None and g.get("pmdec") is not None:
                     ge, gn = g["pmra"] / 1e3, g["pmdec"] / 1e3
                     ze = (t.fit["pm_east"] - ge) / t.fit["pm_east_err"]
                     zn = (t.fit["pm_north"] - gn) / t.fit["pm_north_err"]
@@ -549,7 +552,7 @@ def _nearest_epoch_matched(rows, t, gaia, ref_mjd, radius=4.0):
     """Nearest catalog source after moving the SPHEREx position back to the
     catalog's epoch with the Gaia (preferred) or measured proper motion."""
     pm = None
-    if gaia and gaia.get("pmra") is not None:
+    if gaia and gaia.get("pmra") is not None and gaia.get("pmdec") is not None:
         pm = (gaia["pmra"] / 1e3, gaia["pmdec"] / 1e3)
     elif t.fit and t.tier in ("significant", "systematics_limited"):
         pm = (t.fit["pm_east"], t.fit["pm_north"])
@@ -645,20 +648,26 @@ def load_spectral_set(job: Job, f: Field, cached_only: bool = False) -> dict:
     job.set_stage("read", "Reading spectral images", total=len(fetched))
     out = [(f.band, o) for o, u in zip(f.observations, f.usable) if u]
     failures = 0
+    failure_details = [{"uri": getattr(r, "uri", str(r)), "code": "not_cached", "retryable": True}
+                       for _, r in missing] if cached_only else []
     for k, ((band, _), item) in enumerate(zip(plan, fetched)):
         job.check()
         if item["error"]:
             failures += 1
+            failure_details.append({"uri": item["record"].uri, "code": "cutout_fetch_failed", "message": item["error"], "retryable": True})
             continue
         try:
             out.append((band, load_observation(item["path"], (f.ra, f.dec), item["provenance"])))
-        except ObservationError:
+        except ObservationError as exc:
             failures += 1
+            failure_details.append({"uri": item["record"].uri, "code": "invalid_observation", "message": str(exc), "retryable": False})
         job.progress(k + 1)
-    f.spectral_obs = out
-    f.spectral_missing = (len(missing) if cached_only else 0) + failures
-    f.spectra.clear()
-    return {"fid": f.fid, "n_images": len(out), "failures": failures, "missing": f.spectral_missing}
+    with f.lock:
+        f.spectral_obs = out
+        f.spectral_missing = (len(missing) if cached_only else 0) + failures
+        f.spectral_failures = failure_details
+        f.spectra.clear()
+    return {"fid": f.fid, "n_images": len(out), "failures": failures, "missing": f.spectral_missing, "failure_details": f.spectral_failures}
 
 
 def source_spectrum(f: Field, sid: int) -> dict:
@@ -666,11 +675,12 @@ def source_spectrum(f: Field, sid: int) -> dict:
         raise ValueError("Spectral images not loaded for this field")
     if sid in f.spectra:
         return f.spectra[sid]
+    catalog_snapshot = f.catalogs
     t = next(t for t in f.tracks if t.id == sid)
     pm_e = pm_n = 0.0
     pm_source = None
-    cat = t.catalog or {}
-    if cat.get("gaia") and cat["gaia"].get("pmra") is not None:
+    cat = getattr(t, "catalog", None) or {}
+    if cat.get("gaia") and cat["gaia"].get("pmra") is not None and cat["gaia"].get("pmdec") is not None:
         pm_e, pm_n, pm_source = cat["gaia"]["pmra"] / 1e3, cat["gaia"]["pmdec"] / 1e3, "Gaia DR3"
     elif t.fit and t.tier in ("significant", "systematics_limited"):
         pm_e, pm_n, pm_source = t.fit["pm_east"], t.fit["pm_north"], "NADIR measured"
@@ -686,7 +696,9 @@ def source_spectrum(f: Field, sid: int) -> dict:
         p.pop("x", None), p.pop("y", None)
     sp = clean(sp)
     sp["explanation"] = interpretation.explain_spectrum(sp)
-    f.spectra[sid] = sp
+    with f.lock:
+        if f.catalogs is catalog_snapshot:
+            f.spectra[sid] = sp
     return sp
 
 
