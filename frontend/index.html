@@ -10,6 +10,7 @@
 <link rel="preload" href="/static/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="/static/css/tokens.css">
 <link rel="stylesheet" href="/static/css/nadir.css">
+<link rel="stylesheet" href="/static/css/journey.css">
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -163,6 +164,7 @@
         </div>
       </section>
 
+      <section class="lessons" id="lessons" hidden aria-label="Explore it yourself"></section>
       <div class="loader" id="loader" hidden role="status" aria-live="polite"></div>
       <div class="tour" id="tour" hidden></div>
     </div>
@@ -240,6 +242,37 @@
     <div class="insp-body" id="insp-body" role="tabpanel"></div>
   </aside>
 </div>
+<section class="journey" id="journey" hidden aria-label="NADIR Journey: guided show">
+  <div class="jr-vignette" aria-hidden="true"></div>
+  <header class="jr-top">
+    <div class="jr-title">
+      <p class="jr-eyebrow"><svg class="jr-mark" aria-hidden="true"><use href="#i-mark"/></svg>NADIR Journeys <span class="jr-dot" aria-hidden="true">·</span> <span id="jr-chapter"></span></p>
+      <h2 id="jr-name"></h2>
+      <p class="jr-scene"><span id="jr-scene"></span><span class="jr-sub" id="jr-sub"></span></p>
+    </div>
+    <p class="jr-stamp" id="jr-stamp" hidden></p>
+    <button class="btn ghost sm jr-exit" id="jr-exit">Exit journey <kbd>Esc</kbd></button>
+  </header>
+  <div class="jr-flourish" id="jr-flourish" aria-hidden="true"></div>
+  <aside class="jr-panel" id="jr-panel" aria-label="Evidence for this scene" hidden></aside>
+  <footer class="jr-bottom">
+    <p class="jr-caption" id="jr-caption" aria-live="polite"></p>
+    <div class="jr-end" id="jr-end" hidden>
+      <button class="btn accent" data-jr-action="explore">Explore it yourself</button>
+      <button class="btn" data-jr-action="evidence">View the scientific evidence</button>
+      <button class="btn ghost" data-jr-action="return">Return to the observatory</button>
+    </div>
+    <div class="jr-controls" role="toolbar" aria-label="Journey controls">
+      <button class="icon-btn glass" id="jr-prev" aria-label="Previous scene"><svg><use href="#i-prev"/></svg></button>
+      <button class="jr-play" id="jr-play" aria-label="Pause journey"><svg><use href="#i-pause"/></svg></button>
+      <button class="icon-btn glass" id="jr-next" aria-label="Next scene"><svg><use href="#i-next"/></svg></button>
+      <ol class="jr-progress" id="jr-progress" aria-label="Scenes"></ol>
+      <button class="btn ghost sm" id="jr-evidence" aria-expanded="false">Evidence</button>
+      <button class="btn ghost sm" id="jr-voice" aria-pressed="false" title="Read captions aloud with your browser's speech synthesis (V)">Voice off</button>
+      <button class="btn ghost sm" id="jr-replay">Replay</button>
+    </div>
+  </footer>
+</section>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
 <script type="module" src="/static/js/main.js"></script>
 </body>

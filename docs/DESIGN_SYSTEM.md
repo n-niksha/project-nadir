@@ -88,6 +88,13 @@ OFL) so the demo works offline.
   `.plot-readout`; every point has a 16 px invisible hit target, is focusable,
   and announces its exact values.
 - **Loader / error card** `.loader-card` — staged progress, always with a way out.
+- **Journey layer** `.journey` (`css/journey.css`) — full-bleed sky, vignette,
+  serif caption (27 px, 20 px mobile), frame **stamp** pill naming the exact
+  exposure or "catalog", an evidence card `.jr-card` (`.hero` for the headline
+  number, `.swapped` violet edge when a different star is shown), a pill
+  control bar (amber play, scene progress, Evidence/Voice/Replay) and a chapter
+  flourish (skipped under reduced motion). Entry point: `.journey-cta` in the
+  dossier. Stage B uses `.lessons`. Tag `.tag.lit` (dashed) marks literature.
 
 ## Layout
 

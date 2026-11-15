@@ -7,6 +7,7 @@ import { esc, fmt, pm, sexa, dateTime, mjdToDate, VISIT_COLORS, OTYPE, lambdaCol
 import { plot } from "./plots.js";
 import { visitGroups } from "./playback.js";
 import { C } from "./tokens.js";
+import { isBarnard } from "./journey/journeys.js";
 
 export { displayName };
 
@@ -35,6 +36,7 @@ export class Inspector {
     const classification = d.catalog?.simbad ? (OTYPE[d.catalog.simbad.otype] || d.catalog.simbad.otype) : d.catalog?.gaia ? gaiaClass(d.catalog.gaia) : "Classification unknown";
     document.getElementById("insp-class").innerHTML = `<span class="tier ${d.tier}">${esc(TIERS[d.tier]?.label || d.tier)}</span><span>${esc(classification)}</span>${d.catalog ? L.catalog : L.unknown}`;
     document.getElementById("investigation-summary").innerHTML = hero(d);
+    document.getElementById("take-journey").onclick = () => emit("journey", d.id);
     this.explain();
     this.tab(S.tab || "overview");
   }
@@ -243,7 +245,8 @@ function hero(d) {
   return `<div class="hero-result ${f && d.tier !== "rejected" && d.tier !== "stationary" ? "" : "quiet"}">
     <div class="hero-label">Proper motion ${f ? L.measured : L.unknown}</div>
     ${value}<div class="hero-meta">${pills.join("")}</div></div>
-    <p class="summary-line">${esc(plainSummary(d))}</p>`;
+    <p class="summary-line">${esc(plainSummary(d))}</p>
+    <button class="journey-cta" id="take-journey"><svg class="jc-mark" aria-hidden="true"><use href="#i-mark"/></svg><span><b>Take a journey</b><small>${isBarnard(d) ? "The Stars Are Not Still · 90-second show" : "A short guided look at the data"}</small></span><svg class="jc-go" aria-hidden="true"><use href="#i-next"/></svg></button>`;
 }
 
 function plainSummary(d) {

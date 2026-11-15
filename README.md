@@ -82,10 +82,14 @@ and the report go to `artifacts/viewer-verification/`. See
 6. Click a source to open its dossier: headline measurement, evidence tier,
    plain-language summary, **Explain this observation**, then Overview /
    Motion / Spectrum / Observations / Notes.
-7. **Discover** lists investigation leads by evidence tier (never "discoveries");
+7. **Take a journey** (in the dossier) plays a ~90-second planetarium-style
+   show over the real frames. For Barnard's Star this is *The Stars Are Not
+   Still*. Pause/skip/replay/exit at any time (Space, ←/→, Esc); then
+   **Explore it yourself**. See [NADIR Journeys](docs/JOURNEYS.md).
+8. **Discover** lists investigation leads by evidence tier (never "discoveries");
    **Sky atlas** browses the SPHEREx all-sky cube; **Learn** and **Data & help**
    explain the science, provenance and limitations.
-8. For an unsaturated spectrum, pick **van Maanen's Star**, open Spectrum,
+9. For an unsaturated spectrum, pick **van Maanen's Star**, open Spectrum,
    then **Load cached spectral observations**.
 
 Design language, tokens and components: [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYSTEM.md).
@@ -94,12 +98,13 @@ Design language, tokens and components: [docs/DESIGN_SYSTEM.md](docs/DESIGN_SYST
 
 ```bash
 .venv/bin/python -m pytest tests -q
-node --test tests/frontend.test.mjs  # Node 22+; no npm dependencies
+node --test tests/frontend.test.mjs tests/journey.test.mjs  # Node 22+; no npm dependencies
 .venv/bin/pip install playwright   # optional browser-test dependency
 # Install Google Chrome; launch the FastAPI server before browser checks.
 .venv/bin/python scripts/verify_viewer.py
 .venv/bin/python scripts/verify_milestone3.py --url http://127.0.0.1:8000
 .venv/bin/python scripts/verify_atlas.py --url http://127.0.0.1:8000  # optional: live CDN/IRSA access
+.venv/bin/python scripts/verify_journey.py --url http://127.0.0.1:8000 --out artifacts/journey  # NADIR Journeys, desktop + mobile
 .venv/bin/python scripts/ui_screens.py --url http://127.0.0.1:8000 --out artifacts/ui-screens  # design-review screenshots, 4 widths
 .venv/bin/python scripts/validate_cached.py  # requires existing caches; network forbidden
 .venv/bin/python scripts/benchmark.py --repeat 3
@@ -107,8 +112,8 @@ node --test tests/frontend.test.mjs  # Node 22+; no npm dependencies
 
 Use a server without `--reload` during acceptance testing. A clean checkout
 has no downloaded data: prepare a demo while online with
-`scripts/prepare_demo.py --only barnard vanmaanen --spectra vanmaanen` before
-an offline presentation (this can download uncached observations).
+`scripts/prepare_demo.py --only barnard vanmaanen --spectra barnard vanmaanen` before
+an offline presentation (Barnard's spectral cache feeds the journey's spectrum scene) (this can download uncached observations).
 
 [90-second judge demo](docs/DEMO.md) · [Milestone 3 verification](docs/MILESTONE3.md)
 · [Science and limitations](docs/SCIENCE.md) · [Data sources](docs/DATA_SOURCES.md).

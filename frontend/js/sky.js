@@ -133,6 +133,8 @@ export class SkyView {
     this.c = canvas; this.ctx = canvas.getContext("2d", { willReadFrequently: true });
     this.images = new Map(); this.proc = new Map(); this.diff = null; this.k = 1; this.ox = 0; this.oy = 0;
     this.hover = null; this.flashAt = 0;
+    this.journey = null; // NADIR Journeys annotation layer (see drawJourney)
+    this._fly = null; this._animUntil = 0;
     this._bind();
     new ResizeObserver(() => this.resize()).observe(canvas);
   }
@@ -256,7 +258,7 @@ export class SkyView {
     this.drawCatalogs();
     this.drawSources();
     this.drawHover();
-    this.drawSelected();
+    if (this.journey) this.drawJourney(); else this.drawSelected();
     this.drawScaleBar();
   }
 
@@ -400,18 +402,47 @@ export class SkyView {
     ctx.restore();
   }
 
-  flash() {
-    if (REDUCED) return;
-    this.flashAt = performance.now();
+  /** One guarded rAF loop serves every animation (selection flash, camera flights, journey reveals). */
+  animateUntil(until) {
+    this._animUntil = Math.max(this._animUntil || 0, until);
     if (this._animating) return;
     this._animating = true;
     const step = () => {
-      const done = performance.now() - this.flashAt >= 620;
+      const now = performance.now();
+      this._stepFly(now);
       this.draw();
-      if (done) this._animating = false; else requestAnimationFrame(step);
+      if (now >= this._animUntil && !this._fly) this._animating = false; else requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
   }
+  flash() {
+    if (REDUCED) return;
+    this.flashAt = performance.now();
+    this.animateUntil(this.flashAt + 620);
+  }
+
+  /** Smooth camera move: grid point (x, y) ends at screen fraction (ax, ay) with zoom k.
+   *  Log-zoom and eased; instant under reduced motion; cancelled by any user pan/zoom. */
+  flyTo(x, y, k, ms = 1200, ax = 0.5, ay = 0.5) {
+    if (!this.f) return;
+    const W = this.c.width / this.dpr, H = this.c.height / this.dpr;
+    k = Math.max(0.5, Math.min(60, k));
+    const [u, v] = this.gridToImg(x, y);
+    this.userMoved = true;
+    if (REDUCED || ms <= 0 || !W) { this._fly = null; this.k = k; this.ox = W * ax - u * k; this.oy = H * ay - v * k; this.draw(); return; }
+    this._fly = { k0: this.k, u0: (W * ax - this.ox) / this.k, v0: (H * ay - this.oy) / this.k, k1: k, u1: u, v1: v, ax, ay, t0: performance.now(), ms };
+    this.animateUntil(performance.now() + ms);
+  }
+  _stepFly(now) {
+    const f = this._fly; if (!f) return;
+    const W = this.c.width / this.dpr, H = this.c.height / this.dpr;
+    const p = Math.min(1, (now - f.t0) / f.ms), e = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+    const k = Math.exp(Math.log(f.k0) + (Math.log(f.k1) - Math.log(f.k0)) * e), u = f.u0 + (f.u1 - f.u0) * e, v = f.v0 + (f.v1 - f.v0) * e;
+    this.k = k; this.ox = W * f.ax - u * k; this.oy = H * f.ay - v * k;
+    if (p >= 1) this._fly = null;
+  }
+  /** zoom at which `arcsec` spans a screen box of `px` pixels */
+  kForSpan(arcsec, px) { return px / (arcsec / this.f.grid.pixel_scale_arcsec); }
 
   drawSelected() {
     const d = S.detail; if (!d || !this.f) return;
@@ -454,6 +485,96 @@ export class SkyView {
     ctx.restore();
   }
 
+  /** NADIR Journeys layer: reference rings, rejected look-alikes, measured trail,
+   *  fitted arrow, catalog history and focus reticles.  Each element may carry
+   *  {hidden} or a reveal {t0, ms}; nothing here is drawn from invented data. */
+  drawJourney() {
+    const J = this.journey, ctx = this.ctx, now = performance.now();
+    const prog = (o) => !o || o.hidden ? 0 : o.t0 == null ? 1 : Math.max(0, Math.min(1, (now - o.t0) / Math.max(1, o.ms || 1)));
+    ctx.save();
+    const ring = (s, color, r, dash = []) => { const [sx, sy] = this.gridToScreen(s.x, s.y); halo(ctx, color, 1.5, () => ctx.arc(sx, sy, r, 0, 2 * Math.PI), dash); return [sx, sy]; };
+    let p = prog(J.refs);
+    if (p > 0) {
+      ctx.globalAlpha = p; let labelled = false;
+      for (const id of J.refs.ids) {
+        const s = this.byId?.get(id); if (!s) continue;
+        const [sx, sy] = ring(s, alpha(C("teal"), .95), Math.max(9, Math.min(18, 1.6 * this.k)));
+        if (!labelled) labelled = this.label("reference star", sx + Math.max(9, Math.min(18, 1.6 * this.k)) + 6, sy + 4, alpha(C("teal"), .95), 12);
+      }
+      ctx.globalAlpha = 1;
+    }
+    p = prog(J.rejected);
+    if (p > 0) {
+      ctx.globalAlpha = p;
+      for (const id of J.rejected.ids) {
+        const s = this.byId?.get(id); if (!s) continue;
+        const [sx, sy] = this.gridToScreen(s.x, s.y), a = 6;
+        halo(ctx, C("coral"), 2, () => { ctx.moveTo(sx - a, sy - a); ctx.lineTo(sx + a, sy + a); ctx.moveTo(sx + a, sy - a); ctx.lineTo(sx - a, sy + a); });
+        ring(s, alpha(C("coral"), .8), 16, [3, 3]);
+        this.label("rejected", sx + 22, sy + 4, C("coral"), 12);
+      }
+      ctx.globalAlpha = 1;
+    }
+    p = prog(J.history);
+    if (p > 0) {
+      const pts = [...J.history.pts, { ...J.history.to, label: null }], n = pts.length - 1, upto = p * n;
+      ctx.setLineDash([3, 5]); ctx.strokeStyle = alpha(C("sky"), .85); ctx.lineWidth = 1.4;
+      for (let i = 0; i < n && i < upto; i++) {
+        const [x0, y0] = this.gridToScreen(pts[i].x, pts[i].y), [x1, y1] = this.gridToScreen(pts[i + 1].x, pts[i + 1].y), f = Math.min(1, upto - i);
+        ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x0 + (x1 - x0) * f, y0 + (y1 - y0) * f); ctx.stroke();
+      }
+      ctx.setLineDash([]);
+      pts.slice(0, -1).forEach((q, i) => {
+        if (i > upto) return;
+        const [hx, hy] = this.gridToScreen(q.x, q.y);
+        ctx.fillStyle = C("sky"); ctx.beginPath(); ctx.arc(hx, hy, 3.4, 0, 7); ctx.fill();
+        this.label(`${q.label} · catalog`, hx + 9, hy + 4, C("sky"), 12.5);
+      });
+    }
+    p = prog(J.trail);
+    if (p > 0) {
+      const pts = J.trail.pts, n = pts.length, upto = p * Math.max(1, n - 1), many = n > 6;
+      ctx.strokeStyle = alpha(C("sun-2"), .9); ctx.lineWidth = 1.6;
+      if (!many) for (let i = 0; i < n - 1 && i < upto; i++) {
+        const [x0, y0] = this.gridToScreen(pts[i].x, pts[i].y), [x1, y1] = this.gridToScreen(pts[i + 1].x, pts[i + 1].y), f = Math.min(1, upto - i);
+        halo(ctx, alpha(C("sun-2"), .9), 1.4, () => { ctx.moveTo(x0, y0); ctx.lineTo(x0 + (x1 - x0) * f, y0 + (y1 - y0) * f); });
+      }
+      pts.forEach((q, i) => {
+        if (i > upto + 1e-6) return;
+        const [qx, qy] = this.gridToScreen(q.x, q.y), er = q.r * this.k;
+        if (er > 2.5) { ctx.strokeStyle = alpha(C("sun"), .55); ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(qx, qy, er, 0, 7); ctx.stroke(); }
+        ctx.fillStyle = C("sun"); ctx.strokeStyle = "rgba(2,3,8,.8)"; ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.arc(qx, qy, many ? 2 : 4, 0, 7); ctx.stroke(); ctx.fill();
+        if (q.label && this.k >= 8) this.label(q.label, qx + Math.max(er, 6) + 10, qy + 4, C("sun-2"), 12);
+      });
+    }
+    p = prog(J.fitArrow);
+    if (p > 0) {
+      const a = J.fitArrow, [x0, y0] = this.gridToScreen(a.x0, a.y0), [x1, y1] = this.gridToScreen(a.x0 + (a.x1 - a.x0) * p, a.y0 + (a.y1 - a.y0) * p);
+      arrow(ctx, x0, y0, x1, y1, C("sun"));
+      if (p >= 1 && a.label && this.k >= 8) { ctx.font = `500 12.5px ${FONT.sans}`; this.label(a.label, x0 - ctx.measureText(a.label).width - 16, (y0 + y1) / 2 + 4, C("sun-2"), 12.5); }
+    }
+    for (const fo of J.focus || []) {
+      if (fo.hidden) continue;
+      const s = this.byId?.get(fo.id); if (!s) continue;
+      const [sx, sy] = this.gridToScreen(s.x, s.y), col = C(fo.color === "violet" ? "violet" : "sun");
+      const r = Math.max(15, 3.6 * Math.min(this.k, 8)), len = Math.max(6, r * .45);
+      ctx.globalAlpha = fo.quiet ? .55 : 1;
+      halo(ctx, col, 2, () => {
+        for (const [dx, dy] of [[-1, -1], [1, -1], [1, 1], [-1, 1]]) { ctx.moveTo(sx + dx * r, sy + dy * (r - len)); ctx.lineTo(sx + dx * r, sy + dy * r); ctx.lineTo(sx + dx * (r - len), sy + dy * r); }
+      });
+      ctx.globalAlpha = 1;
+      if (!fo.quiet && fo.label) {
+        const col = fo.color === "violet" ? C("violet") : C("sun-2");
+        ctx.font = `500 14px ${FONT.sans}`;
+        // right of the brackets, else left, else below (narrow screens)
+        this.label(fo.label, sx + r + 8, sy - r + 12, col, 14) || this.label(fo.label, sx - r - 8 - ctx.measureText(fo.label).width, sy - r + 12, col, 14)
+          || this.label(fo.label, Math.max(6, sx - ctx.measureText(fo.label).width / 2), sy + r + 20, col, 14);
+      }
+    }
+    ctx.restore();
+  }
+
   drawScaleBar() {
     const ctx = this.ctx, H = this.c.height / this.dpr, W = this.c.width / this.dpr;
     const aps = this.arcsecPerScreenPx(), target = 100 * aps;
@@ -483,7 +604,7 @@ export class SkyView {
 
   _bind() {
     const c = this.c; let drag = null, moved = false;
-    c.addEventListener("pointerdown", (e) => { drag = { x: e.clientX, y: e.clientY, ox: this.ox, oy: this.oy }; moved = false; c.setPointerCapture(e.pointerId); });
+    c.addEventListener("pointerdown", (e) => { this._fly = null; drag = { x: e.clientX, y: e.clientY, ox: this.ox, oy: this.oy }; moved = false; c.setPointerCapture(e.pointerId); });
     c.addEventListener("pointermove", (e) => {
       const r = c.getBoundingClientRect(), sx = e.clientX - r.left, sy = e.clientY - r.top;
       if (drag) {
@@ -506,7 +627,7 @@ export class SkyView {
       if (drag && !moved && this.f) { const r = c.getBoundingClientRect(); const hit = this.pick(e.clientX - r.left, e.clientY - r.top); if (hit) emit("select", hit.id); }
       drag = null;
     });
-    c.addEventListener("wheel", (e) => { e.preventDefault(); const r = c.getBoundingClientRect(); this.zoomAt(Math.exp(-e.deltaY * 0.0015), e.clientX - r.left, e.clientY - r.top); }, { passive: false });
+    c.addEventListener("wheel", (e) => { e.preventDefault(); this._fly = null; const r = c.getBoundingClientRect(); this.zoomAt(Math.exp(-e.deltaY * 0.0015), e.clientX - r.left, e.clientY - r.top); }, { passive: false });
     c.addEventListener("dblclick", () => this.fit());
     c.addEventListener("keydown", (e) => {
       const step = 40;

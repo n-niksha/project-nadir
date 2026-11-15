@@ -1,0 +1,176 @@
+/* NADIR Journeys — the planetarium layer.  Uses tokens.css only.
+   The sky stays the centrepiece: chrome is a vignette, a caption and a quiet
+   evidence card; nothing here alters the imagery itself. */
+
+/* ---------------------------------------------------------- entry point */
+.journey-cta {
+  display: grid; grid-template-columns: 30px 1fr 18px; align-items: center; gap: 12px; width: 100%; margin-top: var(--s-3);
+  padding: 11px 14px; border-radius: var(--r-md); border: 1px solid rgba(242,179,80,.38); color: var(--text-1); text-align: left; cursor: pointer;
+  background: radial-gradient(260px 80px at 0% 50%, rgba(242,179,80,.16), transparent 70%), var(--ink-2);
+  transition: border-color var(--t-fast), background var(--t-fast);
+}
+.journey-cta:hover { border-color: var(--sun); background: radial-gradient(260px 80px at 0% 50%, rgba(242,179,80,.24), transparent 70%), var(--ink-3); }
+.journey-cta .jc-mark { width: 30px; height: 30px; color: var(--text-1); }
+.journey-cta .jc-go { width: 18px; height: 18px; color: var(--sun); }
+.journey-cta b { display: block; font: 400 21px/1.1 var(--font-display); }
+.journey-cta small { display: block; font-size: var(--fs-xs); color: var(--text-2); margin-top: 2px; }
+
+.tag.lit { color: var(--text-2); border-style: dashed; }
+
+/* ------------------------------------------------------ immersive mode */
+body.journey-on { overflow: hidden; }
+body.journey-on .topbar, body.journey-on .inspector, body.journey-on #timeline,
+body.journey-on .viewport > .hud, body.journey-on .welcome, body.journey-on .tour, body.journey-on .lessons { display: none !important; }
+body.journey-on .app { height: 100%; grid-template-columns: minmax(0, 1fr); }
+body.journey-on .stage { height: 100%; grid-template-rows: minmax(0, 1fr); }
+body.journey-on .viewport { height: 100%; min-height: 0; }
+
+.journey { position: fixed; inset: 0; z-index: 30; pointer-events: none; color: var(--text-1); }
+.journey button, .journey a, .jr-panel, .jr-controls, .jr-end { pointer-events: auto; }
+.jr-vignette {
+  position: absolute; inset: 0;
+  background:
+    linear-gradient(180deg, rgba(3,5,10,.82) 0, rgba(3,5,10,0) 150px),
+    linear-gradient(0deg, rgba(3,5,10,.9) 0, rgba(3,5,10,.55) 130px, rgba(3,5,10,0) 260px),
+    radial-gradient(ellipse 75% 70% at 46% 46%, transparent 55%, rgba(3,5,10,.55) 100%);
+}
+
+/* top: title, frame stamp, exit */
+.jr-top { position: absolute; top: 0; left: 0; right: 0; display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s-4); padding: 20px 28px; }
+.jr-title { max-width: min(34vw, 520px); min-width: 0; }
+.jr-title .jr-scene { overflow-wrap: anywhere; }
+.jr-eyebrow { margin: 0; display: flex; align-items: center; gap: 8px; font-size: var(--fs-xs); letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--sun); }
+.jr-mark { width: 20px; height: 20px; color: var(--text-1); }
+.jr-dot { color: var(--text-3); }
+#jr-chapter { color: var(--text-2); font-family: var(--font-mono); letter-spacing: .08em; }
+#jr-name { margin: 6px 0 2px; font: 400 36px/1.05 var(--font-display); letter-spacing: .005em; text-shadow: 0 2px 18px rgba(0,0,0,.6); }
+.jr-scene { margin: 0; font-size: var(--fs-md); color: var(--text-2); }
+.jr-scene #jr-scene { color: var(--text-1); font-weight: 500; }
+.jr-sub::before { content: " · "; color: var(--text-3); }
+.jr-sub:empty::before { content: ""; }
+.jr-stamp {
+  position: absolute; left: 50%; top: 24px; transform: translateX(-50%); margin: 0; max-width: min(46vw, 620px);
+  display: inline-flex; align-items: center; gap: 8px; padding: 5px 12px 5px 6px; border-radius: var(--r-pill);
+  background: var(--glass); border: 1px solid var(--line-2); font-size: var(--fs-xs); color: var(--text-2);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.jr-stamp span:last-child { overflow: hidden; text-overflow: ellipsis; }
+.jr-exit { flex: none; background: var(--glass); }
+
+/* evidence card */
+.jr-panel {
+  position: absolute; right: 24px; top: 112px; width: 360px; max-height: calc(100% - 112px - 196px); overflow-y: auto; scrollbar-width: thin;
+  padding: 16px 18px; border-radius: var(--r-lg); background: rgba(7,11,22,.86); border: 1px solid var(--line-2);
+  box-shadow: var(--shadow-pop); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+}
+.jr-panel.in { animation: rise var(--t-slow) var(--ease); }
+.journey.panel-closed .jr-panel { display: none; }
+.jr-card h3 { margin: 4px 0 10px; font: 400 28px/1.1 var(--font-display); }
+.jr-card.hero h3 { font: 500 44px/1 var(--font-mono); color: var(--sun-2); letter-spacing: -.02em; margin-bottom: 4px; }
+.jr-card.hero h3 small { font-size: 18px; color: var(--text-2); margin-left: 4px; }
+.jr-card.swapped { border-left: 2px solid var(--violet); padding-left: 12px; margin-left: -14px; }
+.jr-card.swapped .jr-kicker { color: var(--violet); }
+.jr-hero-sub { margin: 0 0 6px; font: 400 var(--fs-sm) var(--font-mono); color: var(--text-2); }
+.jr-kicker { margin: 0; font-size: 11px; letter-spacing: var(--track-caps); text-transform: uppercase; color: var(--sun); }
+.jr-note { margin: 8px 0 0; font-size: var(--fs-xs); color: var(--text-3); line-height: 1.5; }
+.jr-facts { display: grid; grid-template-columns: 104px 1fr; margin: 8px 0 0; font-size: var(--fs-sm); }
+.jr-facts dt { color: var(--text-3); padding: 7px 0; border-top: 1px solid var(--line-1); }
+.jr-facts dd { margin: 0; padding: 7px 0; border-top: 1px solid var(--line-1); color: var(--text-1); }
+.jr-facts dd .small { display: block; margin-top: 2px; }
+.jr-frames { list-style: none; margin: 4px 0 6px; padding: 0; display: grid; gap: 4px; }
+.jr-frames li { display: grid; grid-template-columns: 58px 1fr auto; gap: 8px; align-items: center; padding: 6px 10px; border-radius: var(--r-sm); border: 1px solid var(--line-1); font-size: var(--fs-sm); color: var(--text-2); transition: border-color var(--t-med), background var(--t-med); }
+.jr-frames li b { font-weight: 500; color: var(--text-1); }
+.jr-frames li .lam { font: 12px var(--font-mono); }
+.jr-frames li.on { border-color: rgba(242,179,80,.55); background: var(--sun-soft); }
+.jr-checks { list-style: none; padding: 0; margin: 10px 0 0; display: grid; gap: 6px; font-size: var(--fs-sm); }
+.jr-checks li { display: grid; grid-template-columns: 14px 1fr; gap: 8px; align-items: baseline; }
+.jr-checks li > span:first-child { color: var(--teal); font-weight: 600; }
+.jr-checks li.no > span:first-child { color: var(--text-3); }
+.jr-panel .chart { margin: 8px 0 0; }
+.jr-panel .plot-readout { padding: 6px 10px; min-height: 0; }
+.jr-panel .plot { width: 100%; height: auto; display: block; }
+.jr-panel .callout { font-size: var(--fs-xs); }
+
+/* scene title flourish */
+.jr-flourish { position: absolute; left: 0; right: 0; top: 34%; text-align: center; opacity: 0; pointer-events: none; }
+.jr-flourish span { display: block; font: 500 13px var(--font-mono); letter-spacing: .3em; color: var(--sun); }
+.jr-flourish b { display: block; margin-top: 6px; font: 400 52px/1.05 var(--font-display); text-shadow: 0 4px 30px rgba(0,0,0,.8); }
+.jr-flourish.show { animation: flourish 2.4s var(--ease) both; }
+@keyframes flourish { 0% { opacity: 0; transform: translateY(6px); letter-spacing: .02em; } 18%, 62% { opacity: 1; transform: none; } 100% { opacity: 0; transform: translateY(-4px); } }
+
+/* bottom: caption, end actions, controls */
+.jr-bottom { position: absolute; left: 0; right: 0; bottom: 0; display: grid; justify-items: center; gap: 14px; padding: 0 28px 22px; }
+.jr-caption {
+  margin: 0; max-width: 860px; min-height: 2.7em; text-align: center; display: flex; align-items: flex-end; justify-content: center;
+  font: 400 27px/1.32 var(--font-display); color: #f6f1e7; text-shadow: 0 2px 16px rgba(0,0,0,.85), 0 0 2px rgba(0,0,0,.9); text-wrap: balance;
+}
+.jr-caption.in { animation: capin .6s var(--ease); }
+@keyframes capin { from { opacity: 0; filter: blur(2px); transform: translateY(4px); } to { opacity: 1; filter: none; transform: none; } }
+.journey.loading .jr-caption::after { content: "Preparing the next scene…"; font: 400 var(--fs-sm) var(--font-sans); color: var(--text-3); }
+.jr-end { display: flex; gap: var(--s-2); flex-wrap: wrap; justify-content: center; animation: rise var(--t-slow) var(--ease); }
+.jr-controls {
+  display: flex; align-items: center; gap: 10px; padding: 7px 10px; border-radius: var(--r-pill); max-width: 100%;
+  background: rgba(7,11,22,.78); border: 1px solid var(--line-2); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+}
+.jr-controls .icon-btn { border-radius: 50%; }
+.jr-controls .btn.sm { height: 32px; }
+.jr-play { width: 46px; height: 46px; border-radius: 50%; border: 0; background: var(--sun); color: #1b1305; display: grid; place-items: center; cursor: pointer; flex: none; }
+.jr-play:hover { background: var(--sun-2); }
+.jr-play svg { width: 22px; height: 22px; }
+.jr-progress { list-style: none; display: flex; gap: 5px; margin: 0 6px; padding: 0; }
+.jr-progress button { width: 52px; height: 24px; padding: 0; border: 0; background: none; cursor: pointer; display: flex; align-items: center; border-radius: var(--r-sm); }
+.jr-progress button::before { content: ""; position: absolute; }
+.jr-progress button { position: relative; }
+.jr-progress button i { display: block; height: 4px; width: 0; border-radius: 2px; background: var(--sun); box-shadow: 0 0 0 0 transparent; }
+.jr-progress li { position: relative; }
+.jr-progress li::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 4px; margin-top: -2px; border-radius: 2px; background: var(--line-3); pointer-events: none; }
+.jr-progress li.on::before { background: rgba(242,179,80,.28); }
+#jr-evidence { display: none; }
+#jr-voice[aria-pressed="true"] { color: var(--sun-2); border-color: rgba(242,179,80,.5); }
+.journey.ended .jr-progress i { background: var(--text-2); }
+
+/* -------------------------------------------- Stage B: explore yourself */
+.lessons {
+  position: absolute; z-index: 7; left: var(--s-4); bottom: 64px; width: min(380px, calc(100% - 32px));
+  padding: var(--s-4) var(--s-5); border-radius: var(--r-lg); background: rgba(7,11,22,.9); border: 1px solid rgba(242,179,80,.35);
+  box-shadow: var(--shadow-pop); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); animation: rise var(--t-slow) var(--ease);
+}
+.lessons header { display: flex; justify-content: space-between; align-items: center; }
+.lessons header .icon-btn { width: 30px; height: 30px; }
+.lessons h3 { margin: 6px 0 4px; font: 400 24px/1.15 var(--font-display); }
+.lessons p { margin: 0 0 var(--s-3); color: var(--text-2); font-size: var(--fs-sm); }
+.lessons textarea { width: 100%; background: var(--ink-1); border: 1px solid var(--line-2); border-radius: var(--r-sm); padding: 8px 10px; color: var(--text-1); resize: vertical; }
+.lesson-actions { display: flex; gap: var(--s-2); flex-wrap: wrap; margin-bottom: var(--s-3); }
+.lessons footer { display: flex; align-items: center; justify-content: space-between; gap: var(--s-2); margin-top: var(--s-2); }
+.lesson-pips { display: inline-flex; gap: 4px; } .lesson-pips i { width: 14px; height: 3px; border-radius: 2px; background: var(--line-3); } .lesson-pips i.on { background: var(--sun); }
+
+/* ------------------------------------------------------------ responsive */
+@media (max-width: 1100px) {
+  .jr-panel { width: 320px; }
+  #jr-name { font-size: 30px; }
+}
+@media (max-width: 900px) {
+  #jr-evidence { display: inline-flex; }
+  .jr-stamp { top: auto; bottom: 168px; }
+}
+@media (max-width: 640px) {
+  .jr-title { max-width: none; }
+  .jr-top { padding: 12px 14px; gap: 10px; }
+  #jr-name { font-size: 23px; }
+  .jr-scene { font-size: var(--fs-sm); }
+  .journey[data-full] .jr-sub { display: none; }
+  .jr-exit kbd { display: none; }
+  .jr-stamp { left: 12px; right: 12px; transform: none; max-width: none; bottom: auto; top: 96px; justify-content: center; }
+  .jr-panel { left: 12px; right: 12px; width: auto; top: 128px; max-height: calc(100% - 128px - 236px); }
+  .jr-flourish b { font-size: 34px; }
+  .jr-bottom { padding: 0 12px 12px; gap: 10px; }
+  .jr-caption { font-size: 20px; min-height: 3.96em; }
+  .jr-controls { flex-wrap: wrap; justify-content: center; border-radius: var(--r-lg); row-gap: 6px; }
+  .jr-progress { order: 5; width: 100%; justify-content: center; margin: 0; }
+  .jr-progress button { width: 56px; }
+  .jr-end { flex-direction: column; width: 100%; } .jr-end .btn { width: 100%; }
+  .lessons { left: 12px; right: 12px; width: auto; bottom: 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .jr-flourish { display: none; }
+}

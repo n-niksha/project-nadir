@@ -34,6 +34,10 @@ every module boundary and API call; it added `css/tokens.css`, `js/tokens.js`
 (runtime colour tokens for canvas/SVG), self-hosted fonts and the SVG mark.
 Presentation-mode image smoothing runs client-side on the existing frame PNGs,
 so no backend or API change was needed.
+NADIR Journeys (`js/journey/`, see [JOURNEYS.md](JOURNEYS.md)) add a DOM-free
+scene engine with a single clock, declarative scene factories over the existing
+API payloads, and a sky annotation layer; they reuse the viewer, charts and
+cached-only spectral endpoint, so again no backend change was needed.
 Python regression tests, Node's built-in test runner and two Playwright scripts
 cover complementary layers. Screenshots and timings are stored in `artifacts/`.
 See [Milestone 3 results](MILESTONE3.md) for measured limits, not just test counts.

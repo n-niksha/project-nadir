@@ -8,6 +8,9 @@ import { Inspector } from "./inspector.js";
 import { discoverHTML, learnHTML, helpHTML } from "./sheets.js";
 import { Explorer, label as sliceLabel, CUBE_WL } from "./explore.js";
 import { epochList, stepEpoch } from "./playback.js";
+import { JourneyEngine } from "./journey/engine.js";
+import { JourneyUI, Lessons } from "./journey/ui.js";
+import { journeyFor } from "./journey/journeys.js";
 
 const $ = (id) => document.getElementById(id);
 const BOOT = new URLSearchParams(location.search); // read once: updateUrl() rewrites the query string
@@ -86,7 +89,7 @@ function showStartupError(error) {
 async function loadField(q, opts = {}) {
   loadCtl?.abort(); // supersede any running request (server job is cancelled too)
   const ctl = new AbortController(); loadCtl = ctl;
-  stopTimers(); closePops();
+  stopTimers(); closePops(); lessons.close();
   $("catalog-status").textContent = "Loading Gaia DR3, SIMBAD, 2MASS, AllWISE…";
   showLoader(null, q);
   try {
@@ -427,7 +430,8 @@ function parseCoords(text) {
 function toast(msg) { const t = $("toast"); t.textContent = msg; t.hidden = false; clearTimeout(t._h); t._h = setTimeout(() => (t.hidden = true), 4500); }
 
 // ---------------------------------------------------------------- events
-on("select", (id) => select(id));
+on("select", (id) => { if (!journey.active) select(id); });
+on("journey", (id) => startJourney(id));
 on("setA", (i) => { if (!S.field.epochs[i]?.usable) return; S.a = i; if (S.a === S.b) S.b = S.field.epochs.find(epoch => epoch.usable && epoch.index !== i)?.index; afterPairChange(); });
 on("setB", (i) => { if (!S.field.epochs[i]?.usable || i === S.a) return; S.b = i; if (!["b", "blink", "overlay", "diff"].includes(S.cmp)) S.cmp = "b"; afterPairChange(); setCmp(S.cmp); });
 on("frame", (i) => { if (!S.field?.epochs[i]?.usable) return; stopTimers(); S.cmp = "play"; S.frame = i; document.querySelectorAll("[data-cmp]").forEach(button => { button.classList.toggle("active", button.dataset.cmp === "play"); button.setAttribute("aria-pressed", button.dataset.cmp === "play"); }); $("opacity-ctl").hidden = true; sky.loadFrame(i); sky.draw(); timeline.update(); updateHud(); updateUrl(); });
@@ -502,6 +506,7 @@ $("quick-search").onsubmit = async (e) => {
 $("slice").oninput = (e) => explorer?.setSlice(+e.target.value);
 $("explore-go").onclick = () => { const p = explorer?.picked; if (!p) return; showView("time"); loadField({ ra: +p.ra.toFixed(5), dec: +p.dec.toFixed(5), size: +$("size").value, band: $("band").value }); };
 document.addEventListener("keydown", (e) => {
+  if (journey.active) return; // the journey owns the keyboard while it plays
   if (e.key === "Escape" && POPS.some(([, p]) => !$(p).hidden)) { closePops(); return; }
   if (e.target.closest("input, textarea, select")) { if (e.key === "Escape") e.target.blur(); return; }
   if (e.key === "/") { e.preventDefault(); $("q").focus(); return; }
@@ -533,6 +538,111 @@ async function boot() {
     if (q.get("view") && q.get("view") !== "time") showView(q.get("view"));
   } else loadPreset(presets.find((p) => p.demo) || presets[0]);
 }
-window.NADIR = { S, sky, timeline }; // debugging / scripted demos
+// --------------------------------------------------------------- journeys
+// NADIR Journeys play over the observatory and put everything back on exit.
+// Scenes reach the app only through this context object (see journey/journeys.js).
+const journey = new JourneyEngine({ hold: () => journeyUI.speaking() });
+const journeyUI = new JourneyUI(journey, { reduced: REDUCED, onExit: () => leaveJourney(), onAction: (a) => journeyAction(a) });
+const lessons = new Lessons($("lessons"));
+let journeySnap = null, journeyCtx = null, journeyThen = null;
+const spectralReady = new Map(); // fid -> Promise (cached-only spectral images, never a fresh download)
+
+function ensureSpectral(fid) {
+  if (S.field?.fid === fid && S.field.spectral_ready) return Promise.resolve();
+  if (!spectralReady.has(fid)) {
+    const p = (async () => {
+      const r = await postJSON(`/api/fields/${fid}/spectral?cached_only=true`);
+      if (r.job) await pollJob(r.job, { interval: 500 });
+      if (S.field?.fid === fid) S.field.spectral_ready = true;
+    })();
+    p.catch(() => spectralReady.delete(fid));
+    spectralReady.set(fid, p);
+  }
+  return spectralReady.get(fid);
+}
+
+function makeJourneyCtx(d, subject) {
+  const fid = S.fid, f = S.field, notesKey = `nadir:notes:${d.ra.toFixed(4)},${d.dec.toFixed(4)}`;
+  const live = () => journey.active && S.fid === fid;
+  return {
+    field: f, d, subject, anchor: S.a, name: displayName(d), reduced: REDUCED,
+    frame(i) { if (!live() || !f.epochs[i]?.usable) return; S.cmp = "play"; S.frame = i; sky.loadFrame(i).catch(() => {}); sky.draw(); },
+    loadFrames: (ix) => Promise.all(ix.map((i) => sky.loadFrame(i))),
+    highlightFrame: (i) => journeyUI.highlightFrame(i),
+    fly(x, y, k, ms) { if (!live()) return; const b = journeyUI.freeBox(); sky.flyTo(x, y, k, ms, b.ax, b.ay); },
+    fit(ms) { if (!live()) return; const b = journeyUI.freeBox(), g = f.grid; sky.flyTo((g.nx - 1) / 2, (g.ny - 1) / 2, Math.min(b.w / g.nx, b.h / g.ny) * 0.96, ms, b.ax, b.ay); },
+    kFor(arcsec) { const b = journeyUI.freeBox(); return sky.kForSpan(arcsec, Math.min(b.w, b.h)); },
+    layer(patch) { if (patch === undefined) return sky.journey; if (!live()) return; sky.journey = { ...sky.journey, ...patch }; sky.draw(); },
+    reveal(key, ms) {
+      const o = sky.journey?.[key]; if (!o || !live()) return;
+      const now = performance.now(), dur = REDUCED ? 0 : ms;
+      sky.journey = { ...sky.journey, [key]: { ...o, hidden: false, t0: now, ms: dur } };
+      sky.animateUntil(now + dur + 40);
+    },
+    reset() { if (live()) sky.journey = {}; },
+    async spectrum(id) { await ensureSpectral(fid); return getJSON(`/api/fields/${fid}/sources/${id}/spectrum`); },
+    source: (id) => getJSON(`/api/fields/${fid}/sources/${id}`),
+    // Stage B: the same instruments, driven on the live observatory
+    app: {
+      notesKey,
+      center: () => { sky.centerOn(subject.x, subject.y, Math.max(sky.k, 4)); },
+      compare: (a, b, mode) => { if (S.fid !== fid) return; S.a = a; S.b = b; afterPairChange(); setCmp(mode); },
+      tab: (t) => { if (S.selected !== subject.id) { S.tab = t; select(subject.id, { center: false, keepTab: true }); } else inspector.tab(t); revealInspector(); },
+      overlays: (patch) => { Object.assign(S.overlays, patch); S.visualPreset = "custom"; document.querySelectorAll("[data-ov]").forEach((i) => { i.checked = S.overlays[i.dataset.ov]; }); document.querySelectorAll("[data-visual]").forEach((b) => b.setAttribute("aria-pressed", "false")); sky.draw(); updateHud(); },
+      select: (id, tab) => { if (tab) S.tab = tab; select(id, { keepTab: true }).then(revealInspector); },
+    },
+  };
+}
+function revealInspector() { if (matchMedia("(max-width: 1024px)").matches) $("inspector").scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "start" }); }
+
+async function startJourney(id = S.selected) {
+  if (!S.field || id == null || journey.active) return;
+  const subject = S.field.sources.find((s) => s.id === id);
+  if (!subject) return;
+  let d = S.detail?.id === id ? S.detail : null;
+  try { d ??= await getJSON(`/api/fields/${S.fid}/sources/${id}`); } catch (e) { toast(`Journey unavailable: ${e.message}`); return; }
+  stopTimers(); closePops(); hideWelcome(); $("tour").hidden = true; lessons.close();
+  journeySnap = { fid: S.fid, selected: S.selected, tab: S.tab, cmp: S.cmp, a: S.a, b: S.b, frame: S.frame, overlays: { ...S.overlays }, visual: S.visualPreset,
+    view: { k: sky.k, ox: sky.ox, oy: sky.oy, userMoved: sky.userMoved }, focus: document.activeElement, scrollY: window.scrollY };
+  Object.assign(S.overlays, PRESET_OVERLAYS.clean);
+  window.scrollTo(0, 0); // stacked (tablet/mobile) layouts scroll; the show is full-screen
+  document.body.classList.add("journey-on");
+  sky.journey = {}; sky.resize();
+  journeyCtx = makeJourneyCtx(d, subject); journeyThen = null;
+  try { journey.load(journeyFor(d), journeyCtx).start(); }
+  catch (e) { toast(e.message); journey.stop("error"); }
+}
+
+/** Restore the observatory exactly as it was (selection, tab, mode, overlays, camera). */
+function leaveJourney() {
+  const snap = journeySnap; journeySnap = null;
+  document.body.classList.remove("journey-on");
+  sky.journey = null; sky._fly = null;
+  if (snap && S.fid === snap.fid) {
+    Object.assign(S.overlays, snap.overlays); S.visualPreset = snap.visual;
+    S.a = snap.a; S.b = snap.b; S.frame = snap.frame; S.tab = snap.tab;
+    sky.resize();
+    Object.assign(sky, snap.view); if (!snap.view.userMoved) sky.fit();
+    if (snap.cmp === "play") { // restore the paused timelapse frame without starting playback
+      S.cmp = "play"; $("opacity-ctl").hidden = true;
+      document.querySelectorAll("[data-cmp]").forEach((btn) => { btn.classList.toggle("active", btn.dataset.cmp === "play"); btn.setAttribute("aria-pressed", btn.dataset.cmp === "play"); });
+    } else { S.cmp = null; setCmp(snap.cmp); }
+    if (S.selected !== snap.selected) select(snap.selected, { center: false, keepTab: true, quiet: true });
+    else if (S.detail) inspector.tab(S.tab);
+    timeline.render(); sky.draw(); updateHud(); updateUrl();
+    window.scrollTo(0, snap.scrollY || 0);
+  } else sky.resize();
+  const then = journeyThen; journeyThen = null;
+  if (then) then(); else (snap?.focus?.isConnected ? snap.focus : $("sky")).focus?.({ preventScroll: true });
+}
+
+function journeyAction(action) {
+  const ctx = journeyCtx;
+  if (action === "explore") journeyThen = () => { lessons.open(journey, ctx); requestAnimationFrame(() => $("lessons").querySelector("button.primary, button")?.focus({ preventScroll: true })); };
+  else if (action === "evidence") journeyThen = () => { ctx.app.tab(ctx.d.fit && ctx.d.tier !== "stationary" ? "motion" : "overview"); requestAnimationFrame(() => document.querySelector(".tabs .active")?.focus({ preventScroll: true })); };
+  journey.stop(action);
+}
+
+window.NADIR = { S, sky, timeline, journey, startJourney }; // debugging / scripted demos
 intro();
 boot();
